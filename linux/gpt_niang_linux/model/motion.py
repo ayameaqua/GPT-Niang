@@ -97,8 +97,11 @@ class Animator:
             order = list(VIEWS)
             self.turn_to = order[(order.index(self.view) + 4) % 8]
         # Face-dependent gestures return to a readable view first.
-        if action not in ("turn", "spin", "walk", "run", "stand", "raise-left", "raise-right", "raise-both", "carried", "land", "toss"):
-            if self.view not in ("front", "front-left", "front-right"):
+        allowed = {"turn", "spin", "walk", "run", "stand", "raise-left", "raise-right", "raise-both", "carried", "land", "toss", "tilt-left", "tilt-right"}
+        if self.view in ("left", "right"):
+            allowed |= {"wave", "look", "nod", "shake"}
+        if (action not in allowed and self.view not in ("front", "front-left", "front-right")) or (action in ("sit", "sleep") and self.view != "front-left"):
+            if self.view != "front-left":
                 self.pending = action
                 self.turn_from, self.turn_to = self.view, "front-left"
                 self.action = "turn"
@@ -121,8 +124,14 @@ class Animator:
             p = clamp(self.elapsed / duration)
             target = 1. if self.action in ("sit", "sleep") else 0.
             self.seat = self.start_seat + (target-self.start_seat)*smooth(p)
-            if self.action == "turn" and p >= .5:
-                self.view = self.turn_to
+            if self.action == "turn":
+                order = list(VIEWS)
+                start, end = order.index(self.turn_from), order.index(self.turn_to)
+                delta = (end-start) % 8
+                if delta > 4:
+                    delta -= 8
+                step = min(abs(delta), int(p*abs(delta)+.5))
+                self.view = order[(start + (step if delta >= 0 else -step)) % 8]
             if self.action == "spin":
                 order = list(VIEWS)
                 self.view = order[(order.index(self.turn_from) + int(p*8)) % 8]

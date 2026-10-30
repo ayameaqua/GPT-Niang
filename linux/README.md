@@ -113,4 +113,4 @@ linux/.venv/bin/python linux/tests/kwin_probe.py --pid PET_PID --move 300 120
 
 ## 分层龙娘模型原型（2026-10-31）
 
-已接入原包左前侧的 19 种表情、16/18 个基线动作与歪头/抬手；新增左侧面、背面试验绑定。八视角、转身/转圈和完整 V1 尚未完成。模型通过固定发布包本地导入，第三方 JavaScript 不执行；缺失资源时回到静态角色。使用与验收范围见 [模型工作区](models/dragon/README.md)，角色素材适用限制见 [来源说明](models/dragon/NOTICE.md)。
+已接入19 种表情、18 个基线动作、八视角及歪头/抬手。原包左前侧保留为基底，其余七视角为试验绑定；完整 V1 的美术精修、交互长测和对话气泡尚未完成。模型通过固定发布包本地导入，第三方 JavaScript 不执行；缺失资源时回到静态角色。使用与验收范围见 [模型工作区](models/dragon/README.md)，角色素材适用限制见 [来源说明](models/dragon/NOTICE.md)。

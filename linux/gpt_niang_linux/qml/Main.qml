@@ -178,8 +178,8 @@ Window {
             id: dragon
             objectName: "dragonRenderer"
             anchors.fill: parent
-            active: petWindow.modelActive
-            visible: active
+            active: petWindow.modelActive || (petWindow.previewVisible && available)
+            visible: petWindow.modelActive
         }
         MouseArea {
             anchors.fill: parent

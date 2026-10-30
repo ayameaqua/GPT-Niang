@@ -30,7 +30,7 @@ Use case: identity-preserve. Production exploded LAYER ATLAS for the exact chibi
 Use case: identity-preserve. Production sprite LAYER ATLAS, not a completed character illustration. Same exact chibi dragon girl identity as image 1, delicate white hair, lavender horns/wings, ornate white and lilac dress, scaled white tail, two-head-tall proportions. Draw TRUE LEFT PROFILE (nose points left) separated parts, all on transparent background. A strictly regular 4 columns by 3 rows grid, 12 equal rectangular cells, with every part inside its cell and ample empty margin. No text or grid lines. Row 1: [HEAD with horns, bangs, ear, violet eye and face, and short neck-length side hair, NO long back hair], [LONG BACK HAIR without head/face/horns, full separate opaque neck-to-calf locks], [TORSO AND SKIRT without head/hair/arms/hands/wings/tail/legs: a headless ARM-LESS ornate dress body, shoulders end as rounded skin attachment stumps], [near ARM from shoulder to hand with sleeve, hanging down]. Row 2: [far ARM from shoulder to hand with sleeve], [near lavender BAT WING including root], [far BAT WING including root], [WHITE SCALED TAIL with lavender pointed tip, same leftward profile direction as character]. Row 3: [near LEG thigh to shoe with ankle frills], [far LEG thigh to shoe], [small ornate WAIST/APRON front skirt overlap, no legs], [EMPTY]. No assembled figure or extra detached parts. All hidden attachment surfaces must be fully painted and opaque. The torso/dress MUST NOT contain any arms or hands; those belong ONLY in their separate cells. Head and hair separate with enough overlap for head rotation. Keep original costume design and painted line quality. These cutout pieces will be individually cropped and attached to animated joints; don't cross cell borders.
 ```
 
-当前用于试验绑定；脸部仍为整片，侧面表情与口型请求会转回原基底。裙长和手臂连接需要后续美术检查。
+当前用于身体的试验绑定；头部已由后续空白脸补图替换，口型和眼睛在 Qt 中绘制。裙长和手臂连接需要后续美术检查。
 
 ## source/back-dress.png
 
@@ -41,3 +41,19 @@ Use case: precise-object-edit. Make ONE isolated production cutout of ONLY the t
 ```
 
 另一次透明边缘清理实验没有采用；原图在 Qt 不透明背景合成中不存在查看器显示的彩色边缘噪点，因此没有用程序破坏或阈值化其视觉 alpha。
+
+
+## 后续八视角补图
+
+以下均使用内置 `image_gen.imagegen`、真实透明背景；提示词原文另存为普通文本，便于复用。
+
+| 制作文件 | 实际提示词 | 参考 |
+| --- | --- | --- |
+| `source/front-parts.png` | [front-prompt.txt](source/front-prompt.txt) | 原包缩略图 |
+| `source/right-parts.png` | [right-prompt.txt](source/right-prompt.txt) | 原包缩略图 |
+| `source/front-right-parts.png` | [front-right-prompt.txt](source/front-right-prompt.txt) | 原包缩略图、右侧拆件 |
+| `source/back-left-parts.png` | [back-left-prompt.txt](source/back-left-prompt.txt) | `back-reference.png`、`back-dress.png` |
+| `source/back-right-parts.png` | [back-right-prompt.txt](source/back-right-prompt.txt) | `back-reference.png`、`back-dress.png` |
+| `source/left-head-parts.png` | [left-head-prompt.txt](source/left-head-prompt.txt) | 原包缩略图 |
+
+第一轮右前侧和后侧的错误方向图未采用。后侧最终图依据已生成的背面重新制作；其误加的翼饰和长靴没有用于绑定，改用已有后侧部件。新脸部留白用于独立眨眼、视线、眉毛与口型，不能将制作文件中的空白脸当成最终合成效果。各视角仍有美术精修待办；八视角接触表以实际 Qt 合成为准。

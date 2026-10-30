@@ -7,6 +7,7 @@ No native plugin/Qt private ABI or browser runtime is required.
 import json
 import math
 import logging
+from dataclasses import replace
 from pathlib import Path
 
 from PySide6.QtCore import QPointF, QRectF, Qt
@@ -57,15 +58,26 @@ class DragonRenderer:
         images = {}
         if data.get("schemaVersion") != 1 or not 1 <= len(data.get("parts", [])) <= 64:
             raise ValueError("不支持的视角绑定")
+        def geometry(box):
+            return isinstance(box,list) and len(box)==4 and all(type(v) in (int,float) and math.isfinite(v) and abs(v)<=2048 for v in box) and min(box[2:])>0
+        face=data.get("face")
+        if face is not None and (not isinstance(face,dict) or not geometry(face.get("box"))):
+            raise ValueError("无效的面部锚点")
         for node, point in data.get("pivots", {}).items():
             if node not in self.pivots or len(point) != 2 or any(type(v) not in (int, float) or not math.isfinite(v) for v in point):
                 raise ValueError("无效的视角枢轴")
         for part in data["parts"]:
-            if part.get("id") in images or part.get("parent") not in self.pivots:
+            if not isinstance(part.get("id"),str) or part.get("id") in images or part.get("parent") not in self.pivots:
                 raise ValueError("无效的视角层级")
             box = part.get("box", [])
             if len(box) != 4 or any(type(v) not in (int, float) or not math.isfinite(v) or abs(v) > 2048 for v in box) or min(box[2:]) <= 0:
                 raise ValueError("无效的视角坐标")
+            if type(part.get("z")) not in (int,float) or not math.isfinite(part["z"]):
+                raise ValueError("无效的图层顺序")
+            if part.get("warpY") and (len(part["warpY"])!=2 or any(type(v) not in (int,float) or not 0<v<1 for v in part["warpY"])):
+                raise ValueError("无效的纵向变形")
+            if part.get("cutout") and not geometry(part["cutout"]):
+                raise ValueError("无效的遮罩")
             source = (path.parent / part["src"]).resolve()
             if not source.is_relative_to(self.extension_directory.resolve()):
                 raise ValueError("无效的视角图片路径")
@@ -115,7 +127,7 @@ class DragonRenderer:
     def _feature(self, painter, name):
         painter.drawImage(QRectF(*self.parts[name]["box"]), self.images[name])
 
-    def _face(self, pose, lashes=False):
+    def _face(self, pose, lashes=False, one_eye=False):
         image = QImage(230, 150, QImage.Format.Format_ARGB32_Premultiplied)
         image.fill(Qt.GlobalColor.transparent)
         painter = QPainter(image)
@@ -124,6 +136,8 @@ class DragonRenderer:
         painter.translate(-270, -315)
         face = pose.expression
         for index, side in enumerate(("far", "near")):
+            if one_eye and index == 0:
+                continue
             part = self.parts[f"eye-{side}-white"]
             x, y, w, h = part["box"]
             cx, cy = x+w/2, y+h/2
@@ -272,9 +286,10 @@ class DragonRenderer:
             self._render_source(painter, pose)
         if debug:
             painter.setPen(QPen(QColor("#ef476f"), 3))
-            for name, point in self.pivots.items():
+            debug_pivots={**self.pivots,**(self.rigs.get(pose.view,({},{}))[0].get("pivots",{}))}
+            for name, point in debug_pivots.items():
                 painter.save()
-                self._joint(painter, name, pose)
+                self._joint(painter, name, pose, debug_pivots)
                 painter.drawEllipse(QPointF(*point), 7, 7)
                 painter.restore()
         painter.end()
@@ -315,11 +330,40 @@ class DragonRenderer:
     def _render_view(self, painter, pose):
         data, images = self.rigs[pose.view]
         pivots = {**self.pivots, **data.get("pivots", {})}
-        for part in sorted(data["parts"], key=lambda p: p["z"]):
+        layers = list(data["parts"])
+        face = data.get("face")
+        if data.get("sourceNeck"):
+            layers.append(dict(id="@neck",parent="upper",box=self.parts["neck"]["box"],z=7))
+        if face:
+            layers += [dict(id="@eyes", parent="head", box=face["box"], z=14),
+                       dict(id="@lashes", parent="head", box=face["box"], z=18)]
+        for part in sorted(layers, key=lambda p: p["z"]):
             painter.save()
             self._joint(painter, part["parent"], pose, pivots)
-            if part.get("mesh"):
+            if part["id"] == "@neck":
+                painter.drawImage(QRectF(*part["box"]),self.images["neck"])
+            elif part["id"].startswith("@"):
+                x,y,w,h = part["box"]
+                painter.translate(x+w if face.get("flip") else x, y)
+                if face.get("flip"):
+                    painter.scale(-1, 1)
+                face_pose = replace(pose, gaze=(-pose.gaze[0],pose.gaze[1])) if face.get("flip") else pose
+                painter.drawImage(QRectF(0,0,w,h), self._face(face_pose, part["id"] == "@lashes", face.get("oneEye", False)))
+            elif part.get("warpY"):
+                x,y,w,h=part["box"]; a,b=part["warpY"]; im=images[part["id"]]
+                painter.drawImage(QRectF(x,y,w,h*b),im,QRectF(0,0,im.width(),im.height()*a))
+                painter.drawImage(QRectF(x,y+h*b,w,h*(1-b)),im,QRectF(0,im.height()*a,im.width(),im.height()*(1-a)))
+            elif part.get("mesh"):
+                if part.get("cutout"):
+                    clip=QPainterPath(); clip.addRect(QRectF(0,0,1024,1024))
+                    hole=QPainterPath(); hole.addEllipse(QRectF(*part["cutout"]))
+                    painter.setClipPath(clip.subtracted(hole),Qt.ClipOperation.IntersectClip)
                 self._mesh(painter, images[part["id"]], part["box"], pose.hair)
             else:
-                painter.drawImage(QRectF(*part["box"]), images[part["id"]])
+                if part.get("flipX"):
+                    x,y,w,h = part["box"]
+                    painter.translate(x+w,y); painter.scale(-1,1)
+                    painter.drawImage(QRectF(0,0,w,h), images[part["id"]])
+                else:
+                    painter.drawImage(QRectF(*part["box"]), images[part["id"]])
             painter.restore()

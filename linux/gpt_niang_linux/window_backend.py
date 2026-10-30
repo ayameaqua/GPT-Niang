@@ -83,7 +83,7 @@ class WindowBackend(QObject):
         if size != self.cached_size:
             self.cached_size = size
             self.cached_region = alpha_region(self.image, *size)
-        if self.renderer and self.renderer.active and self.renderer.available:
+        if self.renderer and self.renderer.active and self.renderer.available and self.renderer.isVisible():
             region = self.renderer.input_region.translated(round(x), round(y))
         else:
             region = self.cached_region.translated(round(x), round(y))

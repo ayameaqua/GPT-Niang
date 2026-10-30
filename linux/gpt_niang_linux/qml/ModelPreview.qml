@@ -50,7 +50,7 @@ ApplicationWindow {
                 CheckBox { text: "倾听"; checked: controller.listening; onToggled: controller.setListening(checked) }
             }
             Label {
-                text: "仅在画布内演示走跑和抛落。真实窗口位置仍由 KWin 管理。\n未完成绑定的视角会标注，不能当作已完成模型。"
+                text: "仅在画布内演示走跑和抛落。真实窗口位置仍由 KWin 管理。\n新增视角为试验绑定，衣褶与关节仍需精修。"
                 font.pixelSize: 11; wrapMode: Text.Wrap; Layout.fillWidth: true; color: "#6d6380"
             }
         }

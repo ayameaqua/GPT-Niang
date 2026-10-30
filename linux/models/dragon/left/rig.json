@@ -10,11 +10,15 @@
         225,
         65,
         370,
-        420
+        475
       ],
       "parent": "head",
       "z": 10,
-      "mesh": false
+      "mesh": false,
+      "warpY": [
+        0.73,
+        0.83
+      ]
     },
     {
       "id": "hair-back",
@@ -151,5 +155,15 @@
       490,
       520
     ]
-  }
+  },
+  "face": {
+    "box": [
+      231,
+      315,
+      138,
+      150
+    ],
+    "oneEye": true
+  },
+  "sourceNeck": false
 }

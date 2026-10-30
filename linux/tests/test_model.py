@@ -34,8 +34,9 @@ def synthetic_model(root):
         im = QImage(box[2], box[3], QImage.Format.Format_ARGB32)
         im.fill(QColor.fromHsv(index*11 % 360, 160, 220)); im.save(str(root/part['src']))
         parts.append(part)
-    model = dict(source={'canvas': [1024,1024]}, parts=parts,
-                 pivots={'upper': [425,574], 'head': [425,460], 'armNear': [479,491]})
+    pivots={name:[425,574] for name in set(parents) if name != 'features'}
+    pivots.update(upper=[425,574],head=[425,460],armNear=[479,491])
+    model = dict(source={'canvas': [1024,1024]}, parts=parts,pivots=pivots)
     (root/'model.json').write_text(json.dumps(model))
     return model
 
@@ -82,6 +83,16 @@ class AnimationTests(unittest.TestCase):
         self.assertFalse(a.action or a.pending)
         a.play('carried'); advance(a, 8); self.assertEqual(a.action, 'carried')
         a.play('land'); advance(a, 1); self.assertFalse(a.action)
+
+    def test_turn_visits_intermediate_views_and_spin_returns_to_start(self):
+        a=Animator(); a.set_view('front-left'); a.play('turn'); seen=set()
+        for _ in range(45): a.advance(.01); seen.add(a.view)
+        self.assertGreaterEqual(len(seen),4); self.assertEqual(a.view,'back-right')
+        start=a.view; a.play('spin'); seen=set()
+        for _ in range(85): a.advance(.01); seen.add(a.view)
+        self.assertEqual(seen,set(VIEWS)); self.assertEqual(a.view,start)
+        a.set_view('front'); a.play('sit'); self.assertEqual(a.pending,'sit')
+        advance(a,1.4); self.assertEqual(a.view,'front-left'); self.assertEqual(a.seat,1)
 
     def test_pause_speed_and_reset(self):
         a = Animator(); a.play('sleep'); advance(a, 1); a.speech = a.listening = True
@@ -147,6 +158,34 @@ class ResourceTests(unittest.TestCase):
                 renderer = DragonRenderer(source)
             self.assertEqual(renderer.view_errors, ['back']); self.assertFalse(renderer.rigs)
             self.assertFalse(renderer.render(Animator().pose(), 320).isNull())
+
+    def test_checked_in_views_and_hashes_render_without_the_private_source_pack(self):
+        workspace=Path(__file__).parents[1]/'models/dragon'
+        manifest=json.loads((workspace/'asset-hashes.json').read_text())
+        for name,digest in manifest['sha256'].items():
+            self.assertEqual(hashlib.sha256((workspace/name).read_bytes()).hexdigest(),digest,name)
+        with tempfile.TemporaryDirectory() as tmp:
+            source=Path(tmp); synthetic_model(source); renderer=DragonRenderer(source)
+            self.assertEqual(len(renderer.rigs),7); self.assertFalse(renderer.view_errors)
+            hashes=set(); a=Animator()
+            for view in VIEWS:
+                a.set_view(view); frame=renderer.render(a.pose(),320)
+                self.assertFalse(frame.isNull()); hashes.add(hashlib.sha256(frame.constBits()).hexdigest())
+            self.assertEqual(len(hashes),8)
+
+    def test_paused_preview_updates_and_closing_it_preserves_controller_state(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            source=Path(tmp); synthetic_model(source)
+            with patch('gpt_niang_linux.model.item.model_directory',return_value=source):
+                controller=DragonItem(); preview=DragonItem()
+            controller.timer.stop(); preview.timer.stop()
+            for item in (controller,preview): item.setWidth(320);item.setHeight(320)
+            preview.follow=controller; controller.setPaused(True)
+            before=hashlib.sha256(preview.frame.constBits()).hexdigest()
+            controller.setExpression('happy')
+            self.assertNotEqual(before,hashlib.sha256(preview.frame.constBits()).hexdigest())
+            preview.active=False
+            self.assertEqual(controller.expression,'happy'); self.assertTrue(controller.paused)
 
     def test_unbound_views_and_actions_not_advertised_as_ready(self):
         with tempfile.TemporaryDirectory() as tmp, patch('gpt_niang_linux.model.item.model_directory', return_value=Path(tmp)):

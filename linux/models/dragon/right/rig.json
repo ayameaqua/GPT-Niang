@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "status": "experimental",
+  "view": "right",
+  "parts": [
+    {
+      "id": "head",
+      "src": "head.png",
+      "box": [
+        225,
+        65,
+        420,
+        475
+      ],
+      "parent": "head",
+      "z": 10,
+      "mesh": false,
+      "warpY": [
+        0.73,
+        0.83
+      ]
+    },
+    {
+      "id": "hair-back",
+      "src": "hair-back.png",
+      "box": [
+        200,
+        180,
+        390,
+        610
+      ],
+      "parent": "hairBack",
+      "z": 0,
+      "mesh": true
+    },
+    {
+      "id": "dress",
+      "src": "dress.png",
+      "box": [
+        300,
+        447,
+        350,
+        507
+      ],
+      "parent": "upper",
+      "z": 4,
+      "mesh": false
+    },
+    {
+      "id": "arm-near",
+      "src": "arm-near.png",
+      "box": [
+        487.702258395745,
+        496.703919124822,
+        114,
+        202
+      ],
+      "parent": "armNear",
+      "z": 8,
+      "mesh": false
+    },
+    {
+      "id": "arm-far",
+      "src": "arm-far.png",
+      "box": [
+        411.6203484192662,
+        492.0527436920487,
+        117,
+        185
+      ],
+      "parent": "armFar",
+      "z": 3,
+      "mesh": false
+    },
+    {
+      "id": "wing-far",
+      "src": "wing-far.png",
+      "box": [
+        330,
+        461,
+        170,
+        142
+      ],
+      "parent": "wingFar",
+      "z": 1,
+      "mesh": false
+    },
+    {
+      "id": "wing-near",
+      "src": "wing-near.png",
+      "box": [
+        260,
+        461,
+        238,
+        142
+      ],
+      "parent": "wingNear",
+      "z": 2,
+      "mesh": false,
+      "flipX": true
+    },
+    {
+      "id": "tail",
+      "src": "tail.png",
+      "box": [
+        125,
+        640,
+        393,
+        297
+      ],
+      "parent": "tail",
+      "z": 2.2,
+      "mesh": false,
+      "flipX": true
+    },
+    {
+      "id": "leg-near",
+      "src": "leg-near.png",
+      "box": [
+        480,
+        646,
+        98,
+        323
+      ],
+      "parent": "legNear",
+      "z": 2.6,
+      "mesh": false
+    },
+    {
+      "id": "leg-far",
+      "src": "leg-far.png",
+      "box": [
+        465,
+        652,
+        97,
+        311
+      ],
+      "parent": "legFar",
+      "z": 2.4,
+      "mesh": false
+    }
+  ],
+  "pivots": {
+    "armFar": [
+      507.3316435564833,
+      510.0598274140636
+    ],
+    "armNear": [
+      507.3316435564833,
+      510.0598274140636
+    ],
+    "head": [
+      507.3316435564833,
+      460
+    ]
+  },
+  "face": {
+    "box": [
+      509,
+      315,
+      138,
+      150
+    ],
+    "oneEye": true,
+    "flip": true
+  },
+  "sourceNeck": false
+}

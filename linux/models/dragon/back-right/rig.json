@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 1,
+  "status": "experimental",
+  "view": "back-right",
+  "parts": [
+    {
+      "id": "head",
+      "src": "head.png",
+      "box": [
+        225,
+        65,
+        420,
+        475
+      ],
+      "parent": "head",
+      "z": 10,
+      "mesh": false
+    },
+    {
+      "id": "hair-back",
+      "src": "hair-back.png",
+      "box": [
+        200,
+        180,
+        480,
+        610
+      ],
+      "parent": "hairBack",
+      "z": 0,
+      "mesh": true
+    },
+    {
+      "id": "dress",
+      "src": "dress.png",
+      "box": [
+        225,
+        447,
+        455,
+        507
+      ],
+      "parent": "upper",
+      "z": 4,
+      "mesh": false
+    },
+    {
+      "id": "arm-near",
+      "src": "arm-near.png",
+      "box": [
+        466.67693230635285,
+        486.3585378761318,
+        114,
+        202
+      ],
+      "parent": "armNear",
+      "z": 8,
+      "mesh": false
+    },
+    {
+      "id": "arm-far",
+      "src": "arm-far.png",
+      "box": [
+        326.75445647956724,
+        459.8520303247599,
+        117,
+        185
+      ],
+      "parent": "armFar",
+      "z": 3,
+      "mesh": false
+    },
+    {
+      "id": "wing-far",
+      "src": "wing-far.png",
+      "box": [
+        150,
+        461,
+        275,
+        165
+      ],
+      "parent": "wingFar",
+      "z": 1,
+      "mesh": false
+    },
+    {
+      "id": "wing-near",
+      "src": "wing-near.png",
+      "box": [
+        450,
+        461,
+        290,
+        165
+      ],
+      "parent": "wingNear",
+      "z": 2,
+      "mesh": false
+    },
+    {
+      "id": "tail",
+      "src": "tail.png",
+      "box": [
+        125,
+        640,
+        393,
+        297
+      ],
+      "parent": "tail",
+      "z": 2.2,
+      "mesh": false,
+      "flipX": true
+    },
+    {
+      "id": "leg-near",
+      "src": "leg-near.png",
+      "box": [
+        412,
+        646,
+        98,
+        323
+      ],
+      "parent": "legNear",
+      "z": 2.6,
+      "mesh": false
+    },
+    {
+      "id": "leg-far",
+      "src": "leg-far.png",
+      "box": [
+        342,
+        652,
+        97,
+        311
+      ],
+      "parent": "legFar",
+      "z": 2.4,
+      "mesh": false
+    }
+  ],
+  "pivots": {
+    "armFar": [
+      408.2427449641516,
+      480.79108505112805
+    ],
+    "armNear": [
+      503.9533524904214,
+      504.81886526639346
+    ],
+    "head": [
+      456.0980487272865,
+      460
+    ]
+  }
+}

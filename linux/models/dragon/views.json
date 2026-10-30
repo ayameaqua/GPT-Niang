@@ -8,6 +8,26 @@
     "left": {
       "rig": "left/rig.json",
       "status": "experimental"
+    },
+    "front": {
+      "rig": "front/rig.json",
+      "status": "experimental"
+    },
+    "right": {
+      "rig": "right/rig.json",
+      "status": "experimental"
+    },
+    "front-right": {
+      "rig": "front-right/rig.json",
+      "status": "experimental"
+    },
+    "back-left": {
+      "rig": "back-left/rig.json",
+      "status": "experimental"
+    },
+    "back-right": {
+      "rig": "back-right/rig.json",
+      "status": "experimental"
     }
   }
 }

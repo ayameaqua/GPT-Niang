@@ -9,7 +9,7 @@ from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QColor, QGuiApplication, QImage, QPainter
 
 from gpt_niang_linux.model.assets import model_directory
-from gpt_niang_linux.model.motion import Animator, EXPRESSIONS, MOTIONS
+from gpt_niang_linux.model.motion import Animator, EXPRESSIONS, MOTIONS, VIEWS
 from gpt_niang_linux.model.render import DragonRenderer
 
 
@@ -63,14 +63,30 @@ def main():
     metrics = {"frames": count, "size": 320, "meanRenderAndAlphaMs": round(duration/count*1000, 2),
                "backend": "QPainter CPU compositor; Quick upload excluded", "notLongRunAcceptance": True}
     (args.out/"metrics.json").write_text(json.dumps(metrics, indent=2)+"\n")
+    view_sheet = QImage(2048,1100,QImage.Format.Format_RGB32)
+    view_sheet.fill(QColor('#dad5e5')); painter = QPainter(view_sheet)
+    font = painter.font(); font.setPixelSize(22); painter.setFont(font); painter.setPen(QColor('#544467'))
+    for index,(view,name) in enumerate(VIEWS.items()):
+        a=Animator(); a.clock=1; a.set_view(view); x=(index%4)*512; y=(index//4)*550
+        painter.drawImage(QPointF(x,y),renderer.render(a.pose(),512))
+        painter.drawText(QPointF(x+180,y+535),name)
+    painter.end(); view_sheet.save(str(args.out/'views.png'))
     if args.frames:
         animator = Animator(); animator.play("wave")
         frame_dir = args.out/"frames"; frame_dir.mkdir(exist_ok=True)
-        for index in range(150):
+        for index in range(300):
             if index == 55: animator.play("tilt-left")
-            if index == 110: animator.play("raise-both")
+            if index == 115: animator.play("raise-both")
+            if index == 180: animator.play("spin")
+            if index == 210: animator.play("turn")
+            if index == 235: animator.set_view("right"); animator.speech=True
+            if index == 280: animator.speech=False; animator.set_view("front"); animator.set_expression("happy")
             animator.advance(1/30)
-            renderer.render(animator.pose(), 512).save(str(frame_dir/f"{index:04}.png"))
+            frame = QImage(512,550,QImage.Format.Format_RGB32); frame.fill(QColor('#dad5e5'))
+            painter=QPainter(frame); painter.drawImage(QPointF(0,0),renderer.render(animator.pose(),512))
+            font=painter.font();font.setPixelSize(18);painter.setFont(font);painter.setPen(QColor('#544467'))
+            label=MOTIONS.get(animator.action,('待机',0))[0]+' · '+VIEWS[animator.view]
+            painter.drawText(QPointF(165,530),label);painter.end();frame.save(str(frame_dir/f"{index:04}.png"))
     print(json.dumps(metrics))
 
 

@@ -1,5 +1,6 @@
 """Quick-facing character controller and compositor."""
 import logging
+from functools import lru_cache
 import math
 import time
 
@@ -10,6 +11,13 @@ from PySide6.QtQuick import QQuickPaintedItem
 from .assets import model_directory
 from .motion import Animator, EXPRESSIONS, MOTIONS, VIEWS
 from .render import DragonRenderer
+
+
+@lru_cache(maxsize=1)
+def shared_renderer(directory):
+    # The GUI thread owns the immutable texture set and bounded deformation cache.
+    # A preview shares them with the pet; importing new files requires a restart.
+    return DragonRenderer(directory)
 
 
 class DragonItem(QQuickPaintedItem):
@@ -30,7 +38,7 @@ class DragonItem(QQuickPaintedItem):
         self._render_ms = 0
         self._last = time.monotonic()
         try:
-            self.renderer = DragonRenderer(model_directory())
+            self.renderer = shared_renderer(model_directory())
             self.error = "Coopanion 龙娘 · Qt 独立分层渲染"
             if self.renderer.view_errors:
                 self.error += " · 部分扩展视角加载失败，基底仍可用"
@@ -51,10 +59,15 @@ class DragonItem(QQuickPaintedItem):
 
     @follow.setter
     def follow(self, source):
+        if self._follow:
+            self._follow.frameReady.disconnect(self.render_frame)
         self._follow = source
         if source:
             self.animator = source.animator
             self.renderer = source.renderer
+            self.timer.stop()
+            source.frameReady.connect(self.render_frame)
+        self.render_frame()
         self.changed.emit()
 
     @Property(bool, notify=changed)
@@ -76,7 +89,8 @@ class DragonItem(QQuickPaintedItem):
         self._active = value
         if value:
             self._last = time.monotonic()
-            self.timer.start()
+            if not self._follow:
+                self.timer.start()
             self.render_frame()
         else:
             self.timer.stop()
@@ -144,6 +158,7 @@ class DragonItem(QQuickPaintedItem):
     def setView(self, value):
         if value != "front-left" and (not self.renderer or value not in self.renderer.rigs):
             return
+        self.animator.cancel()
         if self.animator.set_view(value):
             self.animator.speech = self.animator.listening = False
             self.animator.action = self.animator.pending = ""
@@ -182,7 +197,7 @@ class DragonItem(QQuickPaintedItem):
 
     @Slot(bool)
     def setSpeaking(self, value):
-        if value and self.animator.view != "front-left":
+        if value and self.animator.view != "front-left" and not (self.renderer and self.renderer.rigs.get(self.animator.view, ({},{}))[0].get("face")):
             self.animator.view = "front-left"
         self.animator.speech = value
         self.changed.emit()
@@ -190,7 +205,7 @@ class DragonItem(QQuickPaintedItem):
 
     @Slot(bool)
     def setListening(self, value):
-        if value and self.animator.view != "front-left":
+        if value and self.animator.view != "front-left" and not (self.renderer and self.renderer.rigs.get(self.animator.view, ({},{}))[0].get("face")):
             self.animator.view = "front-left"
         self.animator.listening = value
         self.changed.emit()

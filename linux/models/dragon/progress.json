@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "updated": "2026-10-31",
+  "status": "prototype-in-progress",
+  "fullModelV1Complete": false,
+  "renderer": "independent-qt-layered-raster-warp",
+  "baselineExpressionsImplemented": 19,
+  "baselineMotionsImplemented": 16,
+  "baselineMotionsPending": ["turn", "spin"],
+  "additionalGestures": ["tilt-left", "tilt-right", "raise-left", "raise-right", "raise-both", "point"],
+  "interactionPerformances": ["carried", "land", "toss", "pet", "poke"],
+  "views": {
+    "front-left": "original-layered-baseline",
+    "left": "experimental-layered",
+    "back": "experimental-layered",
+    "front": "design-only",
+    "front-right": "design-only",
+    "right": "design-only",
+    "back-left": "design-only",
+    "back-right": "design-only"
+  },
+  "faceAndSpeechView": "front-left",
+  "windowMovement": "native-user-drag-plus-kwin-remember-rule",
+  "globalPointerTracking": false,
+  "autonomousDesktopMovement": false,
+  "realWindowThrow": false,
+  "dialogueProvider": false,
+  "bicycle": false,
+  "longRunValidated": false
+}

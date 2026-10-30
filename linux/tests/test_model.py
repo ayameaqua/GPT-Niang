@@ -1,0 +1,159 @@
+"""Lifecycle, pose isolation, import security and animated hit regions."""
+import hashlib
+import json
+from pathlib import Path
+import tempfile
+import unittest
+from unittest.mock import patch
+import zipfile
+
+from PySide6.QtCore import QPoint, Qt
+from PySide6.QtGui import QColor, QBitmap, QGuiApplication, QImage, QRegion
+
+from gpt_niang_linux.model.assets import import_model, validate_model
+from gpt_niang_linux.model.item import DragonItem
+from gpt_niang_linux.model.motion import Animator, EXPRESSIONS, MOTIONS, VIEWS
+from gpt_niang_linux.model.render import DragonRenderer
+
+app = QGuiApplication.instance() or QGuiApplication([])
+
+
+def advance(animator, seconds):
+    for _ in range(round(seconds*100)):
+        animator.advance(.01)
+
+
+def synthetic_model(root):
+    # These solid pixels are geometry fixtures, never substitute character artwork.
+    names = 'hair-back wing-far wing-near tail leg-far leg-near skirt-far skirt-near arm-far neck torso sit apron arm-near ear-far ear-near face nose mouth eye-far-white eye-near-white eye-far-iris eye-near-iris horns hair-front ahoge eye-far-lash eye-near-lash brow-far brow-near'.split()
+    parents = 'hairBack wingFar wingNear tail legFar legNear skirtFar skirtNear armFar upper upper seat apron armNear head head head head features features features features features head hairFront ahoge features features features features'.split()
+    parts = []; (root/'tex').mkdir()
+    for index, (name, parent) in enumerate(zip(names, parents)):
+        box = {'arm-near': [457,473,114,202], 'hair-back': [231,127,509,615], 'sit': [92,570,804,345]}.get(name, [300,400,55,55])
+        part = dict(id=name, src=f'tex/{name}.png', parent=parent, box=box, z=index)
+        im = QImage(box[2], box[3], QImage.Format.Format_ARGB32)
+        im.fill(QColor.fromHsv(index*11 % 360, 160, 220)); im.save(str(root/part['src']))
+        parts.append(part)
+    model = dict(source={'canvas': [1024,1024]}, parts=parts,
+                 pivots={'upper': [425,574], 'head': [425,460], 'armNear': [479,491]})
+    (root/'model.json').write_text(json.dumps(model))
+    return model
+
+
+class AnimationTests(unittest.TestCase):
+    def test_catalog_matches_baseline(self):
+        data = json.loads((Path(__file__).parents[1]/'docs/coopanion-dragon-baseline.json').read_text())
+        self.assertEqual(set(EXPRESSIONS), {x['id'] for x in data['expressions']})
+        self.assertTrue({x['id'] for x in data['motions']} <= MOTIONS.keys())
+        self.assertEqual(len(VIEWS), 8)
+
+    def test_seated_pose_persists_and_stand_restores(self):
+        a = Animator(); a.play('sit'); advance(a, 2)
+        self.assertEqual(a.seat, 1); self.assertFalse(a.action)
+        advance(a, 20); self.assertEqual(a.seat, 1)
+        a.play('sleep'); advance(a, 2); self.assertTrue(a.pose().eye_closed)
+        a.play('stand'); advance(a, 2)
+        self.assertEqual(a.seat, 0); self.assertFalse(a.pose().eye_closed)
+        for _ in range(30):
+            a.play('sit'); advance(a, 1); a.play('stand'); advance(a, 2)
+        self.assertEqual(a.pose().transforms['upper']['y'], 0)
+        self.assertAlmostEqual(a.pose().root_angle, 0)
+
+    def test_reorient_before_gesture_and_cancel_discards_queue(self):
+        a = Animator(); a.set_view('back'); a.play('wave')
+        self.assertEqual(a.action, 'turn'); self.assertEqual(a.pending, 'wave')
+        advance(a, .6); self.assertEqual(a.view, 'front-left'); self.assertEqual(a.action, 'wave')
+        a.set_view('back'); a.play('wave'); a.cancel(); advance(a, 2)
+        self.assertFalse(a.action); self.assertFalse(a.pending)
+
+    def test_tilt_is_head_only_and_hands_are_distinct(self):
+        poses = {}
+        for action in ('tilt-left','tilt-right','raise-left','raise-right','raise-both','wave'):
+            a = Animator(); a.play(action); advance(a, .6); poses[action] = a.pose()
+        self.assertLess(poses['tilt-left'].transforms['head']['a'], -5)
+        self.assertGreater(poses['tilt-right'].transforms['head']['a'], 5)
+        self.assertEqual(poses['tilt-left'].root_angle, 0)
+        self.assertLess(poses['raise-left'].transforms['armNear']['a'], -90)
+        self.assertGreater(poses['raise-right'].transforms['armFar']['a'], 90)
+        self.assertNotEqual(poses['wave'].transforms['armNear']['a'], poses['raise-left'].transforms['armNear']['a'])
+
+    def test_replacement_discards_pending_gesture_and_carry_holds_until_release(self):
+        a = Animator(); a.set_view('back'); a.play('wave'); a.play('stand'); advance(a, 2)
+        self.assertFalse(a.action or a.pending)
+        a.play('carried'); advance(a, 8); self.assertEqual(a.action, 'carried')
+        a.play('land'); advance(a, 1); self.assertFalse(a.action)
+
+    def test_pause_speed_and_reset(self):
+        a = Animator(); a.play('sleep'); advance(a, 1); a.speech = a.listening = True
+        a.paused = True; before = a.clock; advance(a, 3); self.assertEqual(a.clock, before)
+        a.cancel(); self.assertEqual(a.seat, 0); self.assertFalse(a.speech or a.listening or a.sleeping)
+        a.paused = False; a.speed = .5; advance(a, 1); self.assertAlmostEqual(a.clock-before, .5)
+
+
+class ResourceTests(unittest.TestCase):
+    def test_unknown_archive_and_traversal_are_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); archive = root/'model.zip'
+            with zipfile.ZipFile(archive, 'w') as z: z.writestr('../../escape', 'bad')
+            with self.assertRaises(ValueError): import_model(archive, root/'destination')
+            model = synthetic_model(root); model['parts'][0]['src'] = '../../escape.png'
+            with self.assertRaises(ValueError): validate_model(model)
+            self.assertFalse((root/'destination').exists())
+
+    def test_import_is_data_only_and_preserves_unrelated_files(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); source = root/'source'; source.mkdir(); synthetic_model(source)
+            (source/'figure.json').write_text('{}'); (source/'README.md').write_text('source notice')
+            (source/'thumb.png').write_bytes((source/'tex/face.png').read_bytes())
+            archive = root/'model.zip'
+            with zipfile.ZipFile(archive, 'w') as z:
+                for path in source.rglob('*'):
+                    if path.is_file(): z.write(path, 'gpt-dragon/'+str(path.relative_to(source)))
+                z.writestr('gpt-dragon/figure.js', 'throw Error("must never execute")')
+                z.writestr('../../escape', 'must never extract')
+            with patch('gpt_niang_linux.model.assets.SOURCE_SHA256', hashlib.sha256(archive.read_bytes()).hexdigest()):
+                out = import_model(archive, root/'out')
+                self.assertTrue((out/'README.md').exists()); self.assertFalse((out/'figure.js').exists())
+                self.assertFalse((root/'escape').exists()); self.assertEqual(import_model(archive, out), out)
+                (out/'README.md').write_text('modified')
+                import_model(archive, out)
+                self.assertEqual((out/'README.md').read_text(), 'source notice')
+                backups = list(root.glob('out.backup-*')); self.assertEqual(len(backups), 1)
+                self.assertEqual((backups[0]/'README.md').read_text(), 'modified')
+                unrelated = root/'unrelated'; unrelated.mkdir(); (unrelated/'keep').write_text('keep')
+                with self.assertRaises(ValueError): import_model(archive, unrelated)
+                self.assertEqual((unrelated/'keep').read_text(), 'keep')
+
+    def test_composite_changes_hit_region_and_leaves_empty_space_transparent(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); synthetic_model(root)
+            with patch("gpt_niang_linux.model.render.LINUX_ROOT", root):
+                renderer = DragonRenderer(root)
+            a = Animator(); neutral = renderer.render(a.pose(), 320)
+            a.play('raise-left'); advance(a, .6); raised = renderer.render(a.pose(), 320)
+            self.assertFalse(neutral == raised)
+            flags = Qt.ImageConversionFlag.ThresholdAlphaDither
+            region1 = QRegion(QBitmap.fromImage(neutral.createAlphaMask(flags)))
+            region2 = QRegion(QBitmap.fromImage(raised.createAlphaMask(flags)))
+            self.assertFalse(region1 == region2); self.assertFalse(region2.contains(QPoint(0,0)))
+            self.assertFalse(region2.isEmpty())
+
+    def test_optional_broken_view_does_not_remove_the_baseline(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); source = root/'source'; source.mkdir(); synthetic_model(source)
+            extra = root/'models/dragon'; extra.mkdir(parents=True)
+            (extra/'views.json').write_text(json.dumps({'views': {'back': {'rig': 'missing.json'}}}))
+            with patch('gpt_niang_linux.model.render.LINUX_ROOT', root):
+                renderer = DragonRenderer(source)
+            self.assertEqual(renderer.view_errors, ['back']); self.assertFalse(renderer.rigs)
+            self.assertFalse(renderer.render(Animator().pose(), 320).isNull())
+
+    def test_unbound_views_and_actions_not_advertised_as_ready(self):
+        with tempfile.TemporaryDirectory() as tmp, patch('gpt_niang_linux.model.item.model_directory', return_value=Path(tmp)):
+            item = DragonItem(); item.timer.stop()
+            self.assertFalse(item.available)
+            self.assertFalse(any(m['ready'] for m in item.motions if m['id'] in ('turn','spin')))
+            item.play('turn'); self.assertFalse(item.motion)
+
+
+if __name__ == '__main__': unittest.main()

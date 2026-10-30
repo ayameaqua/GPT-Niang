@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "status": "experimental",
+  "view": "left",
+  "parts": [
+    {
+      "id": "head",
+      "src": "head.png",
+      "box": [
+        225,
+        65,
+        370,
+        420
+      ],
+      "parent": "head",
+      "z": 10,
+      "mesh": false
+    },
+    {
+      "id": "hair-back",
+      "src": "hair-back.png",
+      "box": [
+        280,
+        180,
+        390,
+        610
+      ],
+      "parent": "hairBack",
+      "z": 0,
+      "mesh": true
+    },
+    {
+      "id": "dress",
+      "src": "dress.png",
+      "box": [
+        300,
+        447,
+        350,
+        507
+      ],
+      "parent": "upper",
+      "z": 4,
+      "mesh": false
+    },
+    {
+      "id": "arm-near",
+      "src": "arm-near.png",
+      "box": [
+        395,
+        496,
+        110,
+        202
+      ],
+      "parent": "armNear",
+      "z": 8,
+      "mesh": false
+    },
+    {
+      "id": "arm-far",
+      "src": "arm-far.png",
+      "box": [
+        345,
+        478,
+        105,
+        200
+      ],
+      "parent": "armFar",
+      "z": 3,
+      "mesh": false
+    },
+    {
+      "id": "wing-near",
+      "src": "wing-near.png",
+      "box": [
+        455,
+        461,
+        238,
+        142
+      ],
+      "parent": "wingNear",
+      "z": 2,
+      "mesh": false
+    },
+    {
+      "id": "wing-far",
+      "src": "wing-far.png",
+      "box": [
+        370,
+        461,
+        150,
+        142
+      ],
+      "parent": "wingFar",
+      "z": 1,
+      "mesh": false
+    },
+    {
+      "id": "tail",
+      "src": "tail.png",
+      "box": [
+        450,
+        640,
+        393,
+        297
+      ],
+      "parent": "tail",
+      "z": 1.5,
+      "mesh": false
+    },
+    {
+      "id": "leg-near",
+      "src": "leg-near.png",
+      "box": [
+        415,
+        646,
+        98,
+        323
+      ],
+      "parent": "legNear",
+      "z": 2.6,
+      "mesh": false
+    },
+    {
+      "id": "leg-far",
+      "src": "leg-far.png",
+      "box": [
+        365,
+        652,
+        97,
+        311
+      ],
+      "parent": "legFar",
+      "z": 2.5,
+      "mesh": false
+    }
+  ],
+  "pivots": {
+    "armFar": [
+      390,
+      484
+    ],
+    "armNear": [
+      440,
+      505
+    ],
+    "wingNear": [
+      460,
+      520
+    ],
+    "wingFar": [
+      490,
+      520
+    ]
+  }
+}

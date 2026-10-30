@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
 import QtQuick.Layouts
+import GPTNiang.Model 1.0
 
 Window {
     id: petWindow
@@ -10,8 +11,10 @@ Window {
     visible: true
     color: "transparent"
     flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowDoesNotAcceptFocus
-    readonly property real petHeight: 230 * preferences.scale
-    readonly property int canvasWidth: Math.ceil(Math.max(364, petHeight * windowBackend.imageAspect + 24))
+    property bool previewVisible: false
+    readonly property bool modelActive: preferences.modelEnabled && dragon.available
+    readonly property real petHeight: (modelActive ? 320 : 230) * preferences.scale
+    readonly property int canvasWidth: Math.ceil(Math.max(364, petHeight * (modelActive ? 1 : windowBackend.imageAspect) + 24))
     readonly property int canvasHeight: Math.ceil(350 + petHeight + 16)
     width: canvasWidth
     height: canvasHeight
@@ -33,7 +36,10 @@ Window {
 
     Connections {
         target: windowBackend
+        function onDragStarted() { if (petWindow.modelActive) dragon.play("carried") }
+        function onDragEnded() { if (petWindow.modelActive) dragon.play("land") }
         function onPetClicked() {
+            if (petWindow.modelActive) dragon.play("poke")
             petWindow.bubbleVisible = !petWindow.bubbleVisible
             if (petWindow.bubbleVisible) {
                 quota.ensureFresh()
@@ -43,6 +49,11 @@ Window {
     }
     Connections {
         target: preferences
+        function onModelPreviewRequested() {
+            petWindow.previewVisible = true
+            modelPreview.raise()
+            modelPreview.requestActivate()
+        }
         function onSettingsRequested() {
             settingsWindow.show()
             settingsWindow.raise()
@@ -145,34 +156,58 @@ Window {
         }
     }
 
-    Image {
+    Item {
         id: character
         objectName: "character"
         height: petWindow.petHeight
-        width: height * windowBackend.imageAspect
+        width: height * (petWindow.modelActive ? 1 : windowBackend.imageAspect)
         x: Math.round((petWindow.width - width) / 2)
         y: 350
-        source: preferences.characterUrl
-        sourceSize.height: Math.ceil(height * petWindow.Screen.devicePixelRatio)
-        fillMode: Image.PreserveAspectFit
-        smooth: true
-        opacity: windowBackend.pressed ? 0.88 : 1.0
         onWidthChanged: maskTimer.restart()
         onHeightChanged: maskTimer.restart()
+        Image {
+            anchors.fill: parent
+            visible: !petWindow.modelActive
+            source: preferences.characterUrl
+            sourceSize.height: Math.ceil(height * petWindow.Screen.devicePixelRatio)
+            fillMode: Image.PreserveAspectFit
+            smooth: true
+            opacity: windowBackend.pressed ? 0.88 : 1.0
+        }
+        DragonModel {
+            id: dragon
+            objectName: "dragonRenderer"
+            anchors.fill: parent
+            active: petWindow.modelActive
+            visible: active
+        }
         MouseArea {
             anchors.fill: parent
             acceptedButtons: Qt.LeftButton | Qt.RightButton
             preventStealing: true
+            hoverEnabled: true
             onPressed: function(mouse) {
                 if (mouse.button === Qt.RightButton) {
                     windowBackend.cancelPointer()
                     contextMenu.popup()
                 } else windowBackend.pointerPress(mouse.x, mouse.y)
             }
-            onPositionChanged: function(mouse) { if (pressedButtons & Qt.LeftButton) windowBackend.pointerMove(mouse.x, mouse.y) }
+            onPositionChanged: function(mouse) {
+                if (petWindow.modelActive) dragon.lookAt((mouse.x / width - 0.5) * 2, (mouse.y / height - 0.4) * 2)
+                if (pressedButtons & Qt.LeftButton) windowBackend.pointerMove(mouse.x, mouse.y)
+            }
+            onExited: dragon.lookAt(0, 0)
             onReleased: function(mouse) { if (mouse.button === Qt.LeftButton) windowBackend.pointerRelease() }
             onCanceled: windowBackend.cancelPointer()
+            onDoubleClicked: if (petWindow.modelActive) dragon.play("pet")
         }
+    }
+
+    ModelPreview {
+        id: modelPreview
+        controller: dragon
+        visible: petWindow.previewVisible
+        onClosing: petWindow.previewVisible = false
     }
 
     Menu {
@@ -181,6 +216,7 @@ Window {
         MenuItem { text: petWindow.bubbleVisible ? "收起额度" : "查看额度"; onTriggered: { petWindow.bubbleVisible = !petWindow.bubbleVisible; if (petWindow.bubbleVisible) quota.ensureFresh() } }
         MenuItem { text: "刷新额度"; enabled: !quota.busy; onTriggered: { petWindow.bubbleVisible = true; quota.manualRefresh() } }
         MenuItem { text: "换一句话"; onTriggered: { preferences.nextQuote(); petWindow.bubbleVisible = true } }
+        MenuItem { text: "模型与动作预览…"; onTriggered: { petWindow.previewVisible = true; modelPreview.raise(); modelPreview.requestActivate() } }
         MenuSeparator {}
         Menu {
             title: "角色尺寸"

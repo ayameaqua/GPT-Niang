@@ -4,7 +4,7 @@
 
 本 Fork：[ayameaqua/GPT-Niang](https://github.com/ayameaqua/GPT-Niang)。上游版本为 1.3.6，基线固定在 [`0f43bb54ee413d4fc8e95f03b4248834b468d6b5`](https://github.com/T7moris/GPT-Niang/commit/0f43bb54ee413d4fc8e95f03b4248834b468d6b5)。开始实施时与上游 `main` 相同。Windows/macOS 代码与共享额度核心保持原样。
 
-后续角色扩展见 [Qt 龙娘分层动画与对话气泡实施计划](docs/COOPANION-DRAGON-PLAN.md)：以 Coopanion 龙娘形象包为基底，V1 补全多视角与交互，V2 增加骑自行车。该计划尚未实现，不属于当前预览版已有功能。
+后续角色扩展见 [Qt 龙娘分层动画与对话气泡实施计划](docs/COOPANION-DRAGON-PLAN.md)：以 Coopanion 龙娘形象包为基底，V1 补全多视角与交互，V2 增加骑自行车。当前已开始实施，可动原型与侧面/背面试验绑定见文末；完整 V1 和自行车尚未完成。
 
 ## 安装和启动
 
@@ -110,3 +110,7 @@ linux/.venv/bin/python linux/tests/kwin_probe.py --pid PET_PID --move 300 120
 移除用户级桌面入口和自动安装的项目规则，保留源码、venv、用户设置及 KWin 配置备份。手动导入的规则须在 KDE 编辑器里移除。之后可自行删除源码目录；不触碰 Codex 登录。
 
 代码遵循仓库 MIT 许可；角色图片及衍生图标不适用代码 MIT。保留共享素材中的 [角色使用声明](../gpt-niang-usage/assets/CHARACTER-NOTICE.txt)、[生成来源](../gpt-niang-usage/assets/生成说明.md) 和 [语录许可](../gpt-niang-usage/assets/quotes-LICENSE.txt)，按上游允许范围随非商业项目副本分发。
+
+## 分层龙娘模型原型（2026-10-31）
+
+已接入原包左前侧的 19 种表情、16/18 个基线动作与歪头/抬手；新增左侧面、背面试验绑定。八视角、转身/转圈和完整 V1 尚未完成。模型通过固定发布包本地导入，第三方 JavaScript 不执行；缺失资源时回到静态角色。使用与验收范围见 [模型工作区](models/dragon/README.md)，角色素材适用限制见 [来源说明](models/dragon/NOTICE.md)。

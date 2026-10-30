@@ -26,10 +26,13 @@ def alpha_region(image, width, height, threshold=16):
 class WindowBackend(QObject):
     changed = Signal()
     petClicked = Signal()
+    dragStarted = Signal()
+    dragEnded = Signal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self.window = None
+        self.renderer = None
         self.image = QImage(str(ASSETS / "gpt-dragon-niang-bust.png"))
         if self.image.isNull():
             raise RuntimeError("角色素材缺失")
@@ -62,6 +65,10 @@ class WindowBackend(QObject):
         window.installEventFilter(self)
         window.screenChanged.connect(self.rebuild)
 
+    def attach_renderer(self, renderer):
+        self.renderer = renderer
+        renderer.frameReady.connect(self.rebuild)
+
     @Slot(float, float, float, float, bool, float, float, float, float)
     def updateMask(self, x, y, width, height, bubble, bx, by, bw, bh):
         self.layout = (x, y, width, height, bubble, bx, by, bw, bh)
@@ -76,7 +83,10 @@ class WindowBackend(QObject):
         if size != self.cached_size:
             self.cached_size = size
             self.cached_region = alpha_region(self.image, *size)
-        region = self.cached_region.translated(round(x), round(y))
+        if self.renderer and self.renderer.active and self.renderer.available:
+            region = self.renderer.input_region.translated(round(x), round(y))
+        else:
+            region = self.cached_region.translated(round(x), round(y))
         if bubble:
             # Rounded bubble corners stay transparent. Controls are contained within it.
             rect = QRect(round(bx), round(by), math.ceil(bw), math.ceil(bh))
@@ -105,6 +115,7 @@ class WindowBackend(QObject):
         # Mark moving before the compositor takes the grab. No click on a failed move.
         self.state = "moving"
         self.changed.emit()
+        self.dragStarted.emit()
         self.window.startSystemMove()
         self.release_watchdog.start()
 
@@ -117,9 +128,12 @@ class WindowBackend(QObject):
 
     @Slot()
     def cancelPointer(self):
+        moving = self.state == "moving"
         self.release_watchdog.stop()
         self.state = "idle"
         self.changed.emit()
+        if moving:
+            self.dragEnded.emit()
 
     def eventFilter(self, watched, event):
         if event.type() in (QEvent.Type.WindowDeactivate, QEvent.Type.UngrabMouse, QEvent.Type.Hide):

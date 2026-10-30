@@ -8,7 +8,7 @@ import time
 
 from .paths import xdg_path
 
-DEFAULTS = {"schemaVersion": 1, "scale": 1.0, "nodePath": "", "codexPath": "", "quotesEnabled": True}
+DEFAULTS = {"schemaVersion": 1, "scale": 1.0, "nodePath": "", "codexPath": "", "quotesEnabled": True, "modelEnabled": True}
 
 
 def normalize(raw):
@@ -25,8 +25,9 @@ def normalize(raw):
         value = raw.get(key, "")
         if isinstance(value, str) and len(value) <= 4096 and "\0" not in value:
             result[key] = value
-    if type(raw.get("quotesEnabled")) is bool:
-        result["quotesEnabled"] = raw["quotesEnabled"]
+    for key in ("quotesEnabled", "modelEnabled"):
+        if type(raw.get(key)) is bool:
+            result[key] = raw[key]
     return result
 
 

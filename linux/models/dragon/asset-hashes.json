@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "generator": "built-in image_gen.imagegen",
+  "sha256": {
+    "back/arm-far.png": "f7658fad539e82432d44fa35e9ce2e69cf7b68cc7c1f1147724275072da4ea46",
+    "back/arm-near.png": "234a042979418585f8b7b2b26ba51dd9f3a4ed438aaa57bd143c515d53c09ab2",
+    "back/dress.png": "66ec1bb85c84703428b851edaecaac9a7f4341fdcdb661ada4461fa54d4781a5",
+    "back/hair-back.png": "eb4e66bc6d4b6c8b5a802379677590b049a79a8947e47f8b760b5d4180960d43",
+    "back/head.png": "33c98839baecb17412f5272a834e857bbe644c970cc932ce686f87796d70c7fa",
+    "back/leg-far.png": "baa1270a1d6a5ae11d4f4f782517cb4a70e6b21158deb73365ac5236738f29fb",
+    "back/leg-near.png": "16edfd3d2ef37510ff781a8b5ff0aebd26fa6992f00591fb196157961ffd8b53",
+    "back/tail.png": "9c799eab7dc651e88490f089a0b14feb7820fe05caf5cf992af87ef9b66a2462",
+    "back/wing-far.png": "e93ff793c365c23df8389ebf8a592bbf72d3b2d0e0ddb08678fcbe4300f46271",
+    "back/wing-near.png": "0a70c66deff55e1a8a3eea6aa2eef646c4fa1952dded34115f6d6de79ed58e7c",
+    "left/arm-far.png": "a9c0953d1f5802dc12835a0d181ad1ee331e9ac9da5319bebac47863b05ef20d",
+    "left/arm-near.png": "39a8c8100102aef4a2decfdbd77dbee5f7a3117c8867c0f46e861c99d827cb5d",
+    "left/dress.png": "4e275a0985dd19607a51b7316314b04b7cf5946244f6ac7ea574849bd91dc511",
+    "left/hair-back.png": "b9e9c19caeeff247e0ff45c3553d476a485a04e0614c65f568e4d937a74328a0",
+    "left/head.png": "d25fac4684de98bf306a3e89120f3a4828a0920edcf33347233111b5e4e52798",
+    "left/leg-far.png": "48f396931904da7697e164531e6d0ef26d8622d292ce864d623711cbf03d6786",
+    "left/leg-near.png": "f313f905009cede179415a72bc6c40ce6fcaf8edc509198d0f110669d701c097",
+    "left/tail.png": "7e77cf69ce3169b158d878ca2788c8052b3a504c477946503e6a51d5ddc7c33d",
+    "left/wing-far.png": "4250ac8200db774c41a6e2982d3f336b25cf34084486bb8e4dea02261ca8fe11",
+    "left/wing-near.png": "fd66c80979a3a06c179aa3770490c1872033c67d936eb84f7556554e6f2fbe28",
+    "preview-contact.png": "aab22814651aa8ed7d245a2818272c00a887ddd71fb2d772c133ef84eb4239f5",
+    "source/back-dress.png": "05d182a96edd41267de11e9abf881c7f3d8b72f2289cab3a12a49d89e4a44f2d",
+    "source/back-parts-draft.png": "438180b3285cdb9595845ae582c339ef5514b23688ab43c23ee935c56c0514d4",
+    "source/left-parts-draft.png": "084e631837931f3f3cf8a11b0c12989c4fea38b40b9524d47e3dd77d6c4a01f4",
+    "source/turnaround.png": "e7b0aeff73ab130fd04386bcef06226e6a4501bf8e37bdecc789839be1ab3dbc"
+  }
+}

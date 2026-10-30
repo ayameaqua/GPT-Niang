@@ -38,6 +38,7 @@ ApplicationWindow {
                     Button { required property real modelData; text: Math.round(modelData * 100) + "%"; onClicked: preferences.setScale(modelData) }
                 }
             }
+            CheckBox { text: "启用已导入的 Coopanion 分层模型"; checked: preferences.modelEnabled; onToggled: preferences.setModelEnabled(checked) }
             CheckBox { text: "显示基本语录"; checked: preferences.quotesEnabled; onToggled: preferences.setQuotesEnabled(checked) }
             Rectangle { Layout.fillWidth: true; height: 1; color: "#dce3ed" }
             Label { text: "KDE 窗口管理"; color: "#334155"; font.bold: true }

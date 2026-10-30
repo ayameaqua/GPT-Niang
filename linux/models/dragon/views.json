@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "views": {
+    "back": {
+      "rig": "back/rig.json",
+      "status": "experimental"
+    },
+    "left": {
+      "rig": "left/rig.json",
+      "status": "experimental"
+    }
+  }
+}

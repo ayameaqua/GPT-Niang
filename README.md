@@ -297,7 +297,7 @@ Windows 界面使用 PowerShell / WPF，Mac 界面使用 SwiftUI / AppKit，额�
 
 遇到问题可以 [提交中文问题反馈](https://github.com/T7moris/GPT-Niang/issues/new)。请说明操作系统、CPU 架构（Mac）、Codex 与挂件版本、复现步骤以及期望效果；截图请裁去对话、账号和其他私人信息。不要上传登录文件或整个状态目录。
 
-欢迎改进窗口兼容性、安装流程和可读性；改动后请运行相应平台的检查。角色为静态半身配合按压动画，不包含完整桌宠动作。
+欢迎改进窗口兼容性、安装流程和可读性；改动后请运行相应平台的检查。Windows/macOS 角色为静态半身配合按压动画。Linux 分支已加入分层可动模型原型，仍未完成完整桌宠动作与八视角验收。
 
 源码中的 Windows 本地测试功能见 [图片更换与菜单说明](https://github.com/T7moris/GPT-Niang/blob/v1.3.6/docs/windows-character-menu.md)；1.3.6 保留图片更换、独立大小与图库操作。
 
@@ -350,3 +350,5 @@ Copyright © 2026 T7moris 及项目贡献者。代码和一般文档采用 [MIT 
 龙娘图由 ImageGen 根据用户提供的角色参考生成，并非本项目对参考图或参考角色的版权声明。**参考图、角色设计及相关第三方素材的权利归各自权利人所有，代码开源不代表图片或角色可以随意商用。** 未经相关权利人授权，不得将角色或图片用于商业产品、广告、周边销售、收费素材包等用途，也不得作为独立素材包分发。需要商业使用代码时，可替换为具有适当授权的图片。
 
 完整范围与使用条件见 [角色与图片素材声明](gpt-niang-usage/assets/CHARACTER-NOTICE.txt)，生成来源见 [素材说明](gpt-niang-usage/assets/生成说明.md)。
+
+Linux 分层龙娘模型原型与补图进度见 [模型工作区](linux/models/dragon/README.md)。该目录角色素材适用其单独的[来源与限制说明](linux/models/dragon/NOTICE.md)，不包含在代码 MIT 授权中。

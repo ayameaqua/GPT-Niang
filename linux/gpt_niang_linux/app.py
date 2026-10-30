@@ -14,7 +14,7 @@ import PySide6
 from PySide6.QtCore import ClassInfo, QObject, Property, QTimer, QUrl, Signal, Slot, qVersion
 from PySide6.QtDBus import QDBusConnection, QDBusInterface
 from PySide6.QtGui import QGuiApplication, QIcon
-from PySide6.QtQml import QQmlApplicationEngine
+from PySide6.QtQml import QQmlApplicationEngine, qmlRegisterType
 from PySide6.QtQuick import QQuickWindow
 
 from . import __version__
@@ -28,6 +28,7 @@ from .window_backend import WindowBackend
 class Preferences(QObject):
     changed = Signal()
     settingsRequested = Signal()
+    modelPreviewRequested = Signal()
     quoteChanged = Signal()
 
     def __init__(self, settings, parent=None):
@@ -61,6 +62,14 @@ class Preferences(QObject):
     @Property(str, notify=quoteChanged)
     def quote(self):
         return self.quote_text
+
+    @Property(bool, notify=changed)
+    def modelEnabled(self):
+        return self.store.values["modelEnabled"]
+
+    @Slot(bool)
+    def setModelEnabled(self, enabled):
+        self.save(modelEnabled=enabled)
 
     @Property(str, constant=True)
     def characterUrl(self):
@@ -105,6 +114,10 @@ class Preferences(QObject):
         self.settingsRequested.emit()
 
     @Slot()
+    def showModelPreview(self):
+        self.modelPreviewRequested.emit()
+
+    @Slot()
     def openKdeRules(self):
         from PySide6.QtCore import QProcess
         executable = resolve_executable("kcmshell6")
@@ -140,13 +153,22 @@ def configure_logging():
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description="GPT-Niang Linux / Qt Wayland")
+    parser.add_argument("--import-model", type=Path, metavar="ZIP", help="import the pinned Coopanion v1.1.0 artwork locally (no JavaScript)")
+    parser.add_argument("--model-preview", action="store_true", help="open the animation inspector without querying an account")
     parser.add_argument("--diagnose", action="store_true", help="print safe dependency diagnostics without opening a window")
     parser.add_argument("--settings", action="store_true", help="open preferences (including in an existing instance)")
     parser.add_argument("--smoke-test", action="store_true", help="load all QML without querying an account, then exit")
     parser.add_argument("--quit-after", type=float, default=0, metavar="SECONDS", help="bounded interactive diagnostic run")
-    parser.add_argument("--capture", type=Path, help="save this application's window during a smoke test")
+    parser.add_argument("--capture", type=Path, help="capture the pet or model preview after startup")
     args = parser.parse_args(argv)
     settings = Settings()
+    if args.import_model:
+        from .model.assets import import_model
+        try:
+            print(f"已导入模型：{import_model(args.import_model)}")
+            return 0
+        except (OSError, ValueError) as error:
+            parser.error(str(error))
     if args.diagnose:
         print(json.dumps({"version": __version__, "python": sys.version.split()[0], "pyside": PySide6.__version__,
                           "qt": qVersion(), "session": os.environ.get("XDG_SESSION_TYPE"),
@@ -166,9 +188,13 @@ def main(argv=None):
     if not lock.acquire():
         if args.settings:
             QDBusInterface(APP_ID, "/Controller", "", QDBusConnection.sessionBus()).call("showSettings")
-        print("GPT-Niang 已在此会话运行。使用 --settings 打开已有实例的设置。")
+        if args.model_preview:
+            QDBusInterface(APP_ID, "/Controller", "", QDBusConnection.sessionBus()).call("showModelPreview")
+        print("GPT-Niang 已在此会话运行。使用 --settings 或 --model-preview 打开设置或模型预览。")
         return 0
     configure_logging()
+    from .model.item import DragonItem
+    qmlRegisterType(DragonItem, "GPTNiang.Model", 1, 0, "DragonModel")
     backend = WindowBackend()
     preferences = Preferences(settings)
     # Capture terminal-discovered paths so desktop launchers can use a minimal PATH.
@@ -191,7 +217,12 @@ def main(argv=None):
         return 1
     window = engine.rootObjects()[0]
     backend.attach(window)
+    dragon = window.findChild(DragonItem, "dragonRenderer")
+    if dragon:
+        backend.attach_renderer(dragon)
     QTimer.singleShot(0, backend.rebuild)
+    if args.model_preview:
+        QTimer.singleShot(50, lambda: window.setProperty("previewVisible", True))
     if args.settings or args.smoke_test:
         QTimer.singleShot(50, preferences.showSettings)
     app.aboutToQuit.connect(quota.shutdown)
@@ -215,14 +246,15 @@ def main(argv=None):
             quota.changed.emit()
             window.setProperty("bubbleVisible", True)
         QTimer.singleShot(100, smoke_data)
-        if args.capture:
-            def capture():
-                args.capture.parent.mkdir(parents=True, exist_ok=True)
-                window.grabWindow().save(str(args.capture))
-            QTimer.singleShot(900, capture)
         QTimer.singleShot(1400, app.quit)
-    else:
+    elif not args.model_preview:
         QTimer.singleShot(150, quota.refresh)
+    if args.capture:
+        def capture():
+            args.capture.parent.mkdir(parents=True, exist_ok=True)
+            target = next((w for w in app.allWindows() if w.objectName() == "modelPreview"), window) if args.model_preview else window
+            target.grabWindow().save(str(args.capture))
+        QTimer.singleShot(900, capture)
     if args.quit_after > 0:
         QTimer.singleShot(round(args.quit_after * 1000), app.quit)
     result = app.exec()

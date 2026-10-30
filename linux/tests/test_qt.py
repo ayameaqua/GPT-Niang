@@ -176,6 +176,19 @@ readline.createInterface({input:process.stdin}).on('line', line=>{
                 quota.shutdown()
             self.assert_dead(restarted_cli)
 
+    def test_idle_worker_crash_invalidates_snapshot_identity(self):
+        with tempfile.TemporaryDirectory(prefix="pet idle crash ") as directory:
+            quota, _ = self.fixture(Path(directory))
+            try:
+                quota.refresh()
+                self.wait_for(lambda: quota.snapshot is not None)
+                self.assertFalse(quota.busy)
+                os.kill(quota.worker_pid, signal.SIGKILL)
+                self.wait_for(lambda: quota.snapshot is None)
+                self.assertIn("意外退出", quota.status)
+            finally:
+                quota.shutdown()
+
     def test_outer_timeout_cleans_uncooperative_child(self):
         with tempfile.TemporaryDirectory(prefix="pet timeout ") as directory:
             quota, pidfile = self.fixture(Path(directory), hang=True)

@@ -36,6 +36,7 @@ class QuotaController(QObject):
         self.counter = 0
         self.active_id = None
         self.closing = False
+        self.expected_stop = False
         self.decoder = Decoder()
         self.process = QProcess(self)
         # Give this worker and its children a private process group for bounded cleanup.
@@ -129,11 +130,16 @@ class QuotaController(QObject):
             return
         self.codex_path = codex
         if self.process.state() == QProcess.ProcessState.Running and self.process.program() != node:
-            self._send({"type": "shutdown", "requestId": "reconfigure"})
-            self.process.closeWriteChannel()
-            if not self.process.waitForFinished(1500):
-                self._kill_group()
-                self.process.waitForFinished(1000)
+            self.expected_stop = True
+            try:
+                self._send({"type": "shutdown", "requestId": "reconfigure"})
+                self.process.closeWriteChannel()
+                if not self.process.waitForFinished(1500):
+                    self._kill_group()
+                    self.process.waitForFinished(1000)
+            finally:
+                self.expected_stop = False
+                self.snapshot = None
         self.counter += 1
         self.active_id = str(self.counter)
         self.refreshing = True
@@ -227,7 +233,7 @@ class QuotaController(QObject):
         # A crashed Node process may leave app-server children in its process group.
         self._kill_group()
         self.worker_pid = 0
-        if not self.closing and self.refreshing:
+        if not self.closing and not self.expected_stop:
             self.snapshot = None
             self._failure("额度进程意外退出；可手动重试，将自动重新启动。")
 

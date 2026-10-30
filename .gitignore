@@ -26,3 +26,10 @@ Thumbs.db
 **/gui.lock
 **/worker-ownership.lock
 **/worker.log
+
+# Linux virtual environment and generated diagnostics
+**/.venv/
+**/__pycache__/
+**/*.pyc
+**/*.egg-info/
+linux/test-results/

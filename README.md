@@ -2,6 +2,8 @@
 
 让一只白发紫瞳的小龙娘，陪你看 Codex 的剩余额度。
 
+本 Fork 新增 [Linux / KDE Wayland 源码预览版](linux/README.md)：PySide6 / Qt Quick 普通窗口与 KWin 专用位置记忆规则，包含 Linux 安装、启动、额度气泡与设置。Linux 使用独立版本号，验收范围见 [Linux 验证记录](linux/VALIDATION.md)；下文 Windows/macOS 发布说明保持上游内容。
+
 **Windows / macOS 桌面挂件 · 自动识别套餐与额度窗口 · 中文语录 · 当前版本 1.3.6**
 
 1.3.6 集中修复桌面显示、安装与启动恢复、后台心跳、macOS 恢复边界和额度读取超时，保留 1.3.5 的音乐律动、角色图库、语录、独立缩放、音效导入及回答结束提醒。Windows 与 macOS 安装包通过完整检查后共同发布，两端功能差异见[下文](#windows-与-macos-功能差异136)。

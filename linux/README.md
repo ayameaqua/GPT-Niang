@@ -4,6 +4,8 @@
 
 本 Fork：[ayameaqua/GPT-Niang](https://github.com/ayameaqua/GPT-Niang)。上游版本为 1.3.6，基线固定在 [`0f43bb54ee413d4fc8e95f03b4248834b468d6b5`](https://github.com/T7moris/GPT-Niang/commit/0f43bb54ee413d4fc8e95f03b4248834b468d6b5)。开始实施时与上游 `main` 相同。Windows/macOS 代码与共享额度核心保持原样。
 
+后续角色扩展见 [Qt 龙娘分层动画与对话气泡实施计划](docs/COOPANION-DRAGON-PLAN.md)：以 Coopanion 龙娘形象包为基底，V1 补全多视角与交互，V2 增加骑自行车。该计划尚未实现，不属于当前预览版已有功能。
+
 ## 安装和启动
 
 需要 Python 3.10–3.15（含 venv）、Node.js 20+、Codex CLI、KDE Plasma 6 / Wayland，以及可用的 Codex ChatGPT 登录。首次安装需要联网下载 Qt wheel。Ubuntu 缺少 venv 时先安装 `python3-venv`。

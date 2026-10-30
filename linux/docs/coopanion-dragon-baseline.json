@@ -1,0 +1,301 @@
+{
+  "schemaVersion": 1,
+  "documentType": "planning-baseline",
+  "status": "planned",
+  "source": {
+    "repository": "https://github.com/zhengjihuaren/coopanion-gpt-dragon",
+    "release": "https://github.com/zhengjihuaren/coopanion-gpt-dragon/releases/tag/v1.1.0",
+    "version": "1.1.0",
+    "archive": "gpt-dragon-v1.1.0.zip",
+    "sha256": "ec84d07a2144fb1850d5c85dddc558b5bd12cbf35560d0d8ee25ca1832ac7836",
+    "manifestVersion": 2,
+    "apiVersion": 2,
+    "partCount": 30,
+    "sourceCanvas": [
+      1024,
+      1024
+    ],
+    "hostInterfaceCommit": "91293b3e31b94397a8f2eb79dffec40f4c6d8817"
+  },
+  "target": {
+    "host": "existing-qt-wayland-application",
+    "renderer": "qt-layered-mesh",
+    "characterStyle": "chibi",
+    "adultVariant": false,
+    "cubismExportRequired": false
+  },
+  "expressions": [
+    {
+      "id": "neutral",
+      "name": "平静"
+    },
+    {
+      "id": "happy",
+      "name": "开心"
+    },
+    {
+      "id": "wink",
+      "name": "眨眼"
+    },
+    {
+      "id": "love",
+      "name": "喜欢"
+    },
+    {
+      "id": "shy",
+      "name": "害羞"
+    },
+    {
+      "id": "surprised",
+      "name": "惊讶"
+    },
+    {
+      "id": "angry",
+      "name": "生气"
+    },
+    {
+      "id": "sad",
+      "name": "难过"
+    },
+    {
+      "id": "sleepy",
+      "name": "犯困"
+    },
+    {
+      "id": "thinking",
+      "name": "思考"
+    },
+    {
+      "id": "smug",
+      "name": "得意"
+    },
+    {
+      "id": "pout",
+      "name": "嘟嘴"
+    },
+    {
+      "id": "worried",
+      "name": "担心"
+    },
+    {
+      "id": "determined",
+      "name": "认真"
+    },
+    {
+      "id": "flustered",
+      "name": "慌张"
+    },
+    {
+      "id": "scared",
+      "name": "害怕"
+    },
+    {
+      "id": "excited",
+      "name": "期待"
+    },
+    {
+      "id": "cry",
+      "name": "大哭"
+    },
+    {
+      "id": "confused",
+      "name": "疑惑"
+    }
+  ],
+  "motions": [
+    {
+      "id": "stand",
+      "name": "站起",
+      "sourceDurationSeconds": 1.2,
+      "persistent": false
+    },
+    {
+      "id": "jump",
+      "name": "跳",
+      "sourceDurationSeconds": 1.2,
+      "persistent": false
+    },
+    {
+      "id": "hop",
+      "name": "小跳",
+      "sourceDurationSeconds": 0.9,
+      "persistent": false
+    },
+    {
+      "id": "look",
+      "name": "张望",
+      "sourceDurationSeconds": 2.7,
+      "persistent": false
+    },
+    {
+      "id": "turn",
+      "name": "转身",
+      "sourceDurationSeconds": 0.4,
+      "persistent": false
+    },
+    {
+      "id": "nod",
+      "name": "点头",
+      "sourceDurationSeconds": 0.8,
+      "persistent": false
+    },
+    {
+      "id": "shake",
+      "name": "摇头",
+      "sourceDurationSeconds": 0.8,
+      "persistent": false
+    },
+    {
+      "id": "spin",
+      "name": "转圈",
+      "sourceDurationSeconds": 0.8,
+      "persistent": false
+    },
+    {
+      "id": "sit",
+      "name": "坐下",
+      "sourceDurationSeconds": 0.8,
+      "persistent": true
+    },
+    {
+      "id": "sleep",
+      "name": "睡觉",
+      "sourceDurationSeconds": 0.8,
+      "persistent": true
+    },
+    {
+      "id": "dizzy",
+      "name": "晕",
+      "sourceDurationSeconds": 3.2,
+      "persistent": false
+    },
+    {
+      "id": "walk",
+      "name": "走走",
+      "sourceDurationSeconds": 12,
+      "persistent": false
+    },
+    {
+      "id": "run",
+      "name": "跑",
+      "sourceDurationSeconds": 12,
+      "persistent": false
+    },
+    {
+      "id": "wave",
+      "name": "招手",
+      "sourceDurationSeconds": 1.7,
+      "persistent": false
+    },
+    {
+      "id": "bow",
+      "name": "鞠躬",
+      "sourceDurationSeconds": 1.7,
+      "persistent": false
+    },
+    {
+      "id": "shiver",
+      "name": "发抖",
+      "sourceDurationSeconds": 1.9,
+      "persistent": false
+    },
+    {
+      "id": "flap",
+      "name": "扑腾",
+      "sourceDurationSeconds": 1.5,
+      "persistent": false
+    },
+    {
+      "id": "dance",
+      "name": "跳舞",
+      "sourceDurationSeconds": 3.4,
+      "persistent": false
+    }
+  ],
+  "baselineInteractionRequirements": [
+    "blink",
+    "gaze-follow",
+    "speech-mouth",
+    "listening",
+    "thinking",
+    "poke",
+    "petting",
+    "carried",
+    "swing",
+    "put-down",
+    "thrown",
+    "landing"
+  ],
+  "viewRequirements": [
+    {
+      "id": "front",
+      "name": "正面"
+    },
+    {
+      "id": "front-left",
+      "name": "左前侧"
+    },
+    {
+      "id": "front-right",
+      "name": "右前侧"
+    },
+    {
+      "id": "left",
+      "name": "左侧面"
+    },
+    {
+      "id": "right",
+      "name": "右侧面"
+    },
+    {
+      "id": "back-left",
+      "name": "左后侧"
+    },
+    {
+      "id": "back-right",
+      "name": "右后侧"
+    },
+    {
+      "id": "back",
+      "name": "背面"
+    }
+  ],
+  "v1NewActions": [
+    "tilt-head-left",
+    "tilt-head-right",
+    "raise-left-hand",
+    "raise-right-hand",
+    "raise-both-hands",
+    "point-at-bubble",
+    "look-back"
+  ],
+  "v1BubbleRequirements": [
+    "quota",
+    "quote",
+    "speech",
+    "question",
+    "text-input",
+    "status"
+  ],
+  "v2Requirements": [
+    "bicycle-assets",
+    "mount",
+    "ride-left",
+    "ride-right",
+    "pedal-cycle",
+    "stop",
+    "dismount"
+  ],
+  "windowCapabilityDecisionsForP0": [
+    "global-pointer-observation",
+    "desktop-walking",
+    "window-throw-trajectory",
+    "single-position-owner"
+  ],
+  "acceptance": {
+    "baselineExpressionCount": 19,
+    "baselineMotionCount": 18,
+    "requiredViewCount": 8,
+    "implementationVerified": false
+  }
+}

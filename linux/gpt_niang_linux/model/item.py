@@ -9,7 +9,7 @@ from PySide6.QtGui import QBitmap, QImage, QRegion
 from PySide6.QtQuick import QQuickPaintedItem
 
 from .assets import model_directory
-from .motion import Animator, EXPRESSIONS, MOTIONS, VIEWS
+from .motion import Animator, EXPRESSIONS, HAND_GESTURES, MOTIONS, VIEWS
 from .render import DragonRenderer
 
 
@@ -108,7 +108,25 @@ class DragonItem(QQuickPaintedItem):
 
     @Property('QVariantList', constant=True)
     def motions(self):
-        return [{"id": key, "name": spec[0], "ready": key not in ("turn", "spin") or self.turns_ready()} for key, spec in MOTIONS.items()]
+        return [{"id":key,"name":spec[0],"ready":self.motion_ready(key)} for key,spec in MOTIONS.items()]
+
+    def motion_ready(self,value):
+        if not self.renderer or value not in MOTIONS:
+            return False
+        if value in ("turn","spin"):
+            return self.turns_ready()
+        if value in HAND_GESTURES:
+            rig=self.renderer.rigs.get("front")
+            if not rig:return False
+            parts={p['id']:p for p in rig[0]['parts']}
+            kind="point" if value=="point" else "raised"
+            arms=("arm-far",) if value=="raise-right" else ("arm-near","arm-far") if value in ("raise-both","dance") else ("arm-near",)
+            return all(kind in parts.get(arm,{}).get("variants",{}) for arm in arms)
+        if value=="bow":
+            return all(v in self.renderer.rigs for v in ("left","right"))
+        if value=="look-back":
+            return all(v in self.renderer.rigs for v in ("back-left","back-right","front-right"))
+        return True
 
     @Property('QVariantList', notify=changed)
     def views(self):
@@ -167,7 +185,7 @@ class DragonItem(QQuickPaintedItem):
 
     @Slot(str)
     def play(self, value):
-        if value in ("turn", "spin") and not self.turns_ready():
+        if not self.motion_ready(value):
             return
         if self.animator.play(value):
             self.changed.emit()
@@ -197,16 +215,14 @@ class DragonItem(QQuickPaintedItem):
 
     @Slot(bool)
     def setSpeaking(self, value):
-        if value and self.animator.view != "front-left" and not (self.renderer and self.renderer.rigs.get(self.animator.view, ({},{}))[0].get("face")):
-            self.animator.view = "front-left"
+        self.animator.request_face_view("speech",value)
         self.animator.speech = value
         self.changed.emit()
         self.render_frame()
 
     @Slot(bool)
     def setListening(self, value):
-        if value and self.animator.view != "front-left" and not (self.renderer and self.renderer.rigs.get(self.animator.view, ({},{}))[0].get("face")):
-            self.animator.view = "front-left"
+        self.animator.request_face_view("listening",value)
         self.animator.listening = value
         self.changed.emit()
         self.render_frame()

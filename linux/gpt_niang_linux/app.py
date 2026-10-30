@@ -155,6 +155,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description="GPT-Niang Linux / Qt Wayland")
     parser.add_argument("--import-model", type=Path, metavar="ZIP", help="import the pinned Coopanion v1.1.0 artwork locally (no JavaScript)")
     parser.add_argument("--model-preview", action="store_true", help="open the animation inspector without querying an account")
+    parser.add_argument("--model-view",choices=('front','front-left','left','back-left','back','back-right','right','front-right'),help="initial model angle for reproducible previews")
     parser.add_argument("--diagnose", action="store_true", help="print safe dependency diagnostics without opening a window")
     parser.add_argument("--settings", action="store_true", help="open preferences (including in an existing instance)")
     parser.add_argument("--smoke-test", action="store_true", help="load all QML without querying an account, then exit")
@@ -220,6 +221,7 @@ def main(argv=None):
     dragon = window.findChild(DragonItem, "dragonRenderer")
     if dragon:
         backend.attach_renderer(dragon)
+        if args.model_view:dragon.setView(args.model_view)
     QTimer.singleShot(0, backend.rebuild)
     if args.model_preview:
         QTimer.singleShot(50, lambda: window.setProperty("previewVisible", True))

@@ -15,9 +15,23 @@ MOTIONS = {
     "raise-left": ("抬左手", 2), "raise-right": ("抬右手", 2), "raise-both": ("举双手", 2),
     "point": ("指向气泡", 2), "carried": ("拎起", 1.5), "land": ("放下", .65),
     "toss": ("画布内抛落", 1.4), "pet": ("摸头", 1.6), "poke": ("戳一戳", .65),
+    "look-back": ("回眸", 2.8),
 }
 VIEWS = dict(zip("front front-left left back-left back back-right right front-right".split(),
                  "正面 左前侧 左侧面 左后侧 背面 右后侧 右侧面 右前侧".split()))
+FACE_VIEWS = {"front","front-left","front-right","left","right"}
+HAND_GESTURES = {"wave","raise-left","raise-right","raise-both","point","dance"}
+# Node and screen rotation for anatomical left/right, independent of camera.
+HAND_BINDINGS = {
+    "front": (("armNear",-1),("armFar",1)),
+    "front-left": (("armNear",-1),("armFar",1)),
+    "front-right": (("armNear",-1),("armFar",1)),
+    "left": (("armNear",1),("armFar",1)),
+    "right": (("armFar",-1),("armNear",-1)),
+    "back-left": (("armFar",1),("armNear",-1)),
+    "back": (("armFar",1),("armNear",-1)),
+    "back-right": (("armFar",1),("armNear",-1)),
+}
 
 
 def clamp(value, low=0., high=1.):
@@ -42,11 +56,16 @@ class Pose:
     gaze: tuple = (0, 0)
     speech: float = 0
     hair: float = 0
+    cloth: float = 0
     tear: float = 0
     phase: float = 0
     time: float = 0
     motion: str = ""
     eye_closed: bool = False
+    blend_view: str = ""
+    view_mix: float = 0
+    gesture: float = 0
+    look_back: float = 0
 
 
 class Animator:
@@ -67,24 +86,62 @@ class Animator:
         self.pending = ""
         self.turn_from = self.view
         self.turn_to = self.view
+        self.carry = 0.
+        self.emotion = 0.
+        self.face_requested = False
+        self.face_reasons = set()
+        self.settling = None
+        self.head_start=0.
+        self.head_return=None
 
     def set_expression(self, value):
         if value not in EXPRESSIONS:
             return False
-        if self.view not in ("front", "front-left", "front-right"):
-            self.set_view("front-left")
         self.expression = value
+        self.request_face_view()
         return True
+
+    def request_face_view(self,reason="expression",enabled=True):
+        """Consume requests after a running turn, without losing queued actions."""
+        if enabled:self.face_reasons.add(reason)
+        else:self.face_reasons.discard(reason)
+        self.face_requested=bool(self.face_reasons)
+        self._consume_face_request()
+
+    def _consume_face_request(self):
+        if not self.face_requested or self.action in ("turn","spin","look-back") or self.settling:
+            return
+        if self.view in FACE_VIEWS:
+            self.face_requested=False
+            self.face_reasons.clear()
+            return
+        resume=self.action
+        self.play("turn")
+        self.turn_to="front-right" if self.view=="back-right" else "front-left"
+        self.pending=resume
 
     def set_view(self, value):
         if value not in VIEWS:
             return False
         self.view = value
+        self.settling=None
+        self.head_return=None
         return True
 
     def play(self, action):
         if action not in MOTIONS:
             return False
+        head=self.pose().look_back
+        self.head_start=head if action=='look-back' else 0.
+        self.head_return=[head,0.] if head>0 and action!='look-back' else None
+        # Settle the visible blend before starting another orientation/action.
+        # Selecting an action midway through a turn must not snap back a view.
+        if self.action in ("turn","spin") or self.settling:
+            current=self.pose()
+            if current.blend_view and current.view_mix>0:
+                target=1 if current.view_mix>=.5 else 0
+                self.view=current.blend_view if target else current.view
+                self.settling=[current.view,current.blend_view,current.view_mix,target,0.]
         self.pending = ""
         self.start_seat = self.seat
         self.elapsed = 0.
@@ -96,30 +153,66 @@ class Animator:
             self.turn_from = self.view
             order = list(VIEWS)
             self.turn_to = order[(order.index(self.view) + 4) % 8]
+        target=None
+        if action in HAND_GESTURES:
+            target="front"
+        elif action == "bow":
+            target="right" if self.view in ("right","front-right","back-right") else "left"
+        elif action in ("sit","sleep"):
+            target="front-left"
+        elif action=="look-back":
+            target="back-right" if self.view in ("right","front-right","back-right") else "back-left"
         # Face-dependent gestures return to a readable view first.
         allowed = {"turn", "spin", "walk", "run", "stand", "raise-left", "raise-right", "raise-both", "carried", "land", "toss", "tilt-left", "tilt-right"}
         if self.view in ("left", "right"):
             allowed |= {"wave", "look", "nod", "shake"}
-        if (action not in allowed and self.view not in ("front", "front-left", "front-right")) or (action in ("sit", "sleep") and self.view != "front-left"):
-            if self.view != "front-left":
+        if target is None and action not in allowed and self.view not in FACE_VIEWS:
+            target="front-left"
+        if target is not None and self.view != target:
                 self.pending = action
-                self.turn_from, self.turn_to = self.view, "front-left"
+                self.turn_from, self.turn_to = self.view, target
                 self.action = "turn"
         return True
 
     def cancel(self):
+        current=self.pose()
         self.action = self.pending = ""
         self.elapsed = self.seat = 0.
         self.sleeping = self.speech = self.listening = False
         self.expression = "neutral"
+        self.carry = 0.
+        self.emotion = 0.
+        self.face_requested=False
+        self.face_reasons.clear()
+        self.settling=None
+        self.head_start=0.
+        self.head_return=[current.look_back,0.] if current.look_back>0 else None
+        if current.blend_view and current.view_mix>0:
+            target=1 if current.view_mix>=.5 else 0
+            self.view=current.blend_view if target else current.view
+            self.settling=[current.view,current.blend_view,current.view_mix,target,0.]
 
     def advance(self, dt):
         if self.paused:
             return self.pose()
         dt = clamp(dt, 0, .1) * self.speed
         self.clock += dt
+        if self.head_return:
+            self.head_return[1]+=dt
+            if self.head_return[1]>=.18:self.head_return=None
+        emotion_target=self.expression in ("angry","scared")
+        self.emotion=clamp(self.emotion+(dt/.18 if emotion_target else -dt/.18))
+        carrying=self.action=="carried" or self.pending=="carried"
+        self.carry=clamp(self.carry+(dt/.22 if carrying else -dt/.22))
+        action_dt=dt
+        if self.settling:
+            remaining=max(0,.12-self.settling[4])
+            self.settling[4]+=dt
+            action_dt=max(0,dt-remaining)
+            if self.settling[4]>=.12:self.settling=None
+        self._consume_face_request()
         if self.action:
-            self.elapsed += dt
+            self.elapsed += action_dt
             duration = MOTIONS[self.action][1]
             p = clamp(self.elapsed / duration)
             target = 1. if self.action in ("sit", "sleep") else 0.
@@ -130,7 +223,7 @@ class Animator:
                 delta = (end-start) % 8
                 if delta > 4:
                     delta -= 8
-                step = min(abs(delta), int(p*abs(delta)+.5))
+                step = min(abs(delta), int(p*abs(delta)))
                 self.view = order[(start + (step if delta >= 0 else -step)) % 8]
             if self.action == "spin":
                 order = list(VIEWS)
@@ -143,6 +236,8 @@ class Animator:
                 if self.pending:
                     pending, self.pending = self.pending, ""
                     self.play(pending)
+                if self.face_requested:
+                    self._consume_face_request()
         return self.pose()
 
     def pose(self):
@@ -153,7 +248,19 @@ class Animator:
         beat = math.sin(t*2)
         pose = Pose(expression=self.expression, view=self.view, seat=self.seat, gaze=self.gaze,
                     speech=(.35+.65*abs(math.sin(t*12))) if self.speech else 0,
-                    phase=p, time=t, motion=a, hair=math.sin(t*1.7)*3)
+                    phase=p,time=t,motion=a,hair=math.sin(t*1.7)*3,cloth=math.sin(t*1.3))
+        if a in ("turn","spin"):
+            order=list(VIEWS);start=order.index(self.turn_from)
+            delta=8 if a=="spin" else (order.index(self.turn_to)-start)%8
+            if a=="turn" and delta>4:delta-=8
+            position=p*abs(delta);step=int(position);direction=1 if delta>=0 else -1
+            if step<abs(delta):
+                pose.blend_view=order[(start+direction*(step+1))%8]
+                pose.view_mix=smooth(position-step)
+        if self.settling:
+            first,second,start,target,elapsed=self.settling
+            pose.view=first;pose.blend_view=second
+            pose.view_mix=start+(target-start)*smooth(elapsed/.12)
         # Natural blink, 180 ms every 4.6 s, no wall-clock random jitter in previews.
         blink_phase = t % 4.6
         pose.blink = max(0., 1-abs(blink_phase-3.9)/.09)
@@ -192,11 +299,26 @@ class Animator:
             tr["legFar"]["a"], tr["legNear"]["a"] = stride*amplitude, -stride*amplitude
             tr["armFar"]["a"], tr["armNear"]["a"] = -stride*22, stride*22
             tr["skirtFar"]["a"], tr["skirtNear"]["a"] = stride*3, -stride*3
+            pose.cloth+=math.sin(t*frequency-.65)*(14 if a=='run' else 9)*env
+            if self.view in ('front','back') and a!='dance':
+                # Depth-facing steps shorten/lift alternately. A sagittal kick
+                # rendered as a large screen rotation reads as sideways splits.
+                for node,phase in (('legFar',stride),('legNear',-stride)):
+                    tr[node]['a']=phase*1.5
+                    tr[node]['sy']=1-(.09 if a=='run' else .055)*max(0,phase)
+                tr['armFar']['a'],tr['armNear']['a']=-stride*8,stride*8
             pose.root_y -= abs(math.sin(t*frequency))*7*env
             if a == "run":
-                tr["upper"]["a"] = -10*env
-                tr["armNear"]["a"], tr["armFar"]["a"] = -38*env, -32*env
+                direction=1 if self.view in ("right","front-right","back-right") else -1
+                if self.view in ("front","back"):
+                    tr["upper"]["sy"]*=1-.025*env
+                    tr["head"]["y"]=4*env
+                else:
+                    tr["upper"]["a"] = direction*10*env
+                if self.view not in ('front','back'):
+                    tr["armNear"]["a"],tr["armFar"]["a"]=direction*38*env,direction*32*env
             if a == "dance":
+                pose.gesture=env
                 pose.root_angle = stride*6
                 tr["head"]["a"] -= stride*7
                 tr["armFar"]["a"] += 35*env
@@ -204,44 +326,60 @@ class Animator:
         if a == "look":
             pose.gaze = (math.sin(p*math.pi*2)*.9, -.2)
             tr["head"]["a"] = math.sin(p*math.pi*2)*6
+        if a=="look-back":
+            pose.look_back=(self.head_start+(1-self.head_start)*smooth(p/.18))*(1-smooth((p-.78)/.22))
+            tr["head"]["a"]+=(-3 if self.view=="back-left" else 3)*env
+        elif self.head_return:
+            pose.look_back=self.head_return[0]*(1-smooth(self.head_return[1]/.18))
         if a == "nod":
-            tr["head"]["a"] = math.sin(p*math.pi*4)*6*env
-            tr["head"]["y"] = math.sin(p*math.pi*4)*7*env
+            pulse=math.sin(p*math.pi*4)*env
+            tr["head"]["a"] = pulse*(4 if self.view in ("right","front-right") else -4 if self.view in ("left","front-left") else 0)
+            tr["head"]["y"] = pulse*7
+            tr["head"]["sy"] = 1-.018*pulse
         if a == "shake":
             tr["head"]["x"] = math.sin(p*math.pi*6)*10*env
             tr["head"]["a"] = math.sin(p*math.pi*6)*3*env
         if a.startswith("tilt-"):
             tr["head"]["a"] = (-12 if a == "tilt-left" else 12)*env
         if a in ("wave", "raise-left", "raise-right", "raise-both", "point"):
+            (left,ls),(right,rs)=HAND_BINDINGS[self.view]
+            pose.gesture=env
             if a in ("wave", "raise-left", "raise-both"):
-                tr["armNear"]["a"] = -(110+(math.sin(p*math.pi*12)*12 if a == "wave" else 0))*env
+                tr[left]["a"] = ls*(110+(math.sin(p*math.pi*12)*12 if a == "wave" else 0))*env
             if a in ("raise-right", "raise-both"):
-                tr["armFar"]["a"] = 110*env
+                tr[right]["a"] = rs*110*env
             if a == "point":
-                tr["armNear"]["a"] = -145*env
+                tr[left]["a"] = ls*145*env
                 tr["head"]["a"] = -5*env
                 pose.gaze = (0, -.7)
         if a == "bow":
-            tr["upper"]["a"] = -22*math.sin(math.pi*p)**2
-            tr["head"]["a"] = -8*env
+            direction=1 if self.view=="right" else -1
+            tr["upper"]["a"] = direction*22*math.sin(math.pi*p)**2
+            tr["head"]["a"] = direction*8*env
             pose.eye_closed = True
-        if a == "shiver" or self.expression in ("angry", "scared"):
-            pose.root_x = math.sin(t*45)*(2 if a != "shiver" else 4*env)
-            tr["armFar"]["a"], tr["armNear"]["a"] = -10, 12
+        emotion=self.emotion*(1-env if a else 1)
+        tr["armFar"]["a"]-=10*emotion
+        tr["armNear"]["a"]+=12*emotion
+        pose.root_x+=math.sin(t*45)*(2*self.emotion*(1-env if a=="shiver" else 1)+ (4*env if a=="shiver" else 0))
+        if a=="shiver":
+            tr["armFar"]["a"]-=10*env
+            tr["armNear"]["a"]+=12*env
         if a == "flap":
             flap = math.sin(p*math.pi*12)*env
             tr["wingFar"]["a"], tr["wingNear"]["a"] = flap*30, -flap*30
         if a == "dizzy":
             pose.expression = "dizzy"
             pose.root_angle = math.sin(t*7)*7*env
-        if a == "carried":
-            pose.root_angle = math.sin(t*9)*8
-            pose.root_y -= 30*env
-            tr["armFar"]["a"], tr["armNear"]["a"] = 60, -80
-            tr["legFar"]["a"], tr["legNear"]["a"] = -12, 18
+        carry=smooth(self.carry)
+        if carry:
+            pose.root_angle+=math.sin(t*9)*8*carry
+            pose.root_y-=30*carry
+            for node,angle in (("armFar",60),("armNear",-80),("legFar",-12),("legNear",18)):
+                tr[node]["a"]=tr[node]["a"]*(1-carry)+angle*carry
         if a == "land":
             tr["upper"]["y"] += math.sin(math.pi*p)*22
             pose.hair += math.sin(p*math.pi*3)*8*(1-p)
+            pose.cloth+=math.sin(p*math.pi*3)*5*(1-p)
         if a == "pet":
             pose.expression = "happy"
             tr["head"]["a"] = math.sin(p*math.pi*3)*4*env
@@ -250,4 +388,6 @@ class Animator:
             pose.root_x += math.sin(p*math.pi)*12
         if self.listening:
             tr["head"]["a"] += 5
+        tr["hairBack"]["warp"]=pose.hair
+        tr["hairFront"]["warp"]=pose.hair*.35
         return pose

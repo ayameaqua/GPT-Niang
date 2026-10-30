@@ -2,14 +2,14 @@
 
 这是现有 Qt 程序的第一轮可动模型实现，**尚未完成计划中的模型 V1**。不依赖 Cubism 或 Coopanion 宿主，不执行外部 JavaScript。
 
-**2026-10-31 专项视觉审查未通过。** 用户反馈的正面脸、头发和脚异常已确认；其他方向还存在真实串格、截断、关节迁移、比例与动作遮挡问题。当前截图是待修基线，19/18/8 的数量仅表示接口与资源已接入，不能当作视觉验收通过。详细证据及主上下文修复交接见[专项审查](../../docs/model-review/README.md)。
+**2026-10-31 已按专项审查完成首轮修复。** 重做正面/右前侧头与短前摆、清理完整裁片、逐视角标定关节，并修复持续动作与过渡。修前/修后、实际覆盖范围和未验收项见[修复记录](../../docs/model-review/FIXES.md)。八方向继续保留试验标记，接口数量不等于完整视觉验收。
 
 - 原包左前侧：30 个分片、19 种表情、全部 18 个基线动作；坐下、睡觉保留持续姿态。
-- 新增：左右歪头、左右抬手、双手举起、指向气泡、拎起保持、放下、画布内抛落、摸头和戳一戳。
+- 新增：左右歪头、左右抬手、双手举起、指向锚点、回眸、拎起保持、放下、画布内抛落、摸头和戳一戳。招手、抬手、指向与跳舞先转正面，使用独立张掌/食指姿势。
 - 八视角均已接入：正面、左右前侧、左右侧面、左右后侧、背面。原包左前侧为主要基底，其余七个方向为试验绑定，独立补图，不翻转整只角色冒充背面。
 - 前侧及侧面使用 Qt 独立绘制眨眼、视线与说话口型。背面表情请求转向前侧；坐下/睡觉先转到原包姿态。转身逐步经过中间视角，转圈经过八方向并回到起始方向。
 - 部分附属部件在相邻视角复用；后侧使用已有的臂、翼和短靴分片，排除生成图误加的蝴蝶结/长靴。局部翅膀/尾巴的翻转是关节绑定的一部分，不用于替代身体视角补图。
-- 待精修：衣褶与遮挡一致性、饰物局部轮廓、头颈/翼根连接、逐动作美术审校；手臂目前以整片肩部转动为主，前臂/手掌细分仍待补充。本轮交付可运行模型原型，不标记完整 V1 验收通过。
+- 继续完善：衣褶/饰物一致性、后侧分束遮挡和四肢透视、连续肘腕变形。当前手势由独立姿势平滑切换，仍不标记完整 V1 验收通过。
 - 本轮没有实现对话输入/生成服务或自行车。额度气泡沿用现有功能。
 
 ![八视角模型原型](preview-contact.png)
@@ -21,6 +21,7 @@
 ```bash
 ./linux/run.sh --import-model /absolute/path/gpt-dragon-v1.1.0.zip
 ./linux/run.sh --model-preview
+./linux/run.sh --model-preview --model-view front
 ```
 
 导入后需重启已运行的桌宠。重新导入会检查受管目录；发现资源被改动时，先保留 `.backup-时间戳` 目录再修复。导入命令检查固定 SHA-256，将 PNG、JSON 和原包 README 保存至 `$XDG_DATA_HOME/gpt-niang/models/coopanion-dragon-1.1.0`（默认 `~/.local/share`）。它不会安装、导入或执行 `figure.js`。未导入、资源损坏或设置关闭模型时，主窗口使用原静态角色。运行中的新版本可通过 `--model-preview` 打开动作面板。
@@ -33,13 +34,13 @@
 
 `source/` 是内置 ImageGen 生成的设定图/拆件制作文件。原始拆件图中不适用的躯干单元不使用；背面躯干以单独重绘的 `back-dress.png` 为准。透明图片查看器确会误显低 alpha 像素，但专项审查同时确认了多处 alpha≥128 的真实串格碎片，灰底合成仍可见，且会改变部件外接框和缩放。应逐片核对源图、抗锯齿与合法分离装饰；不能把所有碎片归为查看噪点，也不能全局阈值化透明通道来掩盖它们。
 
-各视角子目录保存切出的 PNG 与 JSON 绑定；`views.json` 标记其试验状态。图层切割由以下命令从制作文件重现，未在工程脚本中代画角色或补绘隐藏部位：
+各视角子目录保存提取的 PNG 与 JSON 绑定；`views.json` 标记其试验状态。`source-selections.json` 记录主体选区，`rig-layouts.json` 记录每个方向的尺寸/枢轴/源内UV，不再套用通用格框或自动肤色关节。部分原始臂腿通过 `sourcePart` 在本机引用。以下命令重现裁片和绑定；工程脚本只处理现有纹理与几何：
 
 ```bash
 QT_QPA_PLATFORM=offscreen ./linux/.venv/bin/python linux/tools/assemble_dragon.py
-QT_QPA_PLATFORM=offscreen PYTHONPATH=linux ./linux/.venv/bin/python linux/tools/model_preview.py --out linux/test-results/model --frames
+QT_QPA_PLATFORM=offscreen PYTHONPATH=linux ./linux/.venv/bin/python linux/tools/model_preview.py --out linux/test-results/model --frames --audit
 ```
 
-第二条命令生成表情/动作接触表、300 帧渲染采样和一组演示帧；采样不代表长时间性能验收。缺少任一视角时，转身/转圈自动禁用并显示待绑定；资源齐备时可完整播放。
+第二条命令生成逐起始方向的动作接触表、可见脸方向的表情表、300帧渲染采样和演示帧。采样不代表长时间性能或逐帧美术验收。缺少方向时转身/转圈禁用；缺少专用掌部资源时，对应手势禁用。
 
 来源及适用限制见 [NOTICE.md](NOTICE.md)，完整生成提示词见 [PROMPTS.md](PROMPTS.md)，实现状态见 [progress.json](progress.json)。完整目标仍以 [实施计划](../../docs/COOPANION-DRAGON-PLAN.md)为准。

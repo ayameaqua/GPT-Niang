@@ -1,6 +1,7 @@
 """Lifecycle, pose isolation, import security and animated hit regions."""
 import hashlib
 import json
+import math
 from pathlib import Path
 import tempfile
 import unittest
@@ -63,14 +64,14 @@ class AnimationTests(unittest.TestCase):
     def test_reorient_before_gesture_and_cancel_discards_queue(self):
         a = Animator(); a.set_view('back'); a.play('wave')
         self.assertEqual(a.action, 'turn'); self.assertEqual(a.pending, 'wave')
-        advance(a, .6); self.assertEqual(a.view, 'front-left'); self.assertEqual(a.action, 'wave')
+        advance(a, .6); self.assertEqual(a.view, 'front'); self.assertEqual(a.action, 'wave')
         a.set_view('back'); a.play('wave'); a.cancel(); advance(a, 2)
         self.assertFalse(a.action); self.assertFalse(a.pending)
 
     def test_tilt_is_head_only_and_hands_are_distinct(self):
         poses = {}
         for action in ('tilt-left','tilt-right','raise-left','raise-right','raise-both','wave'):
-            a = Animator(); a.play(action); advance(a, .6); poses[action] = a.pose()
+            a = Animator(); a.set_view('front'); a.play(action); advance(a, .6); poses[action] = a.pose()
         self.assertLess(poses['tilt-left'].transforms['head']['a'], -5)
         self.assertGreater(poses['tilt-right'].transforms['head']['a'], 5)
         self.assertEqual(poses['tilt-left'].root_angle, 0)
@@ -102,6 +103,28 @@ class AnimationTests(unittest.TestCase):
 
 
 class ResourceTests(unittest.TestCase):
+    def test_pointing_ray_tracks_the_authored_bubble_target_after_rebinding(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            source=Path(tmp);synthetic_model(source);renderer=DragonRenderer(source)
+            data,images=renderer.rigs['front'];arm=next(p for p in data['parts'] if p['id']=='arm-near')
+            v=arm['variants']['point'];px,py=data['pivots']['armNear'];x,y,w,h=v['box']
+            tx,ty=x+v['indexTipUV'][0]*w-px,y+v['indexTipUV'][1]*h-py
+            im=images['arm-near@point'];dx,dy=v['indexRay'][0]*w/im.width(),v['indexRay'][1]*h/im.height()
+            c,s=math.cos(math.radians(v['rotation'])),math.sin(math.radians(v['rotation']))
+            tip=(px+c*tx-s*ty,py+s*tx+c*ty);ray=(c*dx-s*dy,s*dx+c*dy)
+            target=(v['target'][0]-tip[0],v['target'][1]-tip[1])
+            self.assertAlmostEqual((ray[0]*target[1]-ray[1]*target[0])/math.hypot(*ray),0,delta=.01)
+            self.assertGreater(ray[0]*target[0]+ray[1]*target[1],0)
+
+    def test_look_back_preserves_the_rear_body_feet(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            source=Path(tmp);synthetic_model(source);renderer=DragonRenderer(source)
+            for view in ('back-left','back-right'):
+                a=Animator();a.set_view(view);a.play('look-back');advance(a,1);pose=a.pose()
+                looking=renderer.render(pose,320);pose.look_back=0;rear=renderer.render(pose,320)
+                self.assertNotEqual(looking,rear)
+                self.assertEqual(looking.copy(0,280,320,40),rear.copy(0,280,320,40))
+
     def test_unknown_archive_and_traversal_are_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp); archive = root/'model.zip'

@@ -1,5 +1,7 @@
 # 龙娘模型专项审查与主上下文交接
 
+**最新进展：已按本索引顺序实施首轮修复。** 具体改动、方向适用表、修前/修后与验证边界见 [FIXES.md](FIXES.md)。下文保留原失败基线；四份定向复核见 [正面静态](FRONT-STATIC-RECHECK.md)、[右前侧绑定](FR-REBIND-RECHECK.md)、[侧后根点](SIDE-REAR-REBIND-RECHECK.md)、[状态逻辑](MOTION-STATE-RECHECK.md)。
+
 审查日期：2026-10-31。固定基线：`a219dc3aea9eb444349fb23e85a5072b6a739e2e`，分支 `linux/qt-wayland`。用户指出正面脸、头发和脚异常后，要求使用 **GPT-6 Astra / xhigh** 子代理逐方向、逐动作检查，再留下详细说明交给主上下文修复。
 
 本轮审查与修补分开：三名子代理只读实现和素材，生成诊断与报告；没有通过替换素材或修改参数掩盖基线问题。来源文件的 SHA-256 见 [BASELINE.json](BASELINE.json)。此前运行测试和 Linux CI 通过，只能证明相应加载、状态与进程行为，不表示模型造型、绑定和运动视觉合格。

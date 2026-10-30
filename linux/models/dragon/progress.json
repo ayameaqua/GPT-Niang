@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "updated": "2026-10-31",
-  "status": "visual-review-rework-required",
+  "status": "model-repair-pass-1",
   "fullModelV1Complete": false,
   "renderer": "independent-qt-layered-raster-warp",
   "baselineExpressionsImplemented": 19,
@@ -13,7 +13,8 @@
     "raise-left",
     "raise-right",
     "raise-both",
-    "point"
+    "point",
+    "look-back"
   ],
   "interactionPerformances": [
     "carried",
@@ -60,6 +61,27 @@
     "model": "gpt-6-astra",
     "reasoningEffort": "xhigh",
     "result": "requires-rework",
-    "handoff": "../../docs/model-review/README.md"
+    "handoff": "../../docs/model-review/README.md",
+    "repairRecord": "../../docs/model-review/FIXES.md"
+  },
+  "modelRepair": {
+    "sourceExtraction": "explicit complete components; neighboring opaque islands excluded; original RGBA retained",
+    "binding": "per-view authored source UV and world joints",
+    "handPoses": "dedicated open palm and pointing index, with per-limb mirroring",
+    "gestureDirection": "front; bow profiles; look-back rear-quarter body with head groups",
+    "verification": {
+      "pythonQtTests": 52,
+      "nodeAdapterTests": 5,
+      "nativeWaylandSmoke": true,
+      "canvasBoundarySamples": 1200,
+      "boundaryClips": 0
+    },
+    "evidence": "../../docs/model-review/evidence/fix-snapshot.json",
+    "remainingArt": [
+      "continuous elbow/wrist deformation",
+      "rear-quarter limb perspective",
+      "rear hair depth and costume consistency"
+    ],
+    "notFullModelV1Acceptance": true
   }
 }

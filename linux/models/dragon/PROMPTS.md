@@ -1,6 +1,6 @@
 # 生成记录
 
-2026-10-31，全部使用内置 `image_gen.imagegen`，`transparent_background=true`。原角色参考为固定 Coopanion v1.1.0 发布包的 `thumb.png`，SHA-256 见 NOTICE。生成结果保留原透明通道；工程脚本只按记录的矩形切割、裁到 alpha 边界并建立绑定。以下是实际提示词。
+2026-10-31，全部补画使用内置 `image_gen.imagegen`，`transparent_background=true`。原角色参考为固定 Coopanion v1.1.0 发布包的 `thumb.png`，SHA-256 见 NOTICE。首轮的矩形裁片方案已由完整主体提取替代；生成源图不覆盖，运行裁片保留被选择主体及邻接抗锯齿的原RGBA。以下是实际提示词。
 
 ## source/turnaround.png
 
@@ -57,3 +57,19 @@ Use case: precise-object-edit. Make ONE isolated production cutout of ONLY the t
 | `source/left-head-parts.png` | [left-head-prompt.txt](source/left-head-prompt.txt) | 原包缩略图 |
 
 第一轮右前侧和后侧的错误方向图未采用。后侧最终图依据已生成的背面重新制作；其误加的翼饰和长靴没有用于绑定，改用已有后侧部件。新脸部留白用于独立眨眼、视线、眉毛与口型，不能将制作文件中的空白脸当成最终合成效果。各视角仍有美术精修待办；八视角接触表以实际 Qt 合成为准。
+
+## 按视觉审查补图：source/revision-2/
+
+| 文件 | 提示词 | 参考与用途 |
+| --- | --- | --- |
+| front-reference.png | 无新生成 | 从已生成的turnaround第一格裁出的正面参考，不是运行分片 |
+| front-head.png | [原文](source/revision-2/front-head-prompt.txt) | 原包缩略图、正面参考；单一短发头，保留空白脸，去掉重复发层 |
+| front-right-head.png | [原文](source/revision-2/front-right-head-prompt.txt) | 新正面头；向右三分之四头，结饰保留解剖侧 |
+| front-dress.png | [原文](source/revision-2/front-dress-prompt.txt) | 清理后的旧正面裙单片；只修掉错误裸肤楔形与内裙瓣 |
+| front-right-dress.png | [原文](source/revision-2/front-right-dress-prompt.txt) | 清理后的旧右前裙单片；改短中央前摆、保留侧裙 |
+| arm-raised.png | [原文](source/revision-2/arm-raised-prompt.txt) | 原角色缩略图与新正面头；独立张掌举手姿势 |
+| arm-point.png | [原文](source/revision-2/arm-point-prompt.txt) | 同上；独立伸食指姿势 |
+
+本轮先尝试的四格衣片和整件新衣裙仍附带袖子/重复侧裙，未导入运行模型，也没有为了适配而强行压缩；改为针对已存在裙片做局部修正。运行模型不直接使用本目录的原始画布，统一按 `source-selections.json` 提取主体，再按 `rig-layouts.json` 绑定。
+
+此前对“查看噪点”的描述不能涵盖真正的高alpha邻格污染。专项审查已区分二者，本轮提取工具删除未选中的连通部件，不对主体全局阈值化透明通道。源PNG保持原样，制作/运行资源SHA-256由组装脚本更新。

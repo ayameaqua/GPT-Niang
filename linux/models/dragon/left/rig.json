@@ -7,10 +7,10 @@
       "id": "head",
       "src": "head.png",
       "box": [
-        225,
-        65,
-        370,
-        475
+        237.8248,
+        65.0,
+        473.0057,
+        455.6941
       ],
       "parent": "head",
       "z": 10,
@@ -24,10 +24,10 @@
       "id": "hair-back",
       "src": "hair-back.png",
       "box": [
-        280,
-        180,
-        390,
-        610
+        326.6775,
+        175.3259,
+        420.0176,
+        585.2072
       ],
       "parent": "hairBack",
       "z": 0,
@@ -37,22 +37,24 @@
       "id": "dress",
       "src": "dress.png",
       "box": [
-        300,
+        268.906475,
         447,
-        350,
+        495.535,
         507
       ],
       "parent": "upper",
       "z": 4,
-      "mesh": false
+      "mesh": true,
+      "cloth": true,
+      "warpStart": 0.3
     },
     {
       "id": "arm-near",
       "src": "arm-near.png",
       "box": [
-        395,
-        496,
-        110,
+        429.9816,
+        491.20500000000004,
+        86.653,
         202
       ],
       "parent": "armNear",
@@ -63,9 +65,9 @@
       "id": "arm-far",
       "src": "arm-far.png",
       "box": [
-        345,
-        478,
-        105,
+        320.303625,
+        481.84,
+        115.385,
         200
       ],
       "parent": "armFar",
@@ -76,9 +78,9 @@
       "id": "wing-near",
       "src": "wing-near.png",
       "box": [
-        455,
-        461,
-        238,
+        461.85064,
+        452.64,
+        187.848,
         142
       ],
       "parent": "wingNear",
@@ -89,9 +91,9 @@
       "id": "wing-far",
       "src": "wing-far.png",
       "box": [
-        370,
-        461,
-        150,
+        275.80780000000004,
+        444.8,
+        190.63,
         142
       ],
       "parent": "wingFar",
@@ -102,9 +104,9 @@
       "id": "tail",
       "src": "tail.png",
       "box": [
-        450,
-        640,
-        393,
+        431.86372,
+        659.24,
+        359.469,
         297
       ],
       "parent": "tail",
@@ -115,9 +117,9 @@
       "id": "leg-near",
       "src": "leg-near.png",
       "box": [
-        415,
+        365.764,
         646,
-        98,
+        168.972,
         323
       ],
       "parent": "legNear",
@@ -128,9 +130,9 @@
       "id": "leg-far",
       "src": "leg-far.png",
       "box": [
-        365,
-        652,
-        97,
+        321.449,
+        658,
+        156.603,
         311
       ],
       "parent": "legFar",
@@ -139,31 +141,131 @@
     }
   ],
   "pivots": {
-    "armFar": [
-      390,
-      484
+    "upper": [
+      425.0,
+      599.1
     ],
-    "armNear": [
-      440,
-      505
+    "head": [
+      417.566975,
+      464.745
     ],
-    "wingNear": [
-      460,
-      520
+    "hairBack": [
+      448.6818,
+      253.9313
+    ],
+    "hairFront": [
+      407.4295,
+      256.8094
+    ],
+    "ahoge": [
+      393.9985,
+      174.3048
     ],
     "wingFar": [
-      490,
-      520
+      455,
+      530
+    ],
+    "wingNear": [
+      475,
+      535
+    ],
+    "tail": [
+      475,
+      683
+    ],
+    "legFar": [
+      399.75,
+      673.55
+    ],
+    "legNear": [
+      450.25,
+      662.15
+    ],
+    "armFar": [
+      412.611625,
+      507.84
+    ],
+    "armNear": [
+      464.6428,
+      515.445
+    ],
+    "skirtFar": [
+      349,
+      630
+    ],
+    "skirtNear": [
+      472,
+      630
+    ],
+    "apron": [
+      415,
+      578
+    ],
+    "seat": [
+      425,
+      570
     ]
+  },
+  "sourceNeck": false,
+  "registration": {
+    "bodyAxis": 425,
+    "soleY": 969,
+    "status": "roots-calibrated-visual-recheck",
+    "headUniformScaleAboutNeck": 0.959356
   },
   "face": {
     "box": [
-      231,
-      315,
-      138,
-      150
+      302.6034,
+      304.839,
+      132.3911,
+      143.9034
     ],
     "oneEye": true
   },
-  "sourceNeck": false
+  "landmarks": {
+    "waist": [
+      0.315,
+      0.3
+    ],
+    "neck": [
+      0.3,
+      0.035
+    ],
+    "shoulderFar": [
+      0.29,
+      0.12
+    ],
+    "shoulderNear": [
+      0.395,
+      0.135
+    ],
+    "head": [
+      0.38,
+      0.805
+    ],
+    "arm-far": [
+      0.8,
+      0.13
+    ],
+    "arm-near": [
+      0.4,
+      0.12
+    ],
+    "wing-far": [
+      0.94,
+      0.6
+    ],
+    "wing-near": [
+      0.07,
+      0.58
+    ],
+    "tail": [
+      0.12,
+      0.08
+    ]
+  },
+  "anatomicalHands": {
+    "left": "armNear",
+    "right": "armFar"
+  }
 }

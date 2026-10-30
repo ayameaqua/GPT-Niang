@@ -1,0 +1,35 @@
+{
+  "beforeRuntimeCommit": "a219dc3aea9eb444349fb23e85a5072b6a739e2e",
+  "renderedEvidence": {
+    "fix-before-front.png": "99241a3bf4bf8c7b270ec0f32152d03200aa22886edd018289e25e8f06d0da34",
+    "fix-views-after.png": "5b728da0a71edc5c3fc626155fb506ce6e06a9cbb3940dc3f373c05c79968356",
+    "fix-front-before-after.png": "583fe5c1ae87e6426702bf99f43a5454b2c352ea599296680ff46b12c72e42dd",
+    "fix-gestures-after.png": "bc9ae1b2c75207c334f339d9590717f1cd1a86b3a0d3537a359d765c203deaf9",
+    "fix-look-back-after.png": "806e9b9a204fcd19cf9925dbbfa7db6c5c8fc762ef49274738e0f4f396e5f206"
+  },
+  "implementation": {
+    "gpt_niang_linux/model/assets.py": "dbb5ff4885438f8dbccfdf0ccb79ae7d6e80c4b38e325cf32d66f8cc000cc052",
+    "gpt_niang_linux/model/__init__.py": "c570c302b94aaba35ce5f1cde7b9db7a31ba4e52b432dac8d1e2f73b89be492d",
+    "gpt_niang_linux/model/motion.py": "83886ce147d23869ad90d8d1623c9c74cdabbf5a655ed523e428c80ba04b04a8",
+    "gpt_niang_linux/model/render.py": "4ead6ca0e3de56215cb6ef3d94c7f591ac7f592d1a1006fd7b0e4b733667dd6e",
+    "gpt_niang_linux/model/item.py": "1a540b1db663fdcb1361d734f7cc795d9dcd15cb9490de210a1b923953528804",
+    "gpt_niang_linux/model/extraction.py": "2fd6de1c3c9ee68a6e065fae416ed602111c1ee861dbba5bfd9fd8a42ef61d68",
+    "models/dragon/asset-hashes.json": "72e792527bca72676e2ab1db2ff232e61a158594a64d44c2d7c57b5fba33cf43"
+  },
+  "scope": "fixed-time Qt compositions; staged visual comparisons, not exhaustive acceptance",
+  "bounds": {
+    "samples": 1200,
+    "phases": [
+      0,
+      0.25,
+      0.5,
+      0.75,
+      0.99
+    ],
+    "initialViews": 8,
+    "actions": 30,
+    "clipped": [],
+    "empty": [],
+    "scope": "neutral expression; canvas bounds only, not visual acceptance"
+  }
+}

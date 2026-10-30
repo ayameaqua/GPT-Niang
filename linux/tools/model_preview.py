@@ -13,7 +13,7 @@ from gpt_niang_linux.model.motion import Animator, EXPRESSIONS, MOTIONS, VIEWS
 from gpt_niang_linux.model.render import DragonRenderer
 
 
-def contact(renderer, entries, destination, expressions=False):
+def contact(renderer, entries, destination, expressions=False, view='front-left'):
     cell, title_height, columns = 240, 28, 5
     rows = (len(entries)+columns-1)//columns
     output = QImage(cell*columns, (cell+title_height)*rows, QImage.Format.Format_ARGB32_Premultiplied)
@@ -22,6 +22,7 @@ def contact(renderer, entries, destination, expressions=False):
     font = painter.font(); font.setPixelSize(14); painter.setFont(font)
     for index, (key, label) in enumerate(entries):
         animator = Animator()
+        animator.set_view(view)
         if not expressions and key in ("turn", "spin") and len(renderer.rigs) < 7:
             x, y = (index % columns)*cell, (index//columns)*(cell+title_height)
             painter.setPen(QColor("#81738e"))
@@ -38,7 +39,8 @@ def contact(renderer, entries, destination, expressions=False):
         x, y = (index % columns)*cell, (index//columns)*(cell+title_height)
         painter.drawImage(QPointF(x, y), renderer.render(animator.pose(), cell))
         painter.setPen(QColor("#443857"))
-        painter.drawText(QPointF(x+12, y+cell+20), label)
+        shown=label+(' → '+VIEWS[animator.view] if animator.view!=view else '')
+        painter.drawText(QPointF(x+12, y+cell+20),shown)
     painter.end(); output.save(str(destination))
 
 
@@ -46,12 +48,18 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--out", type=Path, default=Path("test-results/model"))
     parser.add_argument("--frames", action="store_true")
+    parser.add_argument("--audit",action="store_true",help="also render one motion sheet per initial view and expressive-view sheets")
     args = parser.parse_args()
     app = QGuiApplication([])
     renderer = DragonRenderer(model_directory())
     args.out.mkdir(parents=True, exist_ok=True)
     contact(renderer, list(EXPRESSIONS.items()), args.out/"expressions.png", True)
     contact(renderer, [(k, v[0]) for k, v in MOTIONS.items()], args.out/"motions.png")
+    if args.audit:
+        for view in VIEWS:
+            contact(renderer,[(k,v[0]) for k,v in MOTIONS.items()],args.out/f'motions-from-{view}.png',view=view)
+        for view in ('front','front-left','front-right','left','right'):
+            contact(renderer,list(EXPRESSIONS.items()),args.out/f'expressions-{view}.png',True,view)
     animator = Animator(); animator.play("dance")
     duration, count = 0., 300
     for index in range(count):

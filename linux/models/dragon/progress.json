@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "updated": "2026-10-31",
-  "status": "eight-view-model-prototype",
+  "status": "visual-review-rework-required",
   "fullModelV1Complete": false,
   "renderer": "independent-qt-layered-raster-warp",
   "baselineExpressionsImplemented": 19,
@@ -51,5 +51,15 @@
     "sleep"
   ],
   "artReviewPending": true,
-  "forearmAndHandDetailPending": true
+  "forearmAndHandDetailPending": true,
+  "visualReviewPassed": false,
+  "countsScope": "registered and renderable IDs/resources, not visual acceptance",
+  "visualReview": {
+    "date": "2026-10-31",
+    "baselineCommit": "a219dc3aea9eb444349fb23e85a5072b6a739e2e",
+    "model": "gpt-6-astra",
+    "reasoningEffort": "xhigh",
+    "result": "requires-rework",
+    "handoff": "../../docs/model-review/README.md"
+  }
 }

@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "reviewDate": "2026-10-31",
+  "sourceCommit": "a219dc3aea9eb444349fb23e85a5072b6a739e2e",
+  "sourceBranch": "linux/qt-wayland",
+  "reviewModel": "gpt-6-astra",
+  "reasoningEffort": "xhigh",
+  "reviewOnly": true,
+  "runtimeOrAssetChanges": false,
+  "originalSource": {
+    "release": "Coopanion GPT dragon v1.1.0",
+    "archiveSha256": "ec84d07a2144fb1850d5c85dddc558b5bd12cbf35560d0d8ee25ca1832ac7836"
+  },
+  "implementationSha256": {
+    "linux/tools/assemble_dragon.py": "b94c9e11da199cb2df2893041d15718af303ccd9d7a9f7c9f9a81f3dec059c9f",
+    "linux/gpt_niang_linux/model/render.py": "a28b30dca6297c52114090905420aadf1ad0e76cc60d3877c79c1c33c17aa0e7",
+    "linux/gpt_niang_linux/model/motion.py": "98b9bff60a12fdfacac50521e2a6effd7692f9bce303888ce04fc8f9016cdf02",
+    "linux/gpt_niang_linux/model/item.py": "c46b6865322e6d9304e7d6b4a0328a8b86ca5a1167b5743f1c101d6b23b321c8",
+    "linux/models/dragon/asset-hashes.json": "10976a484bba2698e8e1bcd12cb7440ed652f9c92347af7acb19751c30716792"
+  },
+  "viewRigSha256": {
+    "front-left": "original-imported-model.json",
+    "back": {
+      "path": "linux/models/dragon/back/rig.json",
+      "sha256": "8f13974432401fd07adc473922ed7783480b22c95a406f84606892ffe19f35ba"
+    },
+    "left": {
+      "path": "linux/models/dragon/left/rig.json",
+      "sha256": "0357df5ff3c84f49f3454dc5f6ef75bcc28dd70853887657865d8066e116089a"
+    },
+    "front": {
+      "path": "linux/models/dragon/front/rig.json",
+      "sha256": "c0f95126c31241f56f6a0327308fc29157ffe72682a9e86c82144dd4018ea95a"
+    },
+    "right": {
+      "path": "linux/models/dragon/right/rig.json",
+      "sha256": "f4dd633a82cf0bd7e27c8acf14e8fdb66c9a8c1a38f669408ce29d1b17b7523d"
+    },
+    "front-right": {
+      "path": "linux/models/dragon/front-right/rig.json",
+      "sha256": "090b5d9a528b201329bcd6348e84e4124bc264a490df0d6b880eb9cec392a8fc"
+    },
+    "back-left": {
+      "path": "linux/models/dragon/back-left/rig.json",
+      "sha256": "9bb5f95ad8631d8f914f3439386414d9933bcedec4ee6a1017505043369c9036"
+    },
+    "back-right": {
+      "path": "linux/models/dragon/back-right/rig.json",
+      "sha256": "bb102cc2f7b7228e4ad44213e665ddad9890392f6df7cc0a5d7cab2cc022d5d9"
+    }
+  }
+}

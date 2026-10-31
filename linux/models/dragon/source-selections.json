@@ -84,12 +84,12 @@
       ]
     },
     "back/dress.png": {
-      "source": "source/back-dress.png",
+      "source": "source/revision-3/back-dress.png",
       "locator": [
         0,
         0,
-        1192,
-        1320
+        1400,
+        1400
       ]
     },
     "left/head.png": {
@@ -426,19 +426,31 @@
       ]
     },
     "back-left/dress.png": {
-      "source": "source/back-left-parts.png",
+      "source": "source/revision-3/back-left-dress.png",
       "locator": [
-        730,
-        25,
-        435,
-        475
+        0,
+        0,
+        1400,
+        1400
       ]
     },
     "back-left/arm-near.png": {
-      "copy": "back/arm-near.png"
+      "source": "source/revision-3/rear-limbs.png",
+      "locator": [
+        680,
+        50,
+        370,
+        640
+      ]
     },
     "back-left/arm-far.png": {
-      "copy": "back/arm-far.png"
+      "source": "source/revision-3/rear-limbs.png",
+      "locator": [
+        50,
+        20,
+        500,
+        660
+      ]
     },
     "back-left/wing-far.png": {
       "copy": "back/wing-far.png"
@@ -456,10 +468,22 @@
       ]
     },
     "back-left/leg-near.png": {
-      "copy": "back/leg-near.png"
+      "source": "source/revision-3/rear-limbs.png",
+      "locator": [
+        700,
+        720,
+        350,
+        700
+      ]
     },
     "back-left/leg-far.png": {
-      "copy": "back/leg-far.png"
+      "source": "source/revision-3/rear-limbs.png",
+      "locator": [
+        170,
+        680,
+        380,
+        730
+      ]
     },
     "back-right/head.png": {
       "source": "source/back-right-parts.png",
@@ -471,19 +495,31 @@
       ]
     },
     "back-right/dress.png": {
-      "source": "source/back-right-parts.png",
+      "source": "source/revision-3/back-right-dress.png",
       "locator": [
-        730,
-        25,
-        435,
-        475
+        0,
+        0,
+        1400,
+        1400
       ]
     },
     "back-right/arm-near.png": {
-      "copy": "back/arm-near.png"
+      "source": "source/revision-3/rear-limbs.png",
+      "locator": [
+        50,
+        20,
+        500,
+        660
+      ]
     },
     "back-right/arm-far.png": {
-      "copy": "back/arm-far.png"
+      "source": "source/revision-3/rear-limbs.png",
+      "locator": [
+        680,
+        50,
+        370,
+        640
+      ]
     },
     "back-right/wing-far.png": {
       "copy": "back/wing-far.png"
@@ -501,10 +537,22 @@
       ]
     },
     "back-right/leg-near.png": {
-      "copy": "back/leg-near.png"
+      "source": "source/revision-3/rear-limbs.png",
+      "locator": [
+        170,
+        680,
+        380,
+        730
+      ]
     },
     "back-right/leg-far.png": {
-      "copy": "back/leg-far.png"
+      "source": "source/revision-3/rear-limbs.png",
+      "locator": [
+        700,
+        720,
+        350,
+        700
+      ]
     },
     "front/arm-raised.png": {
       "source": "source/revision-2/arm-raised.png",
@@ -522,6 +570,42 @@
         0,
         1254,
         1254
+      ]
+    },
+    "front/arm-upper.png": {
+      "source": "source/revision-3/arm-joints.png",
+      "locator": [
+        50,
+        20,
+        450,
+        650
+      ]
+    },
+    "front/arm-forearm.png": {
+      "source": "source/revision-3/arm-joints.png",
+      "locator": [
+        700,
+        20,
+        500,
+        790
+      ]
+    },
+    "front/arm-hand.png": {
+      "source": "source/revision-3/arm-joints.png",
+      "locator": [
+        100,
+        800,
+        450,
+        450
+      ]
+    },
+    "front/arm-point-hand.png": {
+      "source": "source/revision-3/arm-joints.png",
+      "locator": [
+        750,
+        820,
+        450,
+        400
       ]
     }
   }

@@ -36,7 +36,7 @@
       "src": "hair-back.png",
       "box": [
         224.461,
-        200,
+        200.0,
         401.078,
         610
       ],
@@ -68,7 +68,13 @@
       ],
       "parent": "armFar",
       "z": 2.8,
-      "mesh": false
+      "mesh": false,
+      "sourceWindow": [
+        0,
+        0,
+        1,
+        0.5
+      ]
     },
     {
       "id": "arm-near",
@@ -80,8 +86,14 @@
         200
       ],
       "parent": "armNear",
-      "z": 2.9,
-      "mesh": false
+      "z": 2.8,
+      "mesh": false,
+      "sourceWindow": [
+        0,
+        0,
+        1,
+        0.5
+      ]
     },
     {
       "id": "wing-far",
@@ -114,7 +126,7 @@
       "src": "head.png",
       "box": [
         231.919,
-        65,
+        65.0,
         386.163,
         410
       ],
@@ -136,20 +148,58 @@
       "mesh": true,
       "cloth": true,
       "warpStart": 0.3
+    },
+    {
+      "id": "arm-far-distal",
+      "src": "arm-far.png",
+      "box": [
+        286.74302500000005,
+        486.305,
+        110.156,
+        200
+      ],
+      "parent": "armFar",
+      "z": 8,
+      "mesh": false,
+      "sourceWindow": [
+        0,
+        0.42,
+        1,
+        0.58
+      ]
+    },
+    {
+      "id": "arm-near-distal",
+      "src": "arm-near.png",
+      "box": [
+        458.046215,
+        487.305,
+        100.0,
+        200
+      ],
+      "parent": "armNear",
+      "z": 8,
+      "mesh": false,
+      "sourceWindow": [
+        0,
+        0.42,
+        1,
+        0.58
+      ]
     }
   ],
   "pivots": {
     "upper": [
-      425.0,
-      588.96
+      425,
+      586.425
     ],
     "head": [
       425.0,
       464.745
     ],
     "hairBack": [
-      425,
-      245
+      425.0,
+      245.0
     ],
     "hairFront": [
       407,
@@ -245,10 +295,37 @@
     "tail": [
       0.04,
       0.14
+    ],
+    "dress": [
+      0.5,
+      0.275
     ]
   },
   "anatomicalHands": {
     "left": "armFar",
     "right": "armNear"
+  },
+  "garmentLandmarks": {
+    "waist": [
+      0.5,
+      0.275
+    ],
+    "neck": [
+      0.5,
+      0.035
+    ],
+    "arm-far": [
+      0.385,
+      0.115
+    ],
+    "arm-near": [
+      0.615,
+      0.115
+    ]
+  },
+  "depthLayers": {
+    "longHair": "over rear garment; behind distal near forearm",
+    "shoulders": "under hair; distal forearm revealed by source UV region",
+    "lookBack": "profile crown only; rear long hair retained"
   }
 }

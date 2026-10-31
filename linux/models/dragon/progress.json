@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "updated": "2026-10-31",
-  "status": "model-repair-pass-1",
+  "status": "model-repair-pass-2",
   "fullModelV1Complete": false,
   "renderer": "independent-qt-layered-raster-warp",
   "baselineExpressionsImplemented": 19,
@@ -52,7 +52,7 @@
     "sleep"
   ],
   "artReviewPending": true,
-  "forearmAndHandDetailPending": true,
+  "forearmAndHandDetailPending": false,
   "visualReviewPassed": false,
   "countsScope": "registered and renderable IDs/resources, not visual acceptance",
   "visualReview": {
@@ -67,21 +67,27 @@
   "modelRepair": {
     "sourceExtraction": "explicit complete components; neighboring opaque islands excluded; original RGBA retained",
     "binding": "per-view authored source UV and world joints",
-    "handPoses": "dedicated open palm and pointing index, with per-limb mirroring",
+    "handPoses": "front upper arm, forearm sleeve and wrist/hand articulated independently; hand shape alone mixes for pointing",
     "gestureDirection": "front; bow profiles; look-back rear-quarter body with head groups",
     "verification": {
-      "pythonQtTests": 52,
+      "pythonQtTests": 61,
       "nodeAdapterTests": 5,
       "nativeWaylandSmoke": true,
       "canvasBoundarySamples": 1200,
-      "boundaryClips": 0
+      "boundaryClips": 0,
+      "renderAndAlphaMs320": 1.99
     },
     "evidence": "../../docs/model-review/evidence/fix-snapshot.json",
     "remainingArt": [
-      "continuous elbow/wrist deformation",
-      "rear-quarter limb perspective",
-      "rear hair depth and costume consistency"
+      "fine costume/ornament consistency across all eight views",
+      "full visual review of all expression/motion combinations"
     ],
-    "notFullModelV1Acceptance": true
+    "notFullModelV1Acceptance": true,
+    "pass": 2,
+    "articulationScope": "front gestures; all hand gestures route here; other directions retain their registered limb transforms",
+    "rearLimbs": "dedicated near/far rear-quarter arms and heels; opposite side mirrors each limb separately",
+    "rearHair": "retained long hair over rear garment, shoulders underneath, distal near forearm above hair; feathered crown",
+    "lookBack": "profile crown on rear-quarter body; own long hair and rear clothing retained",
+    "detailRecord": "../../docs/model-review/DETAIL-FIXES.md"
   }
 }

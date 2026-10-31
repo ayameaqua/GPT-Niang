@@ -66,6 +66,8 @@ class Pose:
     view_mix: float = 0
     gesture: float = 0
     look_back: float = 0
+    # Anatomical left/right lift, pointing-hand mix, wrist sway in degrees.
+    hands: tuple = (0., 0., 0., 0.)
 
 
 class Animator:
@@ -93,6 +95,7 @@ class Animator:
         self.settling = None
         self.head_start=0.
         self.head_return=None
+        self.hand_return=None
 
     def set_expression(self, value):
         if value not in EXPRESSIONS:
@@ -126,12 +129,15 @@ class Animator:
         self.view = value
         self.settling=None
         self.head_return=None
+        self.hand_return=None
         return True
 
     def play(self, action):
         if action not in MOTIONS:
             return False
-        head=self.pose().look_back
+        previous=self.pose()
+        self.hand_return=[previous.hands,0.]
+        head=previous.look_back
         self.head_start=head if action=='look-back' else 0.
         self.head_return=[head,0.] if head>0 and action!='look-back' else None
         # Settle the visible blend before starting another orientation/action.
@@ -187,6 +193,7 @@ class Animator:
         self.settling=None
         self.head_start=0.
         self.head_return=[current.look_back,0.] if current.look_back>0 else None
+        self.hand_return=[current.hands,0.]
         if current.blend_view and current.view_mix>0:
             target=1 if current.view_mix>=.5 else 0
             self.view=current.blend_view if target else current.view
@@ -197,6 +204,9 @@ class Animator:
             return self.pose()
         dt = clamp(dt, 0, .1) * self.speed
         self.clock += dt
+        if self.hand_return:
+            self.hand_return[1]+=dt
+            if self.hand_return[1]>=.18:self.hand_return=None
         if self.head_return:
             self.head_return[1]+=dt
             if self.head_return[1]>=.18:self.head_return=None
@@ -352,6 +362,14 @@ class Animator:
                 tr[left]["a"] = ls*145*env
                 tr["head"]["a"] = -5*env
                 pose.gaze = (0, -.7)
+        if a in HAND_GESTURES:
+            left=env if a in ('wave','raise-left','raise-both','point','dance') else 0.
+            right=env if a in ('raise-right','raise-both','dance') else 0.
+            sway=math.sin(p*math.pi*(12 if a=='wave' else 8))*12*env if a in ('wave','dance') else 0.
+            pose.hands=(left,right,env if a=='point' else 0.,sway)
+        if self.hand_return:
+            start,elapsed=self.hand_return;amount=smooth(elapsed/.18)
+            pose.hands=tuple(x+(y-x)*amount for x,y in zip(start,pose.hands))
         if a == "bow":
             direction=1 if self.view=="right" else -1
             tr["upper"]["a"] = direction*22*math.sin(math.pi*p)**2

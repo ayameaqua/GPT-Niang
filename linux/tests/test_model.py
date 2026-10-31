@@ -107,14 +107,18 @@ class ResourceTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             source=Path(tmp);synthetic_model(source);renderer=DragonRenderer(source)
             data,images=renderer.rigs['front'];arm=next(p for p in data['parts'] if p['id']=='arm-near')
-            v=arm['variants']['point'];px,py=data['pivots']['armNear'];x,y,w,h=v['box']
-            tx,ty=x+v['indexTipUV'][0]*w-px,y+v['indexTipUV'][1]*h-py
-            im=images['arm-near@point'];dx,dy=v['indexRay'][0]*w/im.width(),v['indexRay'][1]*h/im.height()
-            c,s=math.cos(math.radians(v['rotation'])),math.sin(math.radians(v['rotation']))
-            tip=(px+c*tx-s*ty,py+s*tx+c*ty);ray=(c*dx-s*dy,s*dx+c*dy)
-            target=(v['target'][0]-tip[0],v['target'][1]-tip[1])
-            self.assertAlmostEqual((ray[0]*target[1]-ray[1]*target[0])/math.hypot(*ray),0,delta=.01)
-            self.assertGreater(ray[0]*target[0]+ray[1]*target[1],0)
+            spec=arm['articulation'];hand=spec['segments']['point']
+            for seconds in (.1,.3,.6,1.8):
+                a=Animator();a.set_view('front');a.play('point');advance(a,seconds)
+                chain=renderer._arm_geometry(arm,images,a.pose(),data['pivots'])
+                v=chain['point'];px,py=chain['hand']['root'];x,y,w,h=v['box']
+                tx,ty=x+hand['endUV'][0]*w-px,y+hand['endUV'][1]*h-py
+                im=images['arm-near#point'];dx,dy=hand['indexRay'][0]*w/im.width(),hand['indexRay'][1]*h/im.height()
+                c,s=math.cos(math.radians(v['rotation'])),math.sin(math.radians(v['rotation']))
+                tip=(px+c*tx-s*ty,py+s*tx+c*ty);ray=(c*dx-s*dy,s*dx+c*dy)
+                target=(spec['pointTarget'][0]-tip[0],spec['pointTarget'][1]-tip[1])
+                self.assertAlmostEqual((ray[0]*target[1]-ray[1]*target[0])/math.hypot(*ray),0,delta=.01)
+                self.assertGreater(ray[0]*target[0]+ray[1]*target[1],0)
 
     def test_look_back_preserves_the_rear_body_feet(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -124,6 +128,20 @@ class ResourceTests(unittest.TestCase):
                 looking=renderer.render(pose,320);pose.look_back=0;rear=renderer.render(pose,320)
                 self.assertNotEqual(looking,rear)
                 self.assertEqual(looking.copy(0,280,320,40),rear.copy(0,280,320,40))
+
+    def test_replacing_a_gesture_keeps_the_visible_elbow_and_wrist(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            source=Path(tmp);synthetic_model(source);renderer=DragonRenderer(source)
+            data,images=renderer.rigs['front'];arm=next(p for p in data['parts'] if p['id']=='arm-near')
+            for replacement in ('stand','raise-right','point','carried',None):
+                a=Animator();a.set_view('front');a.play('raise-both');advance(a,.23)
+                before=renderer._arm_geometry(arm,images,a.pose(),data['pivots'])
+                if replacement:a.play(replacement)
+                else:a.cancel()
+                after=renderer._arm_geometry(arm,images,a.pose(),data['pivots'])
+                for node in ('upper','forearm','hand'):
+                    self.assertLess(math.dist(before[node]['root'],after[node]['root']),1,replacement)
+                    self.assertLess(math.dist(before[node]['end'],after[node]['end']),1,replacement)
 
     def test_unknown_archive_and_traversal_are_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:

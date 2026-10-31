@@ -55,45 +55,68 @@
       "parent": "armNear",
       "z": 8,
       "mesh": false,
-      "variants": {
-        "raised": {
-          "src": "arm-raised.png",
-          "box": [
-            475.56,
-            359.02,
-            182.16,
-            240.24
-          ],
-          "flipX": false,
-          "rotation": -16,
-          "startRotation": 105
-        },
-        "point": {
-          "src": "arm-point.png",
-          "box": [
-            488.64,
-            381.06,
-            162.72,
-            190.79999999999998
-          ],
-          "rotation": 5.05,
-          "startRotation": 105,
-          "indexTipUV": [
-            0.995575221238938,
-            0.0018867924528301887
-          ],
-          "indexRay": [
-            108,
-            -121
-          ],
-          "target": [
-            760,
-            280
-          ]
-        }
-      },
       "sourcePart": "arm-near",
-      "flipX": false
+      "flipX": false,
+      "articulation": {
+        "segments": {
+          "upper": {
+            "src": "arm-upper.png",
+            "rootUV": [
+              0.480225988700565,
+              0.07312925170068027
+            ],
+            "endUV": [
+              0.5282485875706214,
+              0.9183673469387755
+            ],
+            "scale": 0.14
+          },
+          "forearm": {
+            "src": "arm-forearm.png",
+            "rootUV": [
+              0.19222462203023757,
+              0.04065040650406504
+            ],
+            "endUV": [
+              0.23974082073434125,
+              0.7181571815718157
+            ],
+            "scale": 0.14
+          },
+          "hand": {
+            "src": "arm-hand.png",
+            "rootUV": [
+              0.532394366197183,
+              0.07196029776674938
+            ],
+            "endUV": [
+              0.4507042253521127,
+              0.9553349875930521
+            ],
+            "scale": 0.12
+          },
+          "point": {
+            "src": "arm-point-hand.png",
+            "rootUV": [
+              0.28362573099415206,
+              0.08192090395480225
+            ],
+            "endUV": [
+              0.9678362573099415,
+              0.9745762711864406
+            ],
+            "scale": 0.12,
+            "indexRay": [
+              160,
+              210
+            ]
+          }
+        },
+        "pointTarget": [
+          760,
+          280
+        ]
+      }
     },
     {
       "id": "arm-far",
@@ -106,22 +129,68 @@
       "parent": "armFar",
       "z": 8,
       "mesh": false,
-      "variants": {
-        "raised": {
-          "src": "arm-raised.png",
-          "box": [
-            192.28,
-            359.02,
-            182.16,
-            240.24
-          ],
-          "flipX": true,
-          "rotation": 16,
-          "startRotation": -105
-        }
-      },
       "sourcePart": "arm-near",
-      "flipX": true
+      "flipX": true,
+      "articulation": {
+        "segments": {
+          "upper": {
+            "src": "arm-upper.png",
+            "rootUV": [
+              0.480225988700565,
+              0.07312925170068027
+            ],
+            "endUV": [
+              0.5282485875706214,
+              0.9183673469387755
+            ],
+            "scale": 0.14
+          },
+          "forearm": {
+            "src": "arm-forearm.png",
+            "rootUV": [
+              0.19222462203023757,
+              0.04065040650406504
+            ],
+            "endUV": [
+              0.23974082073434125,
+              0.7181571815718157
+            ],
+            "scale": 0.14
+          },
+          "hand": {
+            "src": "arm-hand.png",
+            "rootUV": [
+              0.532394366197183,
+              0.07196029776674938
+            ],
+            "endUV": [
+              0.4507042253521127,
+              0.9553349875930521
+            ],
+            "scale": 0.12
+          },
+          "point": {
+            "src": "arm-point-hand.png",
+            "rootUV": [
+              0.28362573099415206,
+              0.08192090395480225
+            ],
+            "endUV": [
+              0.9678362573099415,
+              0.9745762711864406
+            ],
+            "scale": 0.12,
+            "indexRay": [
+              160,
+              210
+            ]
+          }
+        },
+        "pointTarget": [
+          760,
+          280
+        ]
+      }
     },
     {
       "id": "wing-far",

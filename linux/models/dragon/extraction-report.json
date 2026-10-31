@@ -288,35 +288,35 @@
     ]
   },
   "back/dress.png": {
-    "source": "source/back-dress.png",
+    "source": "source/revision-3/back-dress.png",
     "locator": [
       0,
       0,
-      1192,
-      1320
+      1400,
+      1400
     ],
     "include": [],
     "sourceBounds": [
-      27,
-      106,
-      1165,
-      1211
+      0,
+      0,
+      1273,
+      1226
     ],
     "selectedComponents": [
       {
-        "area": 635359,
+        "area": 788497,
         "bounds": [
-          29,
-          108,
-          1163,
-          1209
+          1,
+          1,
+          1273,
+          1224
         ]
       }
     ],
     "edgePadding": 2,
     "outputSize": [
-      1138,
-      1105
+      1273,
+      1226
     ]
   },
   "left/head.png": {
@@ -1504,42 +1504,100 @@
     ]
   },
   "back-left/dress.png": {
-    "source": "source/back-left-parts.png",
+    "source": "source/revision-3/back-left-dress.png",
     "locator": [
-      730,
-      25,
-      435,
-      475
+      0,
+      0,
+      1400,
+      1400
     ],
     "include": [],
     "sourceBounds": [
-      720,
-      55,
-      1164,
-      536
+      4,
+      0,
+      1191,
+      1266
     ],
     "selectedComponents": [
       {
-        "area": 112068,
+        "area": 791293,
         "bounds": [
-          722,
-          57,
-          1162,
-          534
+          6,
+          2,
+          1189,
+          1264
         ]
       }
     ],
     "edgePadding": 2,
     "outputSize": [
-      444,
-      481
+      1187,
+      1266
     ]
   },
   "back-left/arm-near.png": {
-    "copy": "back/arm-near.png"
+    "source": "source/revision-3/rear-limbs.png",
+    "locator": [
+      680,
+      50,
+      370,
+      640
+    ],
+    "include": [],
+    "sourceBounds": [
+      703,
+      87,
+      1019,
+      670
+    ],
+    "selectedComponents": [
+      {
+        "area": 91712,
+        "bounds": [
+          705,
+          89,
+          1017,
+          668
+        ]
+      }
+    ],
+    "edgePadding": 2,
+    "outputSize": [
+      316,
+      583
+    ]
   },
   "back-left/arm-far.png": {
-    "copy": "back/arm-far.png"
+    "source": "source/revision-3/rear-limbs.png",
+    "locator": [
+      50,
+      20,
+      500,
+      660
+    ],
+    "include": [],
+    "sourceBounds": [
+      99,
+      42,
+      497,
+      661
+    ],
+    "selectedComponents": [
+      {
+        "area": 138843,
+        "bounds": [
+          101,
+          44,
+          495,
+          659
+        ]
+      }
+    ],
+    "edgePadding": 2,
+    "outputSize": [
+      398,
+      619
+    ]
   },
   "back-left/wing-far.png": {
     "copy": "back/wing-far.png"
@@ -1580,10 +1638,68 @@
     ]
   },
   "back-left/leg-near.png": {
-    "copy": "back/leg-near.png"
+    "source": "source/revision-3/rear-limbs.png",
+    "locator": [
+      700,
+      720,
+      350,
+      700
+    ],
+    "include": [],
+    "sourceBounds": [
+      736,
+      746,
+      988,
+      1357
+    ],
+    "selectedComponents": [
+      {
+        "area": 92783,
+        "bounds": [
+          738,
+          748,
+          986,
+          1355
+        ]
+      }
+    ],
+    "edgePadding": 2,
+    "outputSize": [
+      252,
+      611
+    ]
   },
   "back-left/leg-far.png": {
-    "copy": "back/leg-far.png"
+    "source": "source/revision-3/rear-limbs.png",
+    "locator": [
+      170,
+      680,
+      380,
+      730
+    ],
+    "include": [],
+    "sourceBounds": [
+      192,
+      700,
+      512,
+      1386
+    ],
+    "selectedComponents": [
+      {
+        "area": 124448,
+        "bounds": [
+          194,
+          702,
+          510,
+          1384
+        ]
+      }
+    ],
+    "edgePadding": 2,
+    "outputSize": [
+      320,
+      686
+    ]
   },
   "back-right/head.png": {
     "source": "source/back-right-parts.png",
@@ -1618,42 +1734,100 @@
     ]
   },
   "back-right/dress.png": {
-    "source": "source/back-right-parts.png",
+    "source": "source/revision-3/back-right-dress.png",
     "locator": [
-      730,
-      25,
-      435,
-      475
+      0,
+      0,
+      1400,
+      1400
     ],
     "include": [],
     "sourceBounds": [
-      727,
-      45,
-      1186,
-      511
+      2,
+      0,
+      1243,
+      1264
     ],
     "selectedComponents": [
       {
-        "area": 114544,
+        "area": 806396,
         "bounds": [
-          729,
-          47,
-          1184,
-          509
+          4,
+          1,
+          1241,
+          1262
         ]
       }
     ],
     "edgePadding": 2,
     "outputSize": [
-      459,
-      466
+      1241,
+      1264
     ]
   },
   "back-right/arm-near.png": {
-    "copy": "back/arm-near.png"
+    "source": "source/revision-3/rear-limbs.png",
+    "locator": [
+      50,
+      20,
+      500,
+      660
+    ],
+    "include": [],
+    "sourceBounds": [
+      99,
+      42,
+      497,
+      661
+    ],
+    "selectedComponents": [
+      {
+        "area": 138843,
+        "bounds": [
+          101,
+          44,
+          495,
+          659
+        ]
+      }
+    ],
+    "edgePadding": 2,
+    "outputSize": [
+      398,
+      619
+    ]
   },
   "back-right/arm-far.png": {
-    "copy": "back/arm-far.png"
+    "source": "source/revision-3/rear-limbs.png",
+    "locator": [
+      680,
+      50,
+      370,
+      640
+    ],
+    "include": [],
+    "sourceBounds": [
+      703,
+      87,
+      1019,
+      670
+    ],
+    "selectedComponents": [
+      {
+        "area": 91712,
+        "bounds": [
+          705,
+          89,
+          1017,
+          668
+        ]
+      }
+    ],
+    "edgePadding": 2,
+    "outputSize": [
+      316,
+      583
+    ]
   },
   "back-right/wing-far.png": {
     "copy": "back/wing-far.png"
@@ -1694,10 +1868,68 @@
     ]
   },
   "back-right/leg-near.png": {
-    "copy": "back/leg-near.png"
+    "source": "source/revision-3/rear-limbs.png",
+    "locator": [
+      170,
+      680,
+      380,
+      730
+    ],
+    "include": [],
+    "sourceBounds": [
+      192,
+      700,
+      512,
+      1386
+    ],
+    "selectedComponents": [
+      {
+        "area": 124448,
+        "bounds": [
+          194,
+          702,
+          510,
+          1384
+        ]
+      }
+    ],
+    "edgePadding": 2,
+    "outputSize": [
+      320,
+      686
+    ]
   },
   "back-right/leg-far.png": {
-    "copy": "back/leg-far.png"
+    "source": "source/revision-3/rear-limbs.png",
+    "locator": [
+      700,
+      720,
+      350,
+      700
+    ],
+    "include": [],
+    "sourceBounds": [
+      736,
+      746,
+      988,
+      1357
+    ],
+    "selectedComponents": [
+      {
+        "area": 92783,
+        "bounds": [
+          738,
+          748,
+          986,
+          1355
+        ]
+      }
+    ],
+    "edgePadding": 2,
+    "outputSize": [
+      252,
+      611
+    ]
   },
   "front/arm-raised.png": {
     "source": "source/revision-2/arm-raised.png",
@@ -1761,6 +1993,134 @@
     "outputSize": [
       904,
       1060
+    ]
+  },
+  "front/arm-upper.png": {
+    "source": "source/revision-3/arm-joints.png",
+    "locator": [
+      50,
+      20,
+      450,
+      650
+    ],
+    "include": [],
+    "sourceBounds": [
+      80,
+      52,
+      434,
+      640
+    ],
+    "selectedComponents": [
+      {
+        "area": 131380,
+        "bounds": [
+          82,
+          54,
+          432,
+          638
+        ]
+      }
+    ],
+    "edgePadding": 2,
+    "outputSize": [
+      354,
+      588
+    ]
+  },
+  "front/arm-forearm.png": {
+    "source": "source/revision-3/arm-joints.png",
+    "locator": [
+      700,
+      20,
+      500,
+      790
+    ],
+    "include": [],
+    "sourceBounds": [
+      727,
+      58,
+      1190,
+      796
+    ],
+    "selectedComponents": [
+      {
+        "area": 196850,
+        "bounds": [
+          729,
+          60,
+          1188,
+          794
+        ]
+      }
+    ],
+    "edgePadding": 2,
+    "outputSize": [
+      463,
+      738
+    ]
+  },
+  "front/arm-hand.png": {
+    "source": "source/revision-3/arm-joints.png",
+    "locator": [
+      100,
+      800,
+      450,
+      450
+    ],
+    "include": [],
+    "sourceBounds": [
+      123,
+      817,
+      478,
+      1220
+    ],
+    "selectedComponents": [
+      {
+        "area": 75116,
+        "bounds": [
+          125,
+          819,
+          476,
+          1218
+        ]
+      }
+    ],
+    "edgePadding": 2,
+    "outputSize": [
+      355,
+      403
+    ]
+  },
+  "front/arm-point-hand.png": {
+    "source": "source/revision-3/arm-joints.png",
+    "locator": [
+      750,
+      820,
+      450,
+      400
+    ],
+    "include": [],
+    "sourceBounds": [
+      772,
+      833,
+      1114,
+      1187
+    ],
+    "selectedComponents": [
+      {
+        "area": 59617,
+        "bounds": [
+          774,
+          835,
+          1112,
+          1185
+        ]
+      }
+    ],
+    "edgePadding": 2,
+    "outputSize": [
+      342,
+      354
     ]
   }
 }

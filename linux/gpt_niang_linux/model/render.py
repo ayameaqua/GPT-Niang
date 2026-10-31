@@ -11,10 +11,11 @@ from dataclasses import replace
 from pathlib import Path
 
 from PySide6.QtCore import QPointF, QRectF, Qt
-from PySide6.QtGui import QColor, QImage, QPainter, QPainterPath, QPen, QPolygonF
+from PySide6.QtGui import QColor, QImage, QLinearGradient, QPainter, QPainterPath, QPen, QPolygonF
 
 from .assets import validate_model
-from .motion import smooth
+from .motion import HAND_GESTURES, smooth
+from .articulation import arm_chain
 from ..paths import LINUX_ROOT
 
 PARENTS = {"head": "upper", "hairBack": "head", "hairFront": "head", "ahoge": "head",
@@ -35,6 +36,7 @@ class DragonRenderer:
         self.rigs = {}
         self.view_errors = []
         self.warp_cache = {}
+        self.texture_cache = {}
         self.face_masks = {}
         self.extension_directory = LINUX_ROOT / "models/dragon"
         extensions = self.extension_directory / "views.json"
@@ -82,6 +84,8 @@ class DragonRenderer:
                 raise ValueError("无效的视角坐标")
             if type(part.get("z")) not in (int,float) or not math.isfinite(part["z"]):
                 raise ValueError("无效的图层顺序")
+            if type(part.get('restRotation',0)) not in (int,float) or not math.isfinite(part.get('restRotation',0)):
+                raise ValueError('无效的静态关节角')
             if part.get("warpY") and (len(part["warpY"])!=2 or any(type(v) not in (int,float) or not 0<v<1 for v in part["warpY"])):
                 raise ValueError("无效的纵向变形")
             if part.get("cutout") and not geometry(part["cutout"]):
@@ -97,7 +101,28 @@ class DragonRenderer:
                 im = QImage(str(source))
             if im.isNull() or max(im.width(), im.height()) > 4096:
                 raise ValueError("无效的视角图片")
-            images[part["id"]] = im
+            images[part["id"]] = self._region_image(im,part)
+            arm=part.get('articulation')
+            if arm is not None:
+                if not isinstance(arm,dict) or set(arm.get('segments',{}))!={'upper','forearm','hand','point'}:
+                    raise ValueError('无效的分段手臂')
+                for name,segment in arm['segments'].items():
+                    if not isinstance(segment,dict):raise ValueError('无效的手臂分片')
+                    for key in ('rootUV','endUV'):
+                        uv=segment.get(key)
+                        if not isinstance(uv,list) or len(uv)!=2 or any(type(n) not in (int,float) or not math.isfinite(n) or not 0<=n<=1 for n in uv):
+                            raise ValueError('无效的肘腕锚点')
+                    scale=segment.get('scale')
+                    if type(scale) not in (int,float) or not math.isfinite(scale) or not 0<scale<=2:
+                        raise ValueError('无效的手臂比例')
+                    source=(path.parent/segment['src']).resolve()
+                    if not source.is_relative_to(self.extension_directory.resolve()):raise ValueError('无效的手臂分片路径')
+                    texture=QImage(str(source))
+                    if texture.isNull() or max(texture.width(),texture.height())>4096:raise ValueError('无效的手臂分片图片')
+                    images[f'{part["id"]}#{name}']=texture
+                target=arm.get('pointTarget');ray=arm['segments']['point'].get('indexRay')
+                if any(not isinstance(v,list) or len(v)!=2 or any(type(n) not in (int,float) or not math.isfinite(n) for n in v) for v in (target,ray)):
+                    raise ValueError('无效的分段指向目标')
             if not isinstance(part.get('variants',{}),dict):raise ValueError('无效的手势列表')
             for name,variant in part.get("variants",{}).items():
                 if not isinstance(variant,dict) or name not in ("raised","point") or not geometry(variant.get("box")):
@@ -114,6 +139,31 @@ class DragonRenderer:
                 if variant.get('target'):
                     variant['rotation']=self._aim_angle(variant,data.get('pivots',{}).get(part['parent'],self.pivots[part['parent']]),image.size())
         return data, images
+
+    @staticmethod
+    def _region_image(image,part):
+        """Keep source pixels in authored depth regions, without editing the PNG."""
+        window=part.get('sourceWindow');fade=part.get('fadeBottom')
+        if window is None and fade is None:return image
+        if window is not None and (not isinstance(window,list) or len(window)!=4 or
+            any(type(n) not in (int,float) or not math.isfinite(n) or not 0<=n<=1 for n in window) or
+            min(window[2:])<=0 or window[0]+window[2]>1 or window[1]+window[3]>1):
+            raise ValueError('无效的发束区域')
+        if fade is not None and (not isinstance(fade,list) or len(fade)!=2 or
+            any(type(n) not in (int,float) or not math.isfinite(n) for n in fade) or not 0<=fade[0]<fade[1]<=1):
+            raise ValueError('无效的发束渐隐')
+        result=QImage(image.size(),QImage.Format.Format_ARGB32_Premultiplied);result.fill(Qt.GlobalColor.transparent)
+        p=QPainter(result)
+        if window:
+            x,y,w,h=window;p.setClipRect(QRectF(x*image.width(),y*image.height(),w*image.width(),h*image.height()))
+        p.drawImage(0,0,image)
+        if fade:
+            gradient=QLinearGradient(0,0,0,image.height())
+            gradient.setColorAt(0,QColor('white'));gradient.setColorAt(fade[0],QColor('white'))
+            gradient.setColorAt(fade[1],QColor(255,255,255,0));gradient.setColorAt(1,QColor(255,255,255,0))
+            p.setCompositionMode(QPainter.CompositionMode.CompositionMode_DestinationIn)
+            p.fillRect(result.rect(),gradient)
+        p.end();return result
 
     @staticmethod
     def _aim_angle(spec,pivot,size):
@@ -359,6 +409,24 @@ class DragonRenderer:
             self.warp_cache[key] = warped
         painter.drawImage(QRectF(x-padding, y, w+padding*2, h), warped)
 
+    def _draw_texture(self,painter,box,image):
+        # QPainter's bilinear sampling alone aliases 1K artwork down to a 20px
+        # sleeve. Area-filtered mip levels retain opaque fills and clean lines.
+        transform=painter.worldTransform();w,h=box[2:]
+        dw=abs(w)*math.hypot(transform.m11(),transform.m12())
+        dh=abs(h)*math.hypot(transform.m21(),transform.m22())
+        divisor=1
+        while image.width()/(divisor*2)>=max(1,dw*1.5) and image.height()/(divisor*2)>=max(1,dh*1.5):divisor*=2
+        if divisor>1:
+            key=(image.cacheKey(),divisor);texture=self.texture_cache.get(key)
+            if texture is None:
+                texture=image.scaled(max(1,image.width()//divisor),max(1,image.height()//divisor),
+                    Qt.AspectRatioMode.IgnoreAspectRatio,Qt.TransformationMode.SmoothTransformation)
+                if len(self.texture_cache)>=64:del self.texture_cache[next(iter(self.texture_cache))]
+                self.texture_cache[key]=texture
+            image=texture
+        painter.drawImage(QRectF(*box),image)
+
     @staticmethod
     def _mix(first,second,amount):
         result=QImage(first.size(),QImage.Format.Format_ARGB32_Premultiplied)
@@ -406,6 +474,7 @@ class DragonRenderer:
     @staticmethod
     def _in_scope(part,scope):
         head=part['parent'] in ('head','hairBack','hairFront','ahoge')
+        if scope=='rear-base':return part['parent'] not in ('head','hairFront','ahoge')
         if scope=='back-hair':return part['parent']=='hairBack'
         if scope=='front-head':return head and part['parent']!='hairBack'
         return scope=='all' or head==(scope=='head')
@@ -448,7 +517,7 @@ class DragonRenderer:
     def _render_look_back(self,painter,pose,data):
         """Keep the rear-quarter body while the head turns over its shoulder."""
         current={**self.pivots,**data.get('pivots',{})}
-        target='front-left' if pose.view=='back-left' else 'front-right'
+        target='left' if pose.view=='back-left' else 'right'
         reference={**self.pivots,**self.rigs.get(target,({},{}))[0].get('pivots',{})}
         layers=[]
         for view in (pose.view,target):
@@ -464,16 +533,46 @@ class DragonRenderer:
                     if view in self.rigs:self._render_view(hp,local,scope=scope)
                     else:self._render_source(hp,local,scope=scope)
                     hp.restore()
-                # Preserve the source hair's ownership of depth. Its opaque
-                # lavender underpaint belongs behind clothes, never over them.
-                reference_head('back-hair')
-                self._render_view(hp,replace(pose,look_back=0),scope='body')
+                # The rear body keeps its own long hair. Only the crown/short
+                # face-framing head turns; no front costume or hair underpaint
+                # is imported into the rear body.
+                self._render_view(hp,replace(pose,look_back=0),scope='rear-base')
                 reference_head('front-head')
             else:
                 self._render_view(hp,head_pose)
             hp.end();layers.append(layer)
         painter.save();painter.resetTransform()
         painter.drawImage(0,0,self._mix(*layers,pose.look_back));painter.restore()
+
+    def _arm_geometry(self,part,images,pose,pivots):
+        spec=part['articulation'];node=part['parent'];side=0 if node=='armNear' else 1
+        lift=pose.hands[side];point=pose.hands[2] if side==0 else 0.
+        state=pose.transforms[node];root=pivots[node]
+        shoulder=(root[0]+state.get('x',0),root[1]+state.get('y',0))
+        sizes={k:(images[f'{part["id"]}#{k}'].width(),images[f'{part["id"]}#{k}'].height()) for k in ('upper','forearm','hand')}
+        base=0. if pose.motion in HAND_GESTURES else state.get('a',0)*(1-max(lift,point))
+        chain=arm_chain(spec,sizes,shoulder,lift,point,pose.hands[3] if lift else 0.,base,part.get('flipX',False))
+        hand=spec['segments']['point'];im=images[f'{part["id"]}#point'];w,h=im.width()*hand['scale'],im.height()*hand['scale']
+        root=chain['hand']['root'];u,v=hand['rootUV'];mirror=part.get('flipX',False)
+        aim={'box':[root[0]-(1-u if mirror else u)*w,root[1]-v*h,w,h],
+             'flipX':mirror,'indexTipUV':hand['endUV'],'indexRay':hand['indexRay'],'target':spec['pointTarget']}
+        aim['rotation']=self._aim_angle(aim,root,im.size())
+        chain['point']=aim
+        return chain
+
+    def _render_arm(self,painter,part,images,pose,pivots):
+        chain=self._arm_geometry(part,images,pose,pivots);spec=part['articulation']
+        self._joint(painter,'upper',pose,pivots)
+        point=pose.hands[2] if part['parent']=='armNear' else 0.
+        names=('hand','point') if part.get('armSegment')=='hand' else (part['armSegment'],)
+        for name in names:
+            segment=chain[name];root=chain['hand']['root'] if name=='point' else segment['root']
+            painter.save();painter.setOpacity(point if name=='point' else 1-point if name=='hand' else 1)
+            painter.translate(*root);painter.rotate(segment['rotation']);painter.translate(-root[0],-root[1])
+            x,y,w,h=segment['box']
+            if segment.get('flipX'):
+                painter.translate(x+w,y);painter.scale(-1,1);x=y=0
+            self._draw_texture(painter,[x,y,w,h],images[f'{part["id"]}#{name}']);painter.restore()
 
     def _render_view(self, painter, pose, scope='all'):
         data, images = self.rigs[pose.view]
@@ -486,6 +585,10 @@ class DragonRenderer:
         # do not use sleeve length as the shoulder-to-hand lever.
         expanded=[]
         for part in layers:
+            if part.get('articulation'):
+                for segment,z in (('upper',part['z']),('forearm',19),('hand',19.1)):
+                    expanded.append({**part,'armSegment':segment,'z':z})
+                continue
             side="left" if part["parent"]=="armNear" else "right"
             active=(pose.motion in ("wave","raise-left","point","raise-both","dance") and side=="left") or (pose.motion in ("raise-right","raise-both","dance") and side=="right")
             kind="point" if pose.motion=="point" else "raised"
@@ -510,11 +613,16 @@ class DragonRenderer:
         for part in sorted(layers, key=lambda p: p["z"]):
             painter.save()
             painter.setOpacity(part.get("opacity",1))
+            if part.get('articulation'):
+                self._render_arm(painter,part,images,pose,pivots);painter.restore()
+                continue
             joint_pose=pose
             if "jointAngle" in part:
                 node=part["parent"]
                 joint_pose=replace(pose,transforms={**pose.transforms,node:{**pose.transforms[node],"a":part["jointAngle"]}})
             self._joint(painter, part["parent"], joint_pose, pivots)
+            if part.get('restRotation'):
+                x,y=pivots[part['parent']];painter.translate(x,y);painter.rotate(part['restRotation']);painter.translate(-x,-y)
             if part["id"] == "@neck":
                 painter.drawImage(QRectF(*part["box"]),self.images["neck"])
             elif part["id"].startswith("@"):
@@ -542,7 +650,7 @@ class DragonRenderer:
                 if part.get("flipX"):
                     x,y,w,h = part["box"]
                     painter.translate(x+w,y); painter.scale(-1,1)
-                    painter.drawImage(QRectF(0,0,w,h), images[part["id"]])
+                    self._draw_texture(painter,[0,0,w,h],images[part["id"]])
                 else:
-                    painter.drawImage(QRectF(*part["box"]), images[part["id"]])
+                    self._draw_texture(painter,part['box'],images[part["id"]])
             painter.restore()

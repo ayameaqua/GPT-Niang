@@ -73,3 +73,17 @@ Use case: precise-object-edit. Make ONE isolated production cutout of ONLY the t
 本轮先尝试的四格衣片和整件新衣裙仍附带袖子/重复侧裙，未导入运行模型，也没有为了适配而强行压缩；改为针对已存在裙片做局部修正。运行模型不直接使用本目录的原始画布，统一按 `source-selections.json` 提取主体，再按 `rig-layouts.json` 绑定。
 
 此前对“查看噪点”的描述不能涵盖真正的高alpha邻格污染。专项审查已区分二者，本轮提取工具删除未选中的连通部件，不对主体全局阈值化透明通道。源PNG保持原样，制作/运行资源SHA-256由组装脚本更新。
+
+## 细节修复补图：source/revision-3/
+
+全部使用内置 `image_gen.imagegen`，保留生成的透明通道；原 PNG 与完整提示词均保存在本仓库。
+
+| 文件 | 提示词 | 参考与用途 |
+| --- | --- | --- |
+| arm-joints.png | [原文](source/revision-3/arm-joints-prompt.txt) | 原包缩略图、上轮抬手；上臂、前臂袖片、张掌和食指手形四片，供连续肘腕绑定 |
+| back-dress.png | [原文](source/revision-3/back-dress-prompt.txt) | 原正背裙；去掉后背错误的尖形围裙，保留后颈小结与外侧褶边 |
+| back-left-dress.png | [原文](source/revision-3/back-left-dress-prompt.txt) | 原左后裙、新正背裙；保留左后透视和肩口，改为连续后摆 |
+| back-right-dress.png | [原文](source/revision-3/back-right-dress-prompt.txt) | 原右后裙、新正背裙；同上，保留右后透视 |
+| rear-limbs.png | [原文](source/revision-3/rear-limbs-prompt.txt) | 原包缩略图、正背臂/腿；后侧近/远手臂、近/远鞋跟四片，对侧逐肢镜像 |
+
+手臂的肩、肘、腕 UV 和后侧四肢/衣片连接点在 `rig-layouts.json` 中手工登记；组装脚本仍只提取原 RGBA，不用程序生成新的角色笔画。后脑/长发的分层区域在运行合成中处理，源图不被改写。缩小预滤波仅用于显示采样，缓存上限64项；不阈值化源 alpha。

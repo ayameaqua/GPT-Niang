@@ -121,11 +121,11 @@ class DragonItem(QQuickPaintedItem):
             parts={p['id']:p for p in rig[0]['parts']}
             kind="point" if value=="point" else "raised"
             arms=("arm-far",) if value=="raise-right" else ("arm-near","arm-far") if value in ("raise-both","dance") else ("arm-near",)
-            return all(kind in parts.get(arm,{}).get("variants",{}) for arm in arms)
+            return all(parts.get(arm,{}).get('articulation') or kind in parts.get(arm,{}).get("variants",{}) for arm in arms)
         if value=="bow":
             return all(v in self.renderer.rigs for v in ("left","right"))
         if value=="look-back":
-            return all(v in self.renderer.rigs for v in ("back-left","back-right","front-right"))
+            return all(v in self.renderer.rigs for v in ("back-left","back-right","left","right"))
         return True
 
     @Property('QVariantList', notify=changed)

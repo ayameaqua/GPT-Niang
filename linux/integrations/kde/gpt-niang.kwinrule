@@ -1,0 +1,10 @@
+[GPT-Niang Linux Pet — position memory]
+Description=GPT-Niang Linux Pet — position memory
+wmclass=org.gptniang.Linux
+wmclassmatch=1
+wmclasscomplete=false
+title=GPT-Niang Pet
+titlematch=1
+types=4294967295
+position=40,40
+positionrule=4

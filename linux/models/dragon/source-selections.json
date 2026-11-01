@@ -1,0 +1,711 @@
+{
+  "schemaVersion": 2,
+  "coordinateSpace": "source pixels; locators identify components, not crop limits",
+  "layers": {
+    "back/leg-far.png": {
+      "source": "source/back-parts-draft.png",
+      "locator": [
+        65,
+        775,
+        260,
+        300
+      ]
+    },
+    "back/leg-near.png": {
+      "source": "source/back-parts-draft.png",
+      "locator": [
+        400,
+        775,
+        265,
+        300
+      ]
+    },
+    "back/hair-back.png": {
+      "source": "source/back-parts-draft.png",
+      "locator": [
+        380,
+        0,
+        348,
+        510
+      ]
+    },
+    "back/tail.png": {
+      "source": "source/back-parts-draft.png",
+      "locator": [
+        1070,
+        490,
+        378,
+        290
+      ]
+    },
+    "back/arm-far.png": {
+      "source": "source/back-parts-draft.png",
+      "locator": [
+        0,
+        475,
+        330,
+        300
+      ]
+    },
+    "back/arm-near.png": {
+      "source": "source/back-parts-draft.png",
+      "locator": [
+        1210,
+        65,
+        238,
+        375
+      ]
+    },
+    "back/wing-far.png": {
+      "source": "source/back-parts-draft.png",
+      "locator": [
+        330,
+        490,
+        360,
+        245
+      ]
+    },
+    "back/wing-near.png": {
+      "source": "source/back-parts-draft.png",
+      "locator": [
+        690,
+        490,
+        380,
+        250
+      ]
+    },
+    "back/head.png": {
+      "source": "source/back-parts-draft.png",
+      "locator": [
+        0,
+        0,
+        380,
+        440
+      ]
+    },
+    "back/dress.png": {
+      "source": "source/revision-3/back-dress.png",
+      "locator": [
+        0,
+        0,
+        1400,
+        1400
+      ]
+    },
+    "left/head.png": {
+      "source": "source/left-head-parts.png",
+      "locator": [
+        0,
+        0,
+        1099,
+        870
+      ]
+    },
+    "left/hair-back.png": {
+      "source": "source/left-parts-draft.png",
+      "locator": [
+        400,
+        0,
+        320,
+        470
+      ]
+    },
+    "left/dress.png": {
+      "source": "source/left-parts-draft.png",
+      "locator": [
+        725,
+        30,
+        435,
+        430
+      ]
+    },
+    "left/arm-near.png": {
+      "source": "source/left-parts-draft.png",
+      "locator": [
+        1180,
+        50,
+        260,
+        400
+      ]
+    },
+    "left/arm-far.png": {
+      "source": "source/left-parts-draft.png",
+      "locator": [
+        50,
+        470,
+        270,
+        300
+      ]
+    },
+    "left/wing-near.png": {
+      "source": "source/left-parts-draft.png",
+      "locator": [
+        385,
+        480,
+        325,
+        250
+      ]
+    },
+    "left/wing-far.png": {
+      "source": "source/left-parts-draft.png",
+      "locator": [
+        725,
+        480,
+        345,
+        250
+      ]
+    },
+    "left/tail.png": {
+      "source": "source/left-parts-draft.png",
+      "locator": [
+        1075,
+        465,
+        373,
+        310
+      ]
+    },
+    "left/leg-near.png": {
+      "source": "source/left-parts-draft.png",
+      "locator": [
+        65,
+        780,
+        260,
+        295
+      ]
+    },
+    "left/leg-far.png": {
+      "source": "source/left-parts-draft.png",
+      "locator": [
+        400,
+        780,
+        260,
+        295
+      ]
+    },
+    "front/head.png": {
+      "source": "source/revision-2/front-head.png",
+      "locator": [
+        50,
+        20,
+        1200,
+        1200
+      ]
+    },
+    "front/hair-back.png": {
+      "source": "source/front-parts.png",
+      "locator": [
+        400,
+        0,
+        330,
+        500
+      ]
+    },
+    "front/dress.png": {
+      "source": "source/revision-2/front-dress.png",
+      "locator": [
+        0,
+        0,
+        1273,
+        1236
+      ]
+    },
+    "front/wing-far.png": {
+      "source": "source/front-parts.png",
+      "locator": [
+        330,
+        480,
+        370,
+        270
+      ]
+    },
+    "front/wing-near.png": {
+      "source": "source/front-parts.png",
+      "locator": [
+        700,
+        480,
+        370,
+        270
+      ]
+    },
+    "front/tail.png": {
+      "source": "source/front-parts.png",
+      "locator": [
+        1080,
+        480,
+        368,
+        290
+      ]
+    },
+    "front/leg-near.png": {
+      "source": "source/front-parts.png",
+      "locator": [
+        65,
+        780,
+        265,
+        306
+      ]
+    },
+    "front/leg-far.png": {
+      "source": "source/front-parts.png",
+      "locator": [
+        400,
+        780,
+        290,
+        306
+      ]
+    },
+    "right/head.png": {
+      "source": "source/right-parts.png",
+      "locator": [
+        0,
+        0,
+        400,
+        460
+      ]
+    },
+    "right/hair-back.png": {
+      "source": "source/right-parts.png",
+      "locator": [
+        400,
+        0,
+        330,
+        500
+      ]
+    },
+    "right/dress.png": {
+      "source": "source/right-parts.png",
+      "locator": [
+        730,
+        25,
+        435,
+        475
+      ]
+    },
+    "right/arm-near.png": {
+      "source": "source/right-parts.png",
+      "locator": [
+        1180,
+        40,
+        268,
+        440
+      ]
+    },
+    "right/arm-far.png": {
+      "source": "source/right-parts.png",
+      "locator": [
+        0,
+        480,
+        330,
+        294
+      ]
+    },
+    "right/wing-far.png": {
+      "source": "source/right-parts.png",
+      "locator": [
+        330,
+        480,
+        370,
+        270
+      ]
+    },
+    "right/wing-near.png": {
+      "source": "source/right-parts.png",
+      "locator": [
+        700,
+        480,
+        370,
+        270
+      ]
+    },
+    "right/tail.png": {
+      "source": "source/right-parts.png",
+      "locator": [
+        1080,
+        480,
+        368,
+        290
+      ]
+    },
+    "right/leg-near.png": {
+      "source": "source/right-parts.png",
+      "locator": [
+        65,
+        780,
+        265,
+        306
+      ]
+    },
+    "right/leg-far.png": {
+      "source": "source/right-parts.png",
+      "locator": [
+        400,
+        780,
+        290,
+        306
+      ]
+    },
+    "front-right/head.png": {
+      "source": "source/revision-2/front-right-head.png",
+      "locator": [
+        0,
+        0,
+        1309,
+        1201
+      ]
+    },
+    "front-right/hair-back.png": {
+      "source": "source/front-right-parts.png",
+      "locator": [
+        400,
+        0,
+        330,
+        500
+      ]
+    },
+    "front-right/dress.png": {
+      "source": "source/revision-2/front-right-dress.png",
+      "locator": [
+        0,
+        0,
+        1323,
+        1189
+      ]
+    },
+    "front-right/arm-near.png": {
+      "source": "source/front-right-parts.png",
+      "locator": [
+        1180,
+        40,
+        268,
+        440
+      ]
+    },
+    "front-right/arm-far.png": {
+      "source": "source/front-right-parts.png",
+      "locator": [
+        0,
+        480,
+        330,
+        294
+      ]
+    },
+    "front-right/wing-far.png": {
+      "source": "source/front-right-parts.png",
+      "locator": [
+        330,
+        480,
+        370,
+        270
+      ]
+    },
+    "front-right/wing-near.png": {
+      "source": "source/front-right-parts.png",
+      "locator": [
+        700,
+        480,
+        370,
+        270
+      ]
+    },
+    "front-right/tail.png": {
+      "source": "source/front-right-parts.png",
+      "locator": [
+        1080,
+        480,
+        368,
+        290
+      ]
+    },
+    "back-left/head.png": {
+      "source": "source/back-left-parts.png",
+      "locator": [
+        0,
+        0,
+        400,
+        460
+      ]
+    },
+    "back-left/dress.png": {
+      "source": "source/revision-3/back-left-dress.png",
+      "locator": [
+        0,
+        0,
+        1400,
+        1400
+      ]
+    },
+    "back-left/arm-near.png": {
+      "source": "source/revision-3/rear-limbs.png",
+      "locator": [
+        680,
+        50,
+        370,
+        640
+      ]
+    },
+    "back-left/arm-far.png": {
+      "source": "source/revision-3/rear-limbs.png",
+      "locator": [
+        50,
+        20,
+        500,
+        660
+      ]
+    },
+    "back-left/wing-far.png": {
+      "copy": "back/wing-far.png"
+    },
+    "back-left/wing-near.png": {
+      "copy": "back/wing-near.png"
+    },
+    "back-left/tail.png": {
+      "source": "source/back-left-parts.png",
+      "locator": [
+        1080,
+        480,
+        368,
+        290
+      ]
+    },
+    "back-left/leg-near.png": {
+      "source": "source/revision-3/rear-limbs.png",
+      "locator": [
+        700,
+        720,
+        350,
+        700
+      ]
+    },
+    "back-left/leg-far.png": {
+      "source": "source/revision-3/rear-limbs.png",
+      "locator": [
+        170,
+        680,
+        380,
+        730
+      ]
+    },
+    "back-right/head.png": {
+      "source": "source/back-right-parts.png",
+      "locator": [
+        0,
+        0,
+        400,
+        460
+      ]
+    },
+    "back-right/dress.png": {
+      "source": "source/revision-3/back-right-dress.png",
+      "locator": [
+        0,
+        0,
+        1400,
+        1400
+      ]
+    },
+    "back-right/arm-near.png": {
+      "source": "source/revision-3/rear-limbs.png",
+      "locator": [
+        50,
+        20,
+        500,
+        660
+      ]
+    },
+    "back-right/arm-far.png": {
+      "source": "source/revision-3/rear-limbs.png",
+      "locator": [
+        680,
+        50,
+        370,
+        640
+      ]
+    },
+    "back-right/wing-far.png": {
+      "copy": "back/wing-far.png"
+    },
+    "back-right/wing-near.png": {
+      "copy": "back/wing-near.png"
+    },
+    "back-right/tail.png": {
+      "source": "source/back-right-parts.png",
+      "locator": [
+        1080,
+        480,
+        368,
+        290
+      ]
+    },
+    "back-right/leg-near.png": {
+      "source": "source/revision-3/rear-limbs.png",
+      "locator": [
+        170,
+        680,
+        380,
+        730
+      ]
+    },
+    "back-right/leg-far.png": {
+      "source": "source/revision-3/rear-limbs.png",
+      "locator": [
+        700,
+        720,
+        350,
+        700
+      ]
+    },
+    "front/arm-raised.png": {
+      "source": "source/revision-2/arm-raised.png",
+      "locator": [
+        0,
+        0,
+        1254,
+        1254
+      ]
+    },
+    "front/arm-point.png": {
+      "source": "source/revision-2/arm-point.png",
+      "locator": [
+        0,
+        0,
+        1254,
+        1254
+      ]
+    },
+    "front/arm-upper.png": {
+      "source": "source/revision-3/arm-joints.png",
+      "locator": [
+        50,
+        20,
+        450,
+        650
+      ]
+    },
+    "front/arm-forearm.png": {
+      "source": "source/revision-3/arm-joints.png",
+      "locator": [
+        700,
+        20,
+        500,
+        790
+      ]
+    },
+    "front/arm-hand.png": {
+      "source": "source/revision-3/arm-joints.png",
+      "locator": [
+        100,
+        800,
+        450,
+        450
+      ]
+    },
+    "front/arm-point-hand.png": {
+      "source": "source/revision-3/arm-joints.png",
+      "locator": [
+        750,
+        820,
+        450,
+        400
+      ]
+    },
+    "common/tail-left.png": {
+      "source": "source/revision-4/tail-left.png",
+      "locator": [
+        0,
+        0,
+        3000,
+        3000
+      ]
+    },
+    "common/tail-right.png": {
+      "source": "source/revision-4/tail-right.png",
+      "locator": [
+        0,
+        0,
+        3000,
+        3000
+      ]
+    },
+    "common/tail-back-left.png": {
+      "source": "source/revision-4/tail-back-left.png",
+      "locator": [
+        0,
+        0,
+        3000,
+        3000
+      ]
+    },
+    "common/tail-back-right.png": {
+      "source": "source/revision-4/tail-back-right.png",
+      "locator": [
+        0,
+        0,
+        3000,
+        3000
+      ]
+    },
+    "common/tail-back.png": {
+      "source": "source/revision-4/tail-back.png",
+      "locator": [
+        0,
+        0,
+        3000,
+        3000
+      ]
+    },
+    "common/head-left112.png": {
+      "source": "source/revision-4/head-left112.png",
+      "locator": [
+        0,
+        0,
+        3000,
+        3000
+      ]
+    },
+    "common/head-left67.png": {
+      "source": "source/revision-4/head-left67.png",
+      "locator": [
+        0,
+        0,
+        3000,
+        3000
+      ]
+    },
+    "common/head-right247.png": {
+      "source": "source/revision-4/head-right247.png",
+      "locator": [
+        0,
+        0,
+        3000,
+        3000
+      ]
+    },
+    "common/head-right292.png": {
+      "source": "source/revision-4/head-right292.png",
+      "locator": [
+        0,
+        0,
+        3000,
+        3000
+      ]
+    },
+    "common/hairpin.png": {
+      "source": "source/revision-5/hairpin.png",
+      "locator": [
+        0,
+        0,
+        3000,
+        3000
+      ]
+    },
+    "common/ear-back.png": {
+      "source": "source/revision-5/ear-back.png",
+      "locator": [
+        0,
+        0,
+        3000,
+        3000
+      ]
+    }
+  }
+}

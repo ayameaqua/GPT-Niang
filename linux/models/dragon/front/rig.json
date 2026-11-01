@@ -1,0 +1,485 @@
+{
+  "schemaVersion": 1,
+  "status": "experimental",
+  "view": "front",
+  "parts": [
+    {
+      "id": "head",
+      "src": "head.png",
+      "box": [
+        190,
+        65,
+        470,
+        470
+      ],
+      "parent": "head",
+      "z": 10,
+      "mesh": false
+    },
+    {
+      "id": "hair-back",
+      "src": "hair-back.png",
+      "box": [
+        211.5,
+        180,
+        427.0,
+        610
+      ],
+      "parent": "hairBack",
+      "z": 0,
+      "mesh": true
+    },
+    {
+      "id": "dress",
+      "src": "dress.png",
+      "box": [
+        165,
+        447,
+        520,
+        507
+      ],
+      "parent": "upper",
+      "z": 4,
+      "mesh": true,
+      "cloth": true,
+      "warpStart": 0.3
+    },
+    {
+      "id": "arm-near",
+      "box": [
+        474,
+        469,
+        114,
+        202
+      ],
+      "parent": "armNear",
+      "z": 8,
+      "mesh": false,
+      "sourcePart": "arm-near",
+      "flipX": false,
+      "articulation": {
+        "segments": {
+          "upper": {
+            "src": "arm-upper.png",
+            "rootUV": [
+              0.480225988700565,
+              0.07312925170068027
+            ],
+            "endUV": [
+              0.5282485875706214,
+              0.9183673469387755
+            ],
+            "scale": 0.14
+          },
+          "forearm": {
+            "src": "arm-forearm.png",
+            "rootUV": [
+              0.19222462203023757,
+              0.04065040650406504
+            ],
+            "endUV": [
+              0.23974082073434125,
+              0.7181571815718157
+            ],
+            "scale": 0.14
+          },
+          "hand": {
+            "src": "arm-hand.png",
+            "rootUV": [
+              0.532394366197183,
+              0.07196029776674938
+            ],
+            "endUV": [
+              0.4507042253521127,
+              0.9553349875930521
+            ],
+            "scale": 0.12
+          },
+          "point": {
+            "src": "arm-point-hand.png",
+            "rootUV": [
+              0.28362573099415206,
+              0.08192090395480225
+            ],
+            "endUV": [
+              0.9678362573099415,
+              0.9745762711864406
+            ],
+            "scale": 0.12,
+            "indexRay": [
+              160,
+              210
+            ]
+          }
+        },
+        "pointTarget": [
+          760,
+          280
+        ]
+      }
+    },
+    {
+      "id": "arm-far",
+      "box": [
+        262,
+        469,
+        114,
+        202
+      ],
+      "parent": "armFar",
+      "z": 8,
+      "mesh": false,
+      "sourcePart": "arm-near",
+      "flipX": true,
+      "articulation": {
+        "segments": {
+          "upper": {
+            "src": "arm-upper.png",
+            "rootUV": [
+              0.480225988700565,
+              0.07312925170068027
+            ],
+            "endUV": [
+              0.5282485875706214,
+              0.9183673469387755
+            ],
+            "scale": 0.14
+          },
+          "forearm": {
+            "src": "arm-forearm.png",
+            "rootUV": [
+              0.19222462203023757,
+              0.04065040650406504
+            ],
+            "endUV": [
+              0.23974082073434125,
+              0.7181571815718157
+            ],
+            "scale": 0.14
+          },
+          "hand": {
+            "src": "arm-hand.png",
+            "rootUV": [
+              0.532394366197183,
+              0.07196029776674938
+            ],
+            "endUV": [
+              0.4507042253521127,
+              0.9553349875930521
+            ],
+            "scale": 0.12
+          },
+          "point": {
+            "src": "arm-point-hand.png",
+            "rootUV": [
+              0.28362573099415206,
+              0.08192090395480225
+            ],
+            "endUV": [
+              0.9678362573099415,
+              0.9745762711864406
+            ],
+            "scale": 0.12,
+            "indexRay": [
+              160,
+              210
+            ]
+          }
+        },
+        "pointTarget": [
+          760,
+          280
+        ]
+      }
+    },
+    {
+      "id": "wing-far",
+      "src": "wing-far.png",
+      "box": [
+        168.2,
+        463.8632,
+        220,
+        137.785
+      ],
+      "parent": "wingFar",
+      "z": 1,
+      "mesh": false
+    },
+    {
+      "id": "wing-near",
+      "src": "wing-near.png",
+      "box": [
+        464.0,
+        464.0912,
+        220,
+        137.31
+      ],
+      "parent": "wingNear",
+      "z": 2,
+      "mesh": false
+    },
+    {
+      "id": "tail",
+      "src": "../common/tail-left.png",
+      "box": [
+        401.4108,
+        656.27,
+        374.432,
+        297
+      ],
+      "parent": "tail",
+      "z": 2.2,
+      "mesh": false,
+      "tailRig": true
+    },
+    {
+      "id": "leg-near",
+      "src": "leg-near.png",
+      "box": [
+        431,
+        659,
+        112.128,
+        310
+      ],
+      "parent": "legNear",
+      "z": 2.6,
+      "mesh": false,
+      "legRig": true
+    },
+    {
+      "id": "leg-far",
+      "src": "leg-far.png",
+      "box": [
+        307,
+        659,
+        113.227,
+        310
+      ],
+      "parent": "legFar",
+      "z": 2.4,
+      "mesh": false,
+      "legRig": true
+    }
+  ],
+  "pivots": {
+    "upper": [
+      425,
+      574
+    ],
+    "head": [
+      425,
+      460
+    ],
+    "hairBack": [
+      425,
+      250
+    ],
+    "hairFront": [
+      407,
+      248
+    ],
+    "ahoge": [
+      393,
+      162
+    ],
+    "wingFar": [
+      375,
+      530
+    ],
+    "wingNear": [
+      475,
+      530
+    ],
+    "tail": [
+      425,
+      683
+    ],
+    "legFar": [
+      355.0422,
+      682.436
+    ],
+    "legNear": [
+      494.4757,
+      682.405
+    ],
+    "armFar": [
+      352,
+      504
+    ],
+    "armNear": [
+      498,
+      504
+    ],
+    "skirtFar": [
+      349,
+      630
+    ],
+    "skirtNear": [
+      472,
+      630
+    ],
+    "apron": [
+      415,
+      578
+    ],
+    "seat": [
+      425,
+      570
+    ]
+  },
+  "face": {
+    "box": [
+      310,
+      315,
+      230,
+      150
+    ],
+    "maskSkin": true,
+    "features": {
+      "eye-far-white": {
+        "box": [
+          30,
+          55,
+          60,
+          54
+        ],
+        "source": "eye-near-white",
+        "flipX": true
+      },
+      "eye-far-iris": {
+        "box": [
+          39,
+          55,
+          42,
+          54
+        ],
+        "source": "eye-near-iris"
+      },
+      "eye-far-lash": {
+        "box": [
+          18.9,
+          45.2,
+          74.8,
+          44.2
+        ],
+        "source": "eye-near-lash",
+        "flipX": true
+      },
+      "brow-far": {
+        "box": [
+          39,
+          18,
+          42,
+          6
+        ],
+        "source": "brow-near",
+        "flipX": true
+      },
+      "eye-near-white": {
+        "box": [
+          140,
+          55,
+          60,
+          54
+        ],
+        "source": "eye-near-white"
+      },
+      "eye-near-iris": {
+        "box": [
+          149,
+          55,
+          42,
+          54
+        ],
+        "source": "eye-near-iris"
+      },
+      "eye-near-lash": {
+        "box": [
+          136.3,
+          45.2,
+          74.8,
+          44.2
+        ],
+        "source": "eye-near-lash"
+      },
+      "brow-near": {
+        "box": [
+          149,
+          18,
+          42,
+          6
+        ],
+        "source": "brow-near"
+      },
+      "mouth": {
+        "box": [
+          110,
+          119,
+          10,
+          8
+        ],
+        "source": "mouth"
+      }
+    },
+    "blush": [
+      [
+        25,
+        107,
+        26,
+        9
+      ],
+      [
+        175,
+        107,
+        26,
+        9
+      ]
+    ],
+    "tears": [
+      [
+        36,
+        99
+      ],
+      [
+        183,
+        99
+      ]
+    ]
+  },
+  "sourceNeck": false,
+  "registration": {
+    "bodyAxis": 425,
+    "soleY": 969,
+    "status": "roots-calibrated-visual-recheck"
+  },
+  "anatomicalHands": {
+    "left": "armNear",
+    "right": "armFar"
+  },
+  "landmarks": {
+    "wing-far": [
+      0.94,
+      0.48
+    ],
+    "wing-near": [
+      0.05,
+      0.48
+    ],
+    "arm-near": [
+      0.21052631578947367,
+      0.17326732673267325
+    ],
+    "arm-far": [
+      0.21052631578947367,
+      0.17326732673267325
+    ],
+    "leg-near": [
+      0.5661,
+      0.0755
+    ],
+    "leg-far": [
+      0.4243,
+      0.0756
+    ]
+  }
+}

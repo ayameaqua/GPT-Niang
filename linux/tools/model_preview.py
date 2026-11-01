@@ -1,0 +1,102 @@
+#!/usr/bin/env python3
+"""Render repeatable model contact sheets and sample animation; no account access."""
+import argparse
+import json
+from pathlib import Path
+import time
+
+from PySide6.QtCore import QPointF, Qt
+from PySide6.QtGui import QColor, QGuiApplication, QImage, QPainter
+
+from gpt_niang_linux.model.assets import model_directory
+from gpt_niang_linux.model.motion import Animator, EXPRESSIONS, MOTIONS, VIEWS
+from gpt_niang_linux.model.render import DragonRenderer
+
+
+def contact(renderer, entries, destination, expressions=False, view='front-left'):
+    cell, title_height, columns = 240, 28, 5
+    rows = (len(entries)+columns-1)//columns
+    output = QImage(cell*columns, (cell+title_height)*rows, QImage.Format.Format_ARGB32_Premultiplied)
+    output.fill(QColor("#ddd8e8"))
+    painter = QPainter(output)
+    font = painter.font(); font.setPixelSize(14); painter.setFont(font)
+    for index, (key, label) in enumerate(entries):
+        animator = Animator()
+        animator.set_view(view)
+        if not expressions and key in ("turn", "spin") and len(renderer.rigs) < 7:
+            x, y = (index % columns)*cell, (index//columns)*(cell+title_height)
+            painter.setPen(QColor("#81738e"))
+            painter.drawText(QPointF(x+20, y+cell/2), label + " · 待绑定")
+            continue
+        if expressions:
+            animator.set_expression(key)
+            animator.clock = 1
+        else:
+            animator.play(key)
+            # Exactly evaluate the middle of the action without a real-time timer.
+            while animator.elapsed < MOTIONS[key][1]*(.99 if key in ("sit", "sleep", "stand") else .45) and animator.action:
+                animator.advance(1/60)
+        x, y = (index % columns)*cell, (index//columns)*(cell+title_height)
+        painter.drawImage(QPointF(x, y), renderer.render(animator.pose(), cell))
+        painter.setPen(QColor("#443857"))
+        shown=label+(' → '+VIEWS[animator.view] if animator.view!=view else '')
+        painter.drawText(QPointF(x+12, y+cell+20),shown)
+    painter.end(); output.save(str(destination))
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--out", type=Path, default=Path("test-results/model"))
+    parser.add_argument("--frames", action="store_true")
+    parser.add_argument("--audit",action="store_true",help="also render one motion sheet per initial view and expressive-view sheets")
+    args = parser.parse_args()
+    app = QGuiApplication([])
+    renderer = DragonRenderer(model_directory())
+    args.out.mkdir(parents=True, exist_ok=True)
+    contact(renderer, list(EXPRESSIONS.items()), args.out/"expressions.png", True)
+    contact(renderer, [(k, v[0]) for k, v in MOTIONS.items()], args.out/"motions.png")
+    if args.audit:
+        for view in VIEWS:
+            contact(renderer,[(k,v[0]) for k,v in MOTIONS.items()],args.out/f'motions-from-{view}.png',view=view)
+        for view in ('front','front-left','front-right','left','right'):
+            contact(renderer,list(EXPRESSIONS.items()),args.out/f'expressions-{view}.png',True,view)
+    animator = Animator(); animator.play("dance")
+    duration, count = 0., 300
+    for index in range(count):
+        animator.advance(1/30)
+        start = time.perf_counter()
+        frame = renderer.render(animator.pose(), 320)
+        frame.createAlphaMask(Qt.ImageConversionFlag.ThresholdAlphaDither)
+        duration += time.perf_counter()-start
+    metrics = {"frames": count, "size": 320, "meanRenderAndAlphaMs": round(duration/count*1000, 2),
+               "backend": "QPainter CPU compositor; Quick upload excluded", "notLongRunAcceptance": True}
+    (args.out/"metrics.json").write_text(json.dumps(metrics, indent=2)+"\n")
+    view_sheet = QImage(2048,1100,QImage.Format.Format_RGB32)
+    view_sheet.fill(QColor('#dad5e5')); painter = QPainter(view_sheet)
+    font = painter.font(); font.setPixelSize(22); painter.setFont(font); painter.setPen(QColor('#544467'))
+    for index,(view,name) in enumerate(VIEWS.items()):
+        a=Animator(); a.clock=1; a.set_view(view); x=(index%4)*512; y=(index//4)*550
+        painter.drawImage(QPointF(x,y),renderer.render(a.pose(),512))
+        painter.drawText(QPointF(x+180,y+535),name)
+    painter.end(); view_sheet.save(str(args.out/'views.png'))
+    if args.frames:
+        animator = Animator(); animator.play("wave")
+        frame_dir = args.out/"frames"; frame_dir.mkdir(exist_ok=True)
+        for index in range(300):
+            if index == 55: animator.play("tilt-left")
+            if index == 115: animator.play("raise-both")
+            if index == 180: animator.play("spin")
+            if index == 210: animator.play("turn")
+            if index == 235: animator.set_view("right"); animator.speech=True
+            if index == 280: animator.speech=False; animator.set_view("front"); animator.set_expression("happy")
+            animator.advance(1/30)
+            frame = QImage(512,550,QImage.Format.Format_RGB32); frame.fill(QColor('#dad5e5'))
+            painter=QPainter(frame); painter.drawImage(QPointF(0,0),renderer.render(animator.pose(),512))
+            font=painter.font();font.setPixelSize(18);painter.setFont(font);painter.setPen(QColor('#544467'))
+            label=MOTIONS.get(animator.action,('待机',0))[0]+' · '+VIEWS[animator.view]
+            painter.drawText(QPointF(165,530),label);painter.end();frame.save(str(frame_dir/f"{index:04}.png"))
+    print(json.dumps(metrics))
+
+
+if __name__ == "__main__":
+    main()

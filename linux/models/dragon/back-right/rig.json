@@ -1,0 +1,342 @@
+{
+  "schemaVersion": 1,
+  "status": "experimental",
+  "view": "back-right",
+  "parts": [
+    {
+      "id": "head",
+      "src": "head.png",
+      "box": [
+        189.50061600000004,
+        65.0,
+        470,
+        710.663
+      ],
+      "parent": "head",
+      "z": 10,
+      "mesh": false,
+      "warpStart": 0.5,
+      "fadeBottom": [
+        0.54,
+        0.6
+      ]
+    },
+    {
+      "id": "hair-back",
+      "src": "head.png",
+      "box": [
+        189.50061600000004,
+        65.0,
+        470,
+        710.663
+      ],
+      "parent": "hairBack",
+      "z": 6,
+      "mesh": true,
+      "warpStart": 0.5,
+      "sourceWindow": [
+        0,
+        0.5839617371384186,
+        1,
+        0.4160382628615814
+      ],
+      "fadeTop": [
+        0.5839617371384186,
+        0.6261758386183043
+      ]
+    },
+    {
+      "id": "dress",
+      "src": "dress.png",
+      "box": [
+        209.76549599999998,
+        447,
+        499.384,
+        507
+      ],
+      "parent": "upper",
+      "z": 4,
+      "mesh": true,
+      "cloth": true,
+      "warpStart": 0.3
+    },
+    {
+      "id": "arm-near",
+      "src": "arm-near.png",
+      "box": [
+        461.2619429014539,
+        502.49103392568657,
+        129.88045234248787,
+        202
+      ],
+      "parent": "armNear",
+      "z": 5,
+      "mesh": false,
+      "restRotation": 5,
+      "projection": "dedicated rear-quarter limb, individual mirror for opposite camera side",
+      "sourceWindow": [
+        0,
+        0,
+        1,
+        0.5
+      ],
+      "flipX": true
+    },
+    {
+      "id": "arm-far",
+      "src": "arm-far.png",
+      "box": [
+        301.17698224356775,
+        495.7637135506003,
+        100.27444253859349,
+        185
+      ],
+      "parent": "armFar",
+      "z": 3,
+      "mesh": false,
+      "restRotation": 0,
+      "projection": "dedicated rear-quarter limb, individual mirror for opposite camera side",
+      "flipX": true
+    },
+    {
+      "id": "wing-far",
+      "src": "wing-far.png",
+      "box": [
+        156.58954000000003,
+        445.85,
+        248.309,
+        165
+      ],
+      "parent": "wingFar",
+      "z": 1,
+      "mesh": false
+    },
+    {
+      "id": "wing-near",
+      "src": "wing-near.png",
+      "box": [
+        445.27192,
+        444.2,
+        245.468,
+        165
+      ],
+      "parent": "wingNear",
+      "z": 2,
+      "mesh": false
+    },
+    {
+      "id": "tail",
+      "src": "../common/tail-back-right.png",
+      "box": [
+        156.33389999999997,
+        665.18,
+        369.523,
+        297
+      ],
+      "parent": "tail",
+      "z": 5,
+      "mesh": false,
+      "tailRig": true
+    },
+    {
+      "id": "leg-near",
+      "src": "leg-near.png",
+      "box": [
+        368.43513119533526,
+        646.0,
+        150.67055393586006,
+        323
+      ],
+      "parent": "legNear",
+      "z": 2.6,
+      "mesh": false,
+      "flipX": true,
+      "projection": "dedicated rear-quarter limb, individual mirror for opposite camera side",
+      "legRig": true
+    },
+    {
+      "id": "leg-far",
+      "src": "leg-far.png",
+      "box": [
+        306.2737315875614,
+        652.0,
+        128.2684124386252,
+        311
+      ],
+      "parent": "legFar",
+      "z": 2.4,
+      "mesh": false,
+      "flipX": true,
+      "projection": "dedicated rear-quarter limb, individual mirror for opposite camera side",
+      "legRig": true
+    },
+    {
+      "id": "arm-near-distal",
+      "src": "arm-near.png",
+      "box": [
+        461.2619429014539,
+        502.49103392568657,
+        129.88045234248787,
+        202
+      ],
+      "parent": "armNear",
+      "z": 8,
+      "mesh": false,
+      "restRotation": 5,
+      "projection": "dedicated rear-quarter limb, individual mirror for opposite camera side",
+      "sourceWindow": [
+        0,
+        0.42,
+        1,
+        0.58
+      ],
+      "flipX": true
+    }
+  ],
+  "pivots": {
+    "upper": [
+      425,
+      595.5509999999999
+    ],
+    "head": [
+      436.98521600000004,
+      464.745
+    ],
+    "hairBack": [
+      436.98521600000004,
+      464.745
+    ],
+    "hairFront": [
+      407,
+      248
+    ],
+    "ahoge": [
+      393,
+      162
+    ],
+    "wingFar": [
+      390,
+      530
+    ],
+    "wingNear": [
+      460,
+      530
+    ],
+    "tail": [
+      425,
+      683
+    ],
+    "legFar": [
+      389.75,
+      660.6530278232406
+    ],
+    "legNear": [
+      460.25,
+      653.533527696793
+    ],
+    "armFar": [
+      379.556056,
+      520.515
+    ],
+    "armNear": [
+      492.91622399999994,
+      523.05
+    ],
+    "skirtFar": [
+      349,
+      630
+    ],
+    "skirtNear": [
+      472,
+      630
+    ],
+    "apron": [
+      415,
+      578
+    ],
+    "seat": [
+      425,
+      570
+    ]
+  },
+  "registration": {
+    "bodyAxis": 425,
+    "soleY": 969,
+    "status": "roots-calibrated-visual-recheck"
+  },
+  "landmarks": {
+    "waist": [
+      0.43,
+      0.35
+    ],
+    "neck": [
+      0.455,
+      0.035
+    ],
+    "shoulderFar": [
+      0.335,
+      0.155
+    ],
+    "shoulderNear": [
+      0.605,
+      0.14
+    ],
+    "arm-far": [
+      0.21835443037974683,
+      0.13379073756432247
+    ],
+    "arm-near": [
+      0.7562814070351759,
+      0.10177705977382875
+    ],
+    "wing-far": [
+      0.94,
+      0.51
+    ],
+    "wing-near": [
+      0.06,
+      0.52
+    ],
+    "dress": [
+      0.431,
+      0.293
+    ],
+    "leg-far": [
+      0.3492063492063492,
+      0.027823240589198037
+    ],
+    "leg-near": [
+      0.390625,
+      0.023323615160349854
+    ]
+  },
+  "anatomicalHands": {
+    "left": "armFar",
+    "right": "armNear"
+  },
+  "cameraNearArm": "armNear",
+  "depthLayers": {
+    "longHair": "over rear garment; behind distal near forearm",
+    "shoulders": "under hair; distal forearm revealed by source UV region",
+    "lookBack": "profile crown only; rear long hair retained"
+  },
+  "garmentLandmarks": {
+    "waist": [
+      0.431,
+      0.293
+    ],
+    "neck": [
+      0.455,
+      0.035
+    ],
+    "arm-far": [
+      0.34,
+      0.145
+    ],
+    "arm-near": [
+      0.567,
+      0.15
+    ]
+  },
+  "rearLimbSource": "revision-3/rear-limbs.png; near/far arms and heels authored separately"
+}

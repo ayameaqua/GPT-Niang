@@ -36,9 +36,13 @@
       "warpStart": 0.5,
       "sourceWindow": [
         0,
-        0.49,
+        0.5839617371384186,
         1,
-        0.51
+        0.4160382628615814
+      ],
+      "fadeTop": [
+        0.5839617371384186,
+        0.6261758386183043
       ]
     },
     {
@@ -122,7 +126,7 @@
     },
     {
       "id": "tail",
-      "src": "tail.png",
+      "src": "../common/tail-back-right.png",
       "box": [
         156.33389999999997,
         665.18,
@@ -130,9 +134,9 @@
         297
       ],
       "parent": "tail",
-      "z": 2.2,
+      "z": 5,
       "mesh": false,
-      "flipX": true
+      "tailRig": true
     },
     {
       "id": "leg-near",
@@ -147,7 +151,8 @@
       "z": 2.6,
       "mesh": false,
       "flipX": true,
-      "projection": "dedicated rear-quarter limb, individual mirror for opposite camera side"
+      "projection": "dedicated rear-quarter limb, individual mirror for opposite camera side",
+      "legRig": true
     },
     {
       "id": "leg-far",
@@ -162,7 +167,8 @@
       "z": 2.4,
       "mesh": false,
       "flipX": true,
-      "projection": "dedicated rear-quarter limb, individual mirror for opposite camera side"
+      "projection": "dedicated rear-quarter limb, individual mirror for opposite camera side",
+      "legRig": true
     },
     {
       "id": "arm-near-distal",
@@ -217,7 +223,7 @@
       530
     ],
     "tail": [
-      415,
+      425,
       683
     ],
     "legFar": [
@@ -290,10 +296,6 @@
     "wing-near": [
       0.06,
       0.52
-    ],
-    "tail": [
-      0.3,
-      0.06
     ],
     "dress": [
       0.431,

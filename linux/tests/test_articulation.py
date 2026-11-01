@@ -60,7 +60,7 @@ class ArmTests(unittest.TestCase):
             if next_action:a.play(next_action)
             else:a.cancel()
             self.assertEqual(a.pose().hands,before,next_action)
-            advance(a,.2)
+            advance(a,.25)
             if next_action in ('stand','carried','turn',None):self.assertEqual(a.pose().hands,(0,0,0,0))
 
     def test_repeated_gesture_does_not_snap_back_to_idle(self):

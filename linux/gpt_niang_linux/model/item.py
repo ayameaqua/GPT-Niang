@@ -180,6 +180,12 @@ class DragonItem(QQuickPaintedItem):
         if self.animator.set_view(value):
             self.animator.speech = self.animator.listening = False
             self.animator.action = self.animator.pending = ""
+            # Explicit camera selection also returns the pet to the ground;
+            # an interrupted fall must not survive with a stopped action clock.
+            self.animator.fall=None;self.animator.after_land=''
+            self.animator.seat=self.animator.start_seat=self.animator.carry=0.
+            self.animator.lid=self.animator.speech_amount=0.
+            self.animator.face_transition=None
             self.render_frame()
             self.changed.emit()
 
@@ -230,6 +236,12 @@ class DragonItem(QQuickPaintedItem):
     @Slot(float, float)
     def lookAt(self, x, y):
         self.animator.gaze = (max(-1., min(1., x)), max(-1., min(1., y)))
+
+    @Slot(float,float)
+    def setPointTarget(self,x,y):
+        if math.isfinite(x) and math.isfinite(y) and max(abs(x),abs(y))<=10000:
+            self.animator.point_target=(x,y)
+            if self.animator.action=='point':self.render_frame()
 
     def _ensure_view(self):
         if self.renderer and self.animator.view not in self.renderer.rigs and self.animator.view != "front-left":

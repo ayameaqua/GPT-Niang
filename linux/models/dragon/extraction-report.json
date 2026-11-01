@@ -2122,5 +2122,357 @@
       342,
       354
     ]
+  },
+  "common/tail-left.png": {
+    "source": "source/revision-4/tail-left.png",
+    "locator": [
+      0,
+      0,
+      3000,
+      3000
+    ],
+    "include": [],
+    "sourceBounds": [
+      40,
+      67,
+      1424,
+      1020
+    ],
+    "selectedComponents": [
+      {
+        "area": 457826,
+        "bounds": [
+          42,
+          69,
+          1422,
+          1018
+        ]
+      }
+    ],
+    "edgePadding": 2,
+    "outputSize": [
+      1384,
+      953
+    ]
+  },
+  "common/tail-right.png": {
+    "source": "source/revision-4/tail-right.png",
+    "locator": [
+      0,
+      0,
+      3000,
+      3000
+    ],
+    "include": [],
+    "sourceBounds": [
+      35,
+      58,
+      1436,
+      1058
+    ],
+    "selectedComponents": [
+      {
+        "area": 570004,
+        "bounds": [
+          37,
+          60,
+          1434,
+          1056
+        ]
+      }
+    ],
+    "edgePadding": 2,
+    "outputSize": [
+      1401,
+      1000
+    ]
+  },
+  "common/tail-back-left.png": {
+    "source": "source/revision-4/tail-back-left.png",
+    "locator": [
+      0,
+      0,
+      3000,
+      3000
+    ],
+    "include": [],
+    "sourceBounds": [
+      20,
+      21,
+      1416,
+      1069
+    ],
+    "selectedComponents": [
+      {
+        "area": 618317,
+        "bounds": [
+          22,
+          23,
+          1414,
+          1067
+        ]
+      }
+    ],
+    "edgePadding": 2,
+    "outputSize": [
+      1396,
+      1048
+    ]
+  },
+  "common/tail-back-right.png": {
+    "source": "source/revision-4/tail-back-right.png",
+    "locator": [
+      0,
+      0,
+      3000,
+      3000
+    ],
+    "include": [],
+    "sourceBounds": [
+      13,
+      59,
+      1440,
+      1070
+    ],
+    "selectedComponents": [
+      {
+        "area": 588971,
+        "bounds": [
+          15,
+          61,
+          1438,
+          1068
+        ]
+      }
+    ],
+    "edgePadding": 2,
+    "outputSize": [
+      1427,
+      1011
+    ]
+  },
+  "common/tail-back.png": {
+    "source": "source/revision-4/tail-back.png",
+    "locator": [
+      0,
+      0,
+      3000,
+      3000
+    ],
+    "include": [],
+    "sourceBounds": [
+      236,
+      81,
+      846,
+      1472
+    ],
+    "selectedComponents": [
+      {
+        "area": 487836,
+        "bounds": [
+          238,
+          83,
+          844,
+          1470
+        ]
+      }
+    ],
+    "edgePadding": 2,
+    "outputSize": [
+      610,
+      1391
+    ]
+  },
+  "common/head-left112.png": {
+    "source": "source/revision-4/head-left112.png",
+    "locator": [
+      0,
+      0,
+      3000,
+      3000
+    ],
+    "include": [],
+    "sourceBounds": [
+      51,
+      34,
+      1234,
+      1212
+    ],
+    "selectedComponents": [
+      {
+        "area": 837999,
+        "bounds": [
+          53,
+          36,
+          1232,
+          1210
+        ]
+      }
+    ],
+    "edgePadding": 2,
+    "outputSize": [
+      1183,
+      1178
+    ]
+  },
+  "common/head-left67.png": {
+    "source": "source/revision-4/head-left67.png",
+    "locator": [
+      0,
+      0,
+      3000,
+      3000
+    ],
+    "include": [],
+    "sourceBounds": [
+      46,
+      18,
+      1271,
+      1197
+    ],
+    "selectedComponents": [
+      {
+        "area": 907456,
+        "bounds": [
+          48,
+          20,
+          1269,
+          1195
+        ]
+      }
+    ],
+    "edgePadding": 2,
+    "outputSize": [
+      1225,
+      1179
+    ]
+  },
+  "common/head-right247.png": {
+    "source": "source/revision-4/head-right247.png",
+    "locator": [
+      0,
+      0,
+      3000,
+      3000
+    ],
+    "include": [],
+    "sourceBounds": [
+      9,
+      17,
+      1124,
+      1337
+    ],
+    "selectedComponents": [
+      {
+        "area": 884803,
+        "bounds": [
+          11,
+          19,
+          1122,
+          1335
+        ]
+      }
+    ],
+    "edgePadding": 2,
+    "outputSize": [
+      1115,
+      1320
+    ]
+  },
+  "common/head-right292.png": {
+    "source": "source/revision-4/head-right292.png",
+    "locator": [
+      0,
+      0,
+      3000,
+      3000
+    ],
+    "include": [],
+    "sourceBounds": [
+      84,
+      0,
+      1192,
+      1201
+    ],
+    "selectedComponents": [
+      {
+        "area": 789968,
+        "bounds": [
+          86,
+          2,
+          1190,
+          1199
+        ]
+      }
+    ],
+    "edgePadding": 2,
+    "outputSize": [
+      1108,
+      1201
+    ]
+  },
+  "common/hairpin.png": {
+    "source": "source/revision-5/hairpin.png",
+    "locator": [
+      0,
+      0,
+      3000,
+      3000
+    ],
+    "include": [],
+    "sourceBounds": [
+      229,
+      19,
+      791,
+      1522
+    ],
+    "selectedComponents": [
+      {
+        "area": 324772,
+        "bounds": [
+          231,
+          21,
+          789,
+          1520
+        ]
+      }
+    ],
+    "edgePadding": 2,
+    "outputSize": [
+      562,
+      1503
+    ]
+  },
+  "common/ear-back.png": {
+    "source": "source/revision-5/ear-back.png",
+    "locator": [
+      0,
+      0,
+      3000,
+      3000
+    ],
+    "include": [],
+    "sourceBounds": [
+      31,
+      165,
+      1480,
+      919
+    ],
+    "selectedComponents": [
+      {
+        "area": 595419,
+        "bounds": [
+          33,
+          167,
+          1478,
+          917
+        ]
+      }
+    ],
+    "edgePadding": 2,
+    "outputSize": [
+      1449,
+      754
+    ]
   }
 }

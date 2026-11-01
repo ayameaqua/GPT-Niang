@@ -31,6 +31,13 @@ def synthetic_model(root):
     parts = []; (root/'tex').mkdir()
     for index, (name, parent) in enumerate(zip(names, parents)):
         box = {'arm-near': [457,473,114,202], 'hair-back': [231,127,509,615], 'sit': [92,570,804,345]}.get(name, [300,400,55,55])
+        # Separate the facial fixtures: coincident opaque brows would cover
+        # both eyes and mouth and make the live-preview check meaningless.
+        box={'eye-far-white':[300,340,50,48],'eye-near-white':[410,340,50,48],
+             'eye-far-iris':[310,344,30,40],'eye-near-iris':[420,344,30,40],
+             'eye-far-lash':[298,335,55,16],'eye-near-lash':[408,335,55,16],
+             'brow-far':[302,325,45,8],'brow-near':[412,325,45,8],
+             'mouth':[380,420,14,10],'nose':[383,400,8,8]}.get(name,box)
         part = dict(id=name, src=f'tex/{name}.png', parent=parent, box=box, z=index)
         im = QImage(box[2], box[3], QImage.Format.Format_ARGB32)
         im.fill(QColor.fromHsv(index*11 % 360, 160, 220)); im.save(str(root/part['src']))
@@ -87,10 +94,10 @@ class AnimationTests(unittest.TestCase):
 
     def test_turn_visits_intermediate_views_and_spin_returns_to_start(self):
         a=Animator(); a.set_view('front-left'); a.play('turn'); seen=set()
-        for _ in range(45): a.advance(.01); seen.add(a.view)
+        for _ in range(round(MOTIONS['turn'][1]*100)+5): a.advance(.01); seen.add(a.view)
         self.assertGreaterEqual(len(seen),4); self.assertEqual(a.view,'back-right')
         start=a.view; a.play('spin'); seen=set()
-        for _ in range(85): a.advance(.01); seen.add(a.view)
+        for _ in range(round(MOTIONS['spin'][1]*100)+5): a.advance(.01); seen.add(a.view)
         self.assertEqual(seen,set(VIEWS)); self.assertEqual(a.view,start)
         a.set_view('front'); a.play('sit'); self.assertEqual(a.pending,'sit')
         advance(a,1.4); self.assertEqual(a.view,'front-left'); self.assertEqual(a.seat,1)
@@ -98,8 +105,10 @@ class AnimationTests(unittest.TestCase):
     def test_pause_speed_and_reset(self):
         a = Animator(); a.play('sleep'); advance(a, 1); a.speech = a.listening = True
         a.paused = True; before = a.clock; advance(a, 3); self.assertEqual(a.clock, before)
-        a.cancel(); self.assertEqual(a.seat, 0); self.assertFalse(a.speech or a.listening or a.sleeping)
+        a.cancel(); self.assertEqual(a.seat, 1); self.assertEqual(a.action,'stand')
+        self.assertFalse(a.speech or a.listening or a.sleeping)
         a.paused = False; a.speed = .5; advance(a, 1); self.assertAlmostEqual(a.clock-before, .5)
+        advance(a,2);self.assertEqual(a.seat,0)
 
 
 class ResourceTests(unittest.TestCase):

@@ -87,3 +87,16 @@ Use case: precise-object-edit. Make ONE isolated production cutout of ONLY the t
 | rear-limbs.png | [原文](source/revision-3/rear-limbs-prompt.txt) | 原包缩略图、正背臂/腿；后侧近/远手臂、近/远鞋跟四片，对侧逐肢镜像 |
 
 手臂的肩、肘、腕 UV 和后侧四肢/衣片连接点在 `rig-layouts.json` 中手工登记；组装脚本仍只提取原 RGBA，不用程序生成新的角色笔画。后脑/长发的分层区域在运行合成中处理，源图不被改写。缩小预滤波仅用于显示采样，缓存上限64项；不阈值化源 alpha。
+
+## 第三轮尾巴／头部制作：source/revision-4/ 与 revision-5/
+
+全部仍使用内置 `image_gen.imagegen`；生成源PNG未覆盖，提示词保存在同名 `-prompt.txt`。
+
+| 文件组 | 用途与实际提示词 |
+| --- | --- |
+| revision-4/tail-left、tail-right、tail-back-left、tail-back-right、tail-back | 五份完整方向尾巴；对应 `tail-*-prompt.txt`，经完整主体提取进入 common，尾根／六段UV在puppet.json实标 |
+| revision-4/head-left67、head-left112、head-right247、head-right292 | 第一批中间方向头，提示词同名；保留可回溯的备用路径，当前完整头材质使用revision-5 |
+| revision-5/core-front、core-front-left、core-left67、core-left、core-left112、core-back-left、core-back、core-back-right、core-right247、core-right、core-right292、core-front-right | 十二份无五官／无附属角耳的干净头；提示词 `core-*-prompt.txt`；head.json登记源裁框、颈点与五官锚点，原生整片绘制，眼口动态合成 |
+| revision-5/hairpin、ear-back | 独立发饰和耳背材质；提示词同名；原生角耳轮廓从本机导入PNG只读引用，耳背按相同alpha轮廓取色 |
+
+卷发独立束和共享衣物表面的试验没有通过视觉审查，不作为运行素材发布。颈块／后发的alpha裁区是运行时分层处理，原始生成PNG保持原样；不执行Coopanion脚本。详见[本轮记录](../../docs/model-review/PASS3-FIXES.md)与[来源限制](NOTICE.md)。

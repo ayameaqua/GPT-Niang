@@ -26,7 +26,7 @@ def main():
             manifest[view]={'rig':f'{view}/rig.json','status':rig['status']}
         (ROOT/'views.json').write_text(json.dumps({'schemaVersion':1,'views':manifest},indent=2)+'\n')
         print(f'Assembled {len(manifest)} explicit view rigs')
-    paths=sorted([*ROOT.rglob('*.png'),*ROOT.glob('*/rig.json'),ROOT/'views.json',ROOT/'rig-layouts.json',ROOT/'source-selections.json'])
+    paths=sorted([*ROOT.rglob('*.png'),*ROOT.glob('*/rig.json'),ROOT/'views.json',ROOT/'rig-layouts.json',ROOT/'source-selections.json',*ROOT.glob('puppet.json'),*ROOT.glob('head.json')])
     hashes={str(path.relative_to(ROOT)):hashlib.sha256(path.read_bytes()).hexdigest() for path in paths}
     (ROOT/'asset-hashes.json').write_text(json.dumps({'schemaVersion':1,'generator':'built-in image_gen.imagegen; component extraction and explicit Qt bindings','sha256':hashes},indent=2)+'\n')
 

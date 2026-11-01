@@ -95,10 +95,10 @@ class ReviewedMotionTests(unittest.TestCase):
         self.assertEqual(a.view,'right');self.assertFalse(a.action)
         a.set_view('back');a.set_expression('happy')
         self.assertEqual(a.view,'back');self.assertEqual(a.action,'turn')
-        advance(a,.4);self.assertEqual(a.view,'front-left')
+        advance(a,.65);self.assertEqual(a.view,'front-left')
 
     def test_turn_has_a_continuous_blend_between_registered_views(self):
-        a=Animator();a.set_view('front');a.play('turn');advance(a,.05)
+        a=Animator();a.set_view('front');a.play('turn');advance(a,.2)
         p=a.pose();self.assertEqual(p.view,'front');self.assertEqual(p.blend_view,'front-left')
         self.assertGreater(p.view_mix,0);self.assertLess(p.view_mix,1)
 
@@ -112,12 +112,12 @@ class ReviewedMotionTests(unittest.TestCase):
         for start in ('front','back'):
             for action in ('turn','spin'):
                 a=Animator();a.set_view(start);a.play(action);advance(a,.12)
-                a.set_expression('happy');advance(a,2)
+                a.set_expression('happy');advance(a,2.4)
                 self.assertIn(a.view,('front','front-left','front-right','left','right'))
                 self.assertFalse(a.face_requested)
 
     def test_interrupting_turn_preserves_the_visible_blend(self):
-        a=Animator();a.set_view('front');a.play('turn');advance(a,.08)
+        a=Animator();a.set_view('front');a.play('turn');advance(a,.2)
         before=a.pose();a.play('stand');after=a.pose()
         self.assertEqual((before.view,before.blend_view,before.view_mix),(after.view,after.blend_view,after.view_mix))
         advance(a,.2);self.assertFalse(a.settling)
@@ -139,15 +139,14 @@ class BindingTests(unittest.TestCase):
                 x,y,w,h=p['box'];actual=[x+u*w,y+v*h];expected=rig['pivots'][p['parent']]
                 for i in (0,1):self.assertAlmostEqual(actual[i],expected[i],delta=.02,msg=f'{view}/{name}')
 
-    def test_turn_blend_keeps_opaque_overlap_opaque(self):
-        # Feed two real render calls the same opaque fixture, checking the middle
-        # of the composition. Endpoints alone did not catch the old 191 alpha.
+    def test_turn_keeps_one_opaque_body_material(self):
         renderer=DragonRenderer.__new__(DragonRenderer);renderer.rigs={'front':None,'front-left':None}
         def solid(painter,pose):painter.fillRect(-500,-500,2500,2500,QColor('white'))
-        with patch.object(renderer,'_render_view',side_effect=solid):
+        with patch.object(renderer,'_sole',return_value=None),patch.object(renderer,'_render_view',side_effect=solid) as draw:
             a=Animator();a.set_view('front');a.play('turn');advance(a,.05)
             im=renderer.render(a.pose(),16)
         self.assertGreaterEqual(im.pixelColor(8,8).alpha(),254)
+        self.assertEqual(draw.call_count,1)
 
     def test_emotion_limbs_are_continuous_at_action_start_and_end(self):
         a=Animator();a.set_expression('angry');advance(a,.3)
@@ -169,7 +168,7 @@ class BindingTests(unittest.TestCase):
         a.request_face_view('speech');a.request_face_view('speech',False);advance(a,1)
         self.assertEqual(a.view,'back');self.assertFalse(a.face_requested)
         a.play('spin');advance(a,.05);a.set_expression('happy')
-        a.request_face_view('speech');a.request_face_view('speech',False);advance(a,2)
+        a.request_face_view('speech');a.request_face_view('speech',False);advance(a,2.4)
         self.assertEqual(a.view,'front-left')
 
 

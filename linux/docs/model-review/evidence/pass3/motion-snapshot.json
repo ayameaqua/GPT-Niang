@@ -1,0 +1,57 @@
+{
+  "size": 384,
+  "warmRenderAndInputMask": {
+    "front/nod": {
+      "meanMs": 21.04,
+      "maxMs": 24.15,
+      "frames": 40
+    },
+    "left/jump": {
+      "meanMs": 32.27,
+      "maxMs": 40.3,
+      "frames": 40
+    },
+    "back/run": {
+      "meanMs": 35.18,
+      "maxMs": 37.05,
+      "frames": 40
+    },
+    "back-left/sit": {
+      "meanMs": 20.94,
+      "maxMs": 26.65,
+      "frames": 40
+    },
+    "front-left/spin": {
+      "meanMs": 22.46,
+      "maxMs": 34.02,
+      "frames": 40
+    }
+  },
+  "scope": "fixed-time actual Qt frames; limited direction-frame turns; not exhaustive visual acceptance",
+  "implementation": {
+    "gpt_niang_linux/model/assets.py": "dbb5ff4885438f8dbccfdf0ccb79ae7d6e80c4b38e325cf32d66f8cc000cc052",
+    "gpt_niang_linux/model/__init__.py": "c570c302b94aaba35ce5f1cde7b9db7a31ba4e52b432dac8d1e2f73b89be492d",
+    "gpt_niang_linux/model/motion.py": "f44f808a6170a39134f13aa335ee4761921860164b821c8172b56524ec52e139",
+    "gpt_niang_linux/model/render.py": "87f98c56ef2151d4cfa28eb7852ab8971045a7d2c26ff63a6e9c1e0b86bf437c",
+    "gpt_niang_linux/model/item.py": "f6d180516ac6332e3bdfa25cd12778f184b3ddeceec746a94e55d70625632308",
+    "gpt_niang_linux/model/extraction.py": "2fd6de1c3c9ee68a6e065fae416ed602111c1ee861dbba5bfd9fd8a42ef61d68",
+    "gpt_niang_linux/model/articulation.py": "6f6604230341458c28f9a5ad6483b589817afeab6ccb539435f5e52e9079d939",
+    "gpt_niang_linux/model/kinematics.py": "324229e3bfe713c7b135682e40d97f5c044b3c0846af1b1f8e2cf09f510dfaae",
+    "gpt_niang_linux/model/raster_mesh.py": "0b17ed04c4fef15fb841d6debc1e2f12cb73a5e4e667a1e081b7981722fd0d36",
+    "gpt_niang_linux/model/dynamics.py": "03a0e74cac01b2655d217b453004c4bfdbba06ea44a39509d885071b2264f5e8",
+    "gpt_niang_linux/model/skinning.py": "17699c6253ad8f2176d152115825826462ddc1277910cc181228a26ca77fb4a6",
+    "gpt_niang_linux/model/silhouette.py": "f4cc8593d6c28cd818c0ac30844ca718b59e88e8d0bd31dc243b3c4071bbadaf",
+    "gpt_niang_linux/model/head.py": "beedfeb5882701c112615fe656e7db1cc821f43adf19206e21d2cc7c8b8f62dc",
+    "models/dragon/asset-hashes.json": "6e8ab265fb02b2014dffa9fec752b323a1d0dc7b79ec697e19ca0ccb6d59f31c"
+  },
+  "images": {
+    "native-8.png": "ecb9ce659c94719a7c1e1003b030610faf2484674358a9ba70ff25830a62f5d7",
+    "front-nod.png": "5a45f5def6b3db90344d780e1601aafc08e4b14771c7f264674c1fed7b633600",
+    "left-nod.png": "6bc6a1719339d6473b4084c7a331764b6b331312bcb9f8c70c4c93aa2378b0ea",
+    "front-jump.png": "f3e9ee464920b9c7a80b2ebcef565020591a86550eaf4f3ca7474555dec36a9f",
+    "left-jump.png": "e00cbc24ba78297df20676a91bcdb172abc921e4e98839bb802e3fd0be7320d5",
+    "back-left-sit.png": "49d0069e99e604051be573fed95185a280d6ca76849aaabe3a560622c2a0f53b",
+    "back-sit.png": "cbd437c123f7cc69adbb56bf33d2ba43761533679ed8249a0382b79dd794cd9a",
+    "back-right-sit.png": "9f56e52966f3520b31814ff0d148d05e05eaed93bb33d43fa76800fc8ce516de"
+  }
+}

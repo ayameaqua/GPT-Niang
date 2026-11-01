@@ -1,0 +1,2011 @@
+{
+  "schemaVersion": 1,
+  "cores": {
+    "back-left": {
+      "src": "source/revision-5/core-back-left.png",
+      "angle": 135,
+      "baseView": "back-left",
+      "neck": [
+        430.148,
+        464.745
+      ],
+      "headCrown": [
+        418.01000000000005,
+        150.31300000000002
+      ],
+      "face": null,
+      "featureAnatomicalSides": {
+        "near": "left",
+        "far": "right"
+      },
+      "runtimeCrop": {
+        "sourceRectPx": [
+          321,
+          261,
+          821,
+          659
+        ],
+        "box": [
+          187.96600000000004,
+          145.689,
+          474.53799999999995,
+          380.902
+        ],
+        "neckCropUV": [
+          0.510353227771011,
+          0.8376327769347496
+        ]
+      },
+      "neckMaskRegions": []
+    },
+    "left112": {
+      "src": "source/revision-5/core-left112.png",
+      "angle": 112.5,
+      "baseView": "left",
+      "neck": [
+        425,
+        460
+      ],
+      "headCrown": [
+        464.20000000000005,
+        143.59999999999997
+      ],
+      "face": {
+        "box": [
+          317.48,
+          320.0,
+          98.00000000000001,
+          123.20000000000002
+        ],
+        "oneEye": true,
+        "flip": false,
+        "maskSkin": true,
+        "features": {
+          "eye-near-white": {
+            "source": "eye-near-white",
+            "box": [
+              22.3429,
+              35.4545,
+              69.6571,
+              60.0
+            ]
+          },
+          "eye-near-iris": {
+            "source": "eye-near-iris",
+            "box": [
+              28.9603,
+              34.3745,
+              48.0634,
+              61.08
+            ]
+          },
+          "eye-near-lash": {
+            "source": "eye-near-lash",
+            "box": [
+              18.0589,
+              24.5345,
+              86.7928,
+              49.08
+            ]
+          },
+          "brow-near": {
+            "source": "brow-near",
+            "box": [
+              13.775,
+              -4.9255,
+              53.636,
+              7.62
+            ]
+          },
+          "mouth": {
+            "source": "mouth",
+            "box": [
+              53.8857,
+              111.8182,
+              19.7143,
+              8.1818
+            ]
+          }
+        },
+        "blush": [
+          [
+            -100,
+            -100,
+            0,
+            0
+          ],
+          [
+            30.7017,
+            91.8545,
+            43.884,
+            8.4
+          ]
+        ],
+        "tears": [
+          [
+            -100,
+            -100
+          ],
+          [
+            46.0263,
+            90.0545
+          ]
+        ]
+      },
+      "featureAnatomicalSides": {
+        "near": "left",
+        "far": "right"
+      },
+      "runtimeCrop": {
+        "sourceRectPx": [
+          345,
+          220,
+          758,
+          648
+        ],
+        "box": [
+          265.4,
+          140.79999999999998,
+          424.48,
+          362.88000000000005
+        ],
+        "neckCropUV": [
+          0.3759894459102902,
+          0.8796296296296297
+        ]
+      },
+      "neckMaskRegions": []
+    },
+    "left": {
+      "src": "source/revision-5/core-left.png",
+      "angle": 90,
+      "baseView": "left",
+      "neck": [
+        417.566975,
+        464.745
+      ],
+      "headCrown": [
+        483.10110898692807,
+        135.99999999999997
+      ],
+      "face": {
+        "box": [
+          310.671133496732,
+          303.5954901960784,
+          139.66290849673203,
+          142.34873366013073
+        ],
+        "oneEye": true,
+        "flip": false,
+        "maskSkin": true,
+        "features": {
+          "eye-near-white": {
+            "source": "eye-near-white",
+            "box": [
+              113.2308,
+              47.5472,
+              61.9231,
+              55.4717
+            ]
+          },
+          "eye-near-iris": {
+            "source": "eye-near-iris",
+            "box": [
+              119.1135,
+              46.5487,
+              42.7269,
+              56.4702
+            ]
+          },
+          "eye-near-lash": {
+            "source": "eye-near-lash",
+            "box": [
+              109.4225,
+              37.4513,
+              77.1562,
+              45.3758
+            ]
+          },
+          "brow-near": {
+            "source": "brow-near",
+            "box": [
+              105.6142,
+              10.2147,
+              47.6808,
+              7.0449
+            ]
+          },
+          "mouth": {
+            "source": "mouth",
+            "box": [
+              84.9231,
+              118.8679,
+              10.6154,
+              9.0566
+            ]
+          }
+        },
+        "blush": [
+          [
+            -100,
+            -100,
+            0,
+            0
+          ],
+          [
+            120.6615,
+            99.6906,
+            39.0115,
+            7.766
+          ]
+        ],
+        "tears": [
+          [
+            -100,
+            -100
+          ],
+          [
+            134.2846,
+            98.0264
+          ]
+        ]
+      },
+      "featureAnatomicalSides": {
+        "near": "left",
+        "far": "right"
+      },
+      "runtimeCrop": {
+        "sourceRectPx": [
+          300,
+          173,
+          878,
+          702
+        ],
+        "box": [
+          246.21132957516338,
+          133.3141748366013,
+          471.6308986928105,
+          377.0898529411765
+        ],
+        "neckCropUV": [
+          0.36332574031890663,
+          0.8789173789173789
+        ]
+      },
+      "neckMaskRegions": []
+    },
+    "left67": {
+      "src": "source/revision-5/core-left67.png",
+      "angle": 67.5,
+      "baseView": "left",
+      "neck": [
+        425,
+        460
+      ],
+      "headCrown": [
+        461.87732342007433,
+        139.99999999999997
+      ],
+      "face": {
+        "box": [
+          300.6877323420074,
+          311.30111524163567,
+          148.69888475836433,
+          136.80297397769516
+        ],
+        "oneEye": false,
+        "flip": false,
+        "maskSkin": true,
+        "features": {
+          "eye-near-white": {
+            "source": "eye-near-white",
+            "box": [
+              104.88,
+              35.8696,
+              83.72,
+              71.087
+            ]
+          },
+          "eye-near-iris": {
+            "source": "eye-near-iris",
+            "box": [
+              112.8334,
+              34.59,
+              57.7668,
+              72.3665
+            ]
+          },
+          "eye-near-lash": {
+            "source": "eye-near-lash",
+            "box": [
+              99.7312,
+              22.9317,
+              104.3151,
+              58.1491
+            ]
+          },
+          "brow-near": {
+            "source": "brow-near",
+            "box": [
+              94.5824,
+              -11.972,
+              64.4644,
+              9.028
+            ]
+          },
+          "eye-far-white": {
+            "source": "eye-far-white",
+            "box": [
+              10.12,
+              45.0,
+              32.2,
+              57.3913
+            ]
+          },
+          "eye-far-iris": {
+            "source": "eye-far-iris",
+            "box": [
+              13.179,
+              43.967,
+              22.218,
+              58.4243
+            ]
+          },
+          "eye-far-lash": {
+            "source": "eye-far-lash",
+            "box": [
+              8.1397,
+              34.5548,
+              40.1212,
+              46.9461
+            ]
+          },
+          "brow-far": {
+            "source": "brow-far",
+            "box": [
+              6.1594,
+              6.3757,
+              24.794,
+              7.2887
+            ]
+          },
+          "mouth": {
+            "source": "mouth",
+            "box": [
+              58.88,
+              118.0435,
+              14.72,
+              9.1304
+            ]
+          }
+        },
+        "blush": [
+          [
+            13.984,
+            98.9478,
+            20.286,
+            8.0348
+          ],
+          [
+            114.9264,
+            102.6913,
+            52.7436,
+            9.9522
+          ]
+        ],
+        "tears": [
+          [
+            21.068,
+            97.2261
+          ],
+          [
+            133.3448,
+            100.5587
+          ]
+        ]
+      },
+      "featureAnatomicalSides": {
+        "near": "left",
+        "far": "right"
+      },
+      "runtimeCrop": {
+        "sourceRectPx": [
+          334,
+          227,
+          740,
+          645
+        ],
+        "box": [
+          234.66542750929366,
+          135.24163568773233,
+          440.1486988847584,
+          383.64312267657994
+        ],
+        "neckCropUV": [
+          0.43243243243243246,
+          0.8465116279069768
+        ]
+      },
+      "neckMaskRegions": []
+    },
+    "back-right": {
+      "src": "source/revision-5/core-back-right.png",
+      "angle": 225,
+      "baseView": "back-right",
+      "neck": [
+        436.985216,
+        464.745
+      ],
+      "headCrown": [
+        436.48720175949364,
+        150.0
+      ],
+      "face": null,
+      "featureAnatomicalSides": {
+        "near": "left",
+        "far": "right"
+      },
+      "runtimeCrop": {
+        "sourceRectPx": [
+          331,
+          212,
+          780,
+          699
+        ],
+        "box": [
+          252.7199470126582,
+          147.01191455696204,
+          388.45110759493673,
+          348.11195411392407
+        ],
+        "neckCropUV": [
+          0.47435897435897434,
+          0.9127324749642346
+        ]
+      },
+      "neckMaskRegions": [
+        [
+          369,
+          436,
+          104,
+          56
+        ]
+      ]
+    },
+    "right247": {
+      "src": "source/revision-5/core-right247.png",
+      "angle": 247.5,
+      "baseView": "right",
+      "neck": [
+        425,
+        460
+      ],
+      "headCrown": [
+        368.54378818737274,
+        145.0
+      ],
+      "face": {
+        "box": [
+          450.6619144602851,
+          313.0855397148676,
+          76.9857433808554,
+          128.30957230142565
+        ],
+        "oneEye": true,
+        "flip": true,
+        "maskSkin": true,
+        "features": {
+          "eye-near-white": {
+            "source": "eye-near-white",
+            "box": [
+              59.4167,
+              33.75,
+              80.5,
+              60.0
+            ]
+          },
+          "eye-near-iris": {
+            "source": "eye-near-iris",
+            "box": [
+              76.7242,
+              32.67,
+              55.545,
+              61.08
+            ]
+          },
+          "eye-near-lash": {
+            "source": "eye-near-lash",
+            "box": [
+              44.5644,
+              22.83,
+              100.303,
+              49.08
+            ]
+          },
+          "brow-near": {
+            "source": "brow-near",
+            "box": [
+              87.8332,
+              -6.63,
+              61.985,
+              7.62
+            ]
+          },
+          "mouth": {
+            "source": "mouth",
+            "box": [
+              74.75,
+              105.75,
+              23.0,
+              7.5
+            ]
+          }
+        },
+        "blush": [
+          [
+            -100,
+            -100,
+            0,
+            0
+          ],
+          [
+            79.5417,
+            90.15,
+            50.715,
+            8.4
+          ]
+        ],
+        "tears": [
+          [
+            -100,
+            -100
+          ],
+          [
+            112.5467,
+            88.35
+          ]
+        ]
+      },
+      "featureAnatomicalSides": {
+        "near": "right",
+        "far": "left"
+      },
+      "runtimeCrop": {
+        "sourceRectPx": [
+          277,
+          228,
+          570,
+          571
+        ],
+        "box": [
+          187.62729124236253,
+          141.79226069246437,
+          365.68228105906314,
+          366.32382892057024
+        ],
+        "neckCropUV": [
+          0.6491228070175439,
+          0.8686514886164624
+        ]
+      },
+      "neckMaskRegions": [
+        [
+          414,
+          435,
+          29,
+          49
+        ]
+      ]
+    },
+    "right": {
+      "src": "source/revision-5/core-right.png",
+      "angle": 270,
+      "baseView": "right",
+      "neck": [
+        405.58992,
+        464.745
+      ],
+      "headCrown": [
+        397.6364119354839,
+        135.99999999999994
+      ],
+      "face": {
+        "box": [
+          433.4271982258065,
+          291.0934072580645,
+          117.31424395161291,
+          147.1398991935484
+        ],
+        "oneEye": true,
+        "flip": true,
+        "maskSkin": true,
+        "features": {
+          "eye-near-white": {
+            "source": "eye-near-white",
+            "box": [
+              74.0678,
+              39.1892,
+              74.0678,
+              62.1622
+            ]
+          },
+          "eye-near-iris": {
+            "source": "eye-near-iris",
+            "box": [
+              89.9924,
+              38.0703,
+              51.1068,
+              63.2811
+            ]
+          },
+          "eye-near-lash": {
+            "source": "eye-near-lash",
+            "box": [
+              60.4023,
+              27.8757,
+              92.2885,
+              50.8486
+            ]
+          },
+          "brow-near": {
+            "source": "brow-near",
+            "box": [
+              100.2137,
+              -2.6459,
+              57.0322,
+              7.8946
+            ]
+          },
+          "mouth": {
+            "source": "mouth",
+            "box": [
+              61.0734,
+              112.1622,
+              16.8927,
+              9.4595
+            ]
+          }
+        },
+        "blush": [
+          [
+            -100,
+            -100,
+            0,
+            0
+          ],
+          [
+            92.5847,
+            97.6216,
+            46.6627,
+            8.7027
+          ]
+        ],
+        "tears": [
+          [
+            -100,
+            -100
+          ],
+          [
+            122.9525,
+            95.7568
+          ]
+        ]
+      },
+      "featureAnatomicalSides": {
+        "near": "right",
+        "far": "left"
+      },
+      "runtimeCrop": {
+        "sourceRectPx": [
+          289,
+          265,
+          610,
+          591
+        ],
+        "box": [
+          167.6474704032258,
+          132.68603830645156,
+          404.3033266129033,
+          391.71027217741937
+        ],
+        "neckCropUV": [
+          0.5885245901639344,
+          0.8477157360406091
+        ]
+      },
+      "neckMaskRegions": [
+        [
+          379,
+          424,
+          74,
+          59
+        ]
+      ]
+    },
+    "right292": {
+      "src": "source/revision-5/core-right292.png",
+      "angle": 292.5,
+      "baseView": "right",
+      "neck": [
+        425,
+        460
+      ],
+      "headCrown": [
+        426.70212765957444,
+        139.99999999999997
+      ],
+      "face": {
+        "box": [
+          413.65248226950354,
+          305.1063829787234,
+          151.48936170212767,
+          138.43971631205676
+        ],
+        "oneEye": false,
+        "flip": true,
+        "maskSkin": true,
+        "features": {
+          "eye-near-white": {
+            "source": "eye-near-white",
+            "box": [
+              112.8464,
+              43.6475,
+              75.8052,
+              64.5492
+            ]
+          },
+          "eye-near-iris": {
+            "source": "eye-near-iris",
+            "box": [
+              129.1446,
+              42.4857,
+              52.3056,
+              65.7111
+            ]
+          },
+          "eye-near-lash": {
+            "source": "eye-near-lash",
+            "box": [
+              98.8604,
+              31.8996,
+              94.4533,
+              52.8012
+            ]
+          },
+          "brow-near": {
+            "source": "brow-near",
+            "box": [
+              139.6057,
+              0.2059,
+              58.37,
+              8.1977
+            ]
+          },
+          "eye-far-white": {
+            "source": "eye-far-white",
+            "box": [
+              11.1985,
+              51.0246,
+              34.4569,
+              54.7131
+            ]
+          },
+          "eye-far-iris": {
+            "source": "eye-far-iris",
+            "box": [
+              18.6067,
+              50.0398,
+              23.7753,
+              55.698
+            ]
+          },
+          "eye-far-lash": {
+            "source": "eye-far-lash",
+            "box": [
+              4.8412,
+              41.0668,
+              42.9333,
+              44.7553
+            ]
+          },
+          "brow-far": {
+            "source": "brow-far",
+            "box": [
+              23.3618,
+              14.2027,
+              26.5318,
+              6.9486
+            ]
+          },
+          "mouth": {
+            "source": "mouth",
+            "box": [
+              46.5169,
+              116.1885,
+              14.6442,
+              7.9918
+            ]
+          }
+        },
+        "blush": [
+          [
+            19.8127,
+            102.4549,
+            21.7079,
+            7.6598
+          ],
+          [
+            131.7978,
+            104.3238,
+            47.7573,
+            9.0369
+          ]
+        ],
+        "tears": [
+          [
+            33.9401,
+            100.8135
+          ],
+          [
+            162.8779,
+            102.3873
+          ]
+        ]
+      },
+      "featureAnatomicalSides": {
+        "near": "right",
+        "far": "left"
+      },
+      "runtimeCrop": {
+        "sourceRectPx": [
+          292,
+          210,
+          749,
+          685
+        ],
+        "box": [
+          177.62411347517727,
+          137.73049645390068,
+          424.96453900709224,
+          388.6524822695036
+        ],
+        "neckCropUV": [
+          0.582109479305741,
+          0.8291970802919708
+        ]
+      },
+      "neckMaskRegions": [
+        [
+          377,
+          438,
+          44,
+          41
+        ]
+      ]
+    },
+    "front": {
+      "src": "source/revision-5/core-front.png",
+      "angle": 0,
+      "baseView": "front",
+      "neck": [
+        425,
+        460
+      ],
+      "headCrown": [
+        425.0,
+        140.0
+      ],
+      "face": {
+        "box": [
+          330.44323483670297,
+          305.72317262830484,
+          189.1135303265941,
+          139.34681181959564
+        ],
+        "oneEye": false,
+        "flip": false,
+        "maskSkin": true,
+        "features": {
+          "eye-near-white": {
+            "box": [
+              154.3421,
+              50.8929,
+              63.5526,
+              62.1429
+            ],
+            "source": "eye-near-white"
+          },
+          "eye-near-iris": {
+            "box": [
+              160.3796,
+              49.7743,
+              43.8513,
+              63.2614
+            ],
+            "source": "eye-near-iris"
+          },
+          "eye-near-lash": {
+            "box": [
+              150.4336,
+              39.5829,
+              79.1866,
+              50.8329
+            ],
+            "source": "eye-near-lash"
+          },
+          "brow-near": {
+            "box": [
+              146.5251,
+              9.0707,
+              48.9355,
+              7.8921
+            ],
+            "source": "brow-near"
+          },
+          "eye-far-white": {
+            "box": [
+              21.7895,
+              50.8929,
+              63.5526,
+              62.1429
+            ],
+            "source": "eye-near-white",
+            "flipX": true
+          },
+          "eye-far-iris": {
+            "box": [
+              27.827,
+              49.7743,
+              43.8513,
+              63.2614
+            ],
+            "source": "eye-near-iris"
+          },
+          "eye-far-lash": {
+            "box": [
+              17.881,
+              39.5829,
+              79.1866,
+              50.8329
+            ],
+            "source": "eye-near-lash",
+            "flipX": true
+          },
+          "brow-far": {
+            "box": [
+              13.9725,
+              9.0707,
+              48.9355,
+              7.8921
+            ],
+            "source": "brow-near",
+            "flipX": true
+          },
+          "mouth": {
+            "box": [
+              109.5526,
+              122.6786,
+              10.8947,
+              7.5
+            ],
+            "source": "mouth"
+          }
+        },
+        "blush": [
+          [
+            29.4158,
+            109.3071,
+            40.0382,
+            8.7
+          ],
+          [
+            161.9684,
+            109.3071,
+            40.0382,
+            8.7
+          ]
+        ],
+        "tears": [
+          [
+            43.3974,
+            107.4429
+          ],
+          [
+            175.95,
+            107.4429
+          ]
+        ]
+      },
+      "featureAnatomicalSides": {
+        "near": "left",
+        "far": "right"
+      },
+      "runtimeCrop": {
+        "sourceRectPx": [
+          289,
+          170,
+          872,
+          722
+        ],
+        "box": [
+          208.51477449455678,
+          137.51166407465007,
+          433.9657853810265,
+          359.31570762052877
+        ],
+        "neckCropUV": [
+          0.4988532110091743,
+          0.8975069252077562
+        ]
+      },
+      "neckMaskRegions": []
+    },
+    "back": {
+      "src": "source/revision-5/core-back.png",
+      "angle": 180,
+      "baseView": "back",
+      "neck": [
+        425,
+        464.745
+      ],
+      "headCrown": [
+        425.0,
+        145.00000000000006
+      ],
+      "face": null,
+      "featureAnatomicalSides": {
+        "near": "left",
+        "far": "right"
+      },
+      "runtimeCrop": {
+        "sourceRectPx": [
+          365,
+          240,
+          699,
+          606
+        ],
+        "box": [
+          201.61650684931507,
+          142.49710371819967,
+          437.3811252446184,
+          379.18878669275927
+        ],
+        "neckCropUV": [
+          0.5107296137339056,
+          0.8498349834983498
+        ]
+      },
+      "neckMaskRegions": []
+    },
+    "front-left": {
+      "src": "source/revision-5/core-front-left.png",
+      "angle": 45,
+      "baseView": "front-left",
+      "neck": [
+        425,
+        460
+      ],
+      "headCrown": [
+        430.3234750462107,
+        140.0
+      ],
+      "face": {
+        "box": [
+          336.8669131238447,
+          300.29574861367837,
+          189.27911275415897,
+          146.09981515711647
+        ],
+        "oneEye": false,
+        "flip": false,
+        "maskSkin": true,
+        "features": {
+          "eye-near-white": {
+            "source": "eye-near-white",
+            "box": [
+              138.7188,
+              54.0486,
+              75.4688,
+              61.9433
+            ]
+          },
+          "eye-near-iris": {
+            "source": "eye-near-iris",
+            "box": [
+              145.8883,
+              52.9336,
+              52.0734,
+              63.0583
+            ]
+          },
+          "eye-near-lash": {
+            "source": "eye-near-lash",
+            "box": [
+              134.0774,
+              42.7749,
+              94.0341,
+              50.6696
+            ]
+          },
+          "brow-near": {
+            "source": "brow-near",
+            "box": [
+              129.4361,
+              12.3607,
+              58.1109,
+              7.8668
+            ]
+          },
+          "eye-far-white": {
+            "source": "eye-far-white",
+            "box": [
+              7.1875,
+              58.9069,
+              50.3125,
+              55.2632
+            ]
+          },
+          "eye-far-iris": {
+            "source": "eye-far-iris",
+            "box": [
+              11.9672,
+              57.9121,
+              34.7156,
+              56.2579
+            ]
+          },
+          "eye-far-lash": {
+            "source": "eye-far-lash",
+            "box": [
+              4.0933,
+              48.849,
+              62.6894,
+              45.2053
+            ]
+          },
+          "brow-far": {
+            "source": "brow-far",
+            "box": [
+              0.9991,
+              21.7148,
+              38.7406,
+              7.0184
+            ]
+          },
+          "mouth": {
+            "source": "mouth",
+            "box": [
+              92.7188,
+              123.2794,
+              12.9375,
+              8.502
+            ]
+          }
+        },
+        "blush": [
+          [
+            13.225,
+            110.8543,
+            31.6969,
+            7.7368
+          ],
+          [
+            147.775,
+            112.2753,
+            47.5453,
+            8.6721
+          ]
+        ],
+        "tears": [
+          [
+            24.2937,
+            109.1964
+          ],
+          [
+            164.3781,
+            110.417
+          ]
+        ]
+      },
+      "featureAnatomicalSides": {
+        "near": "left",
+        "far": "right"
+      },
+      "runtimeCrop": {
+        "sourceRectPx": [
+          340,
+          253,
+          630,
+          648
+        ],
+        "box": [
+          238.08687615526802,
+          136.4510166358595,
+          372.6432532347505,
+          383.2902033271719
+        ],
+        "neckCropUV": [
+          0.5015873015873016,
+          0.8441358024691358
+        ]
+      },
+      "neckMaskRegions": []
+    },
+    "front-right": {
+      "src": "source/revision-5/core-front-right.png",
+      "angle": 315,
+      "baseView": "front-right",
+      "neck": [
+        443.391,
+        450.949
+      ],
+      "headCrown": [
+        430.2110580847724,
+        140.0
+      ],
+      "face": {
+        "box": [
+          366.75207849293565,
+          301.57632496075354,
+          180.61401883830456,
+          131.7994191522763
+        ],
+        "oneEye": false,
+        "flip": false,
+        "maskSkin": true,
+        "features": {
+          "eye-near-white": {
+            "box": [
+              159.7568,
+              51.1111,
+              43.5135,
+              60.0
+            ],
+            "source": "eye-far-white",
+            "flipX": true
+          },
+          "eye-near-iris": {
+            "box": [
+              163.8905,
+              50.0311,
+              30.0243,
+              61.08
+            ],
+            "source": "eye-far-iris"
+          },
+          "eye-near-lash": {
+            "box": [
+              157.0807,
+              40.1911,
+              54.2178,
+              49.08
+            ],
+            "source": "eye-far-lash",
+            "flipX": true
+          },
+          "brow-near": {
+            "box": [
+              154.4046,
+              10.7311,
+              33.5054,
+              7.62
+            ],
+            "source": "brow-far",
+            "flipX": true
+          },
+          "eye-far-white": {
+            "box": [
+              21.7568,
+              51.1111,
+              68.3784,
+              62.7778
+            ],
+            "source": "eye-near-white",
+            "flipX": true
+          },
+          "eye-far-iris": {
+            "box": [
+              28.2527,
+              49.9811,
+              47.1811,
+              63.9078
+            ],
+            "source": "eye-near-iris"
+          },
+          "eye-far-lash": {
+            "box": [
+              17.5515,
+              39.6856,
+              85.1995,
+              51.3522
+            ],
+            "source": "eye-near-lash",
+            "flipX": true
+          },
+          "brow-far": {
+            "box": [
+              13.3462,
+              8.8617,
+              52.6514,
+              7.9728
+            ],
+            "source": "brow-near",
+            "flipX": true
+          },
+          "mouth": {
+            "box": [
+              117.4865,
+              127.7778,
+              11.1892,
+              7.7778
+            ],
+            "source": "mouth"
+          }
+        },
+        "blush": [
+          [
+            29.9622,
+            110.1222,
+            43.0784,
+            8.7889
+          ],
+          [
+            164.9784,
+            107.5111,
+            27.4135,
+            8.4
+          ]
+        ],
+        "tears": [
+          [
+            45.0054,
+            108.2389
+          ],
+          [
+            174.5514,
+            105.7111
+          ]
+        ]
+      },
+      "featureAnatomicalSides": {
+        "near": "left",
+        "far": "right"
+      },
+      "runtimeCrop": {
+        "sourceRectPx": [
+          236,
+          182,
+          883,
+          738
+        ],
+        "box": [
+          189.0669356357928,
+          136.58297802197802,
+          431.03291522762953,
+          360.25174568288855
+        ],
+        "neckCropUV": [
+          0.5900339750849377,
+          0.8726287262872628
+        ]
+      },
+      "neckMaskRegions": []
+    }
+  },
+  "paths": {
+    "front": {
+      "angle": 0,
+      "appendages": {
+        "hornLeft": {
+          "attachmentOffset": [
+            145,
+            -214
+          ],
+          "tipOffset": [
+            153,
+            -389
+          ]
+        },
+        "hornRight": {
+          "attachmentOffset": [
+            -145,
+            -214
+          ],
+          "tipOffset": [
+            -153,
+            -389
+          ]
+        },
+        "earLeft": {
+          "attachmentOffset": [
+            150,
+            -80
+          ],
+          "tipOffset": [
+            197,
+            -94
+          ]
+        },
+        "earRight": {
+          "attachmentOffset": [
+            -150,
+            -80
+          ],
+          "tipOffset": [
+            -216,
+            -94
+          ]
+        },
+        "ahoge": {
+          "attachmentOffset": [
+            -9.0,
+            -293.0
+          ],
+          "tipOffset": [
+            37.0,
+            -363.0
+          ]
+        },
+        "hairpin": {
+          "attachmentOffset": [
+            129,
+            -178
+          ],
+          "tipOffset": [
+            132.64,
+            -8.740000000000009
+          ]
+        }
+      }
+    },
+    "front-left": {
+      "angle": 45,
+      "appendages": {
+        "hornLeft": {
+          "attachmentOffset": [
+            140,
+            -191
+          ],
+          "tipOffset": [
+            159,
+            -393
+          ]
+        },
+        "hornRight": {
+          "attachmentOffset": [
+            -103,
+            -196
+          ],
+          "tipOffset": [
+            -93,
+            -380
+          ]
+        },
+        "earLeft": {
+          "attachmentOffset": [
+            107,
+            -95
+          ],
+          "tipOffset": [
+            174,
+            -110
+          ]
+        },
+        "earRight": {
+          "attachmentOffset": [
+            -84,
+            -86
+          ],
+          "tipOffset": [
+            -139,
+            -103
+          ]
+        },
+        "ahoge": {
+          "attachmentOffset": [
+            -25.67652495378934,
+            -315.0
+          ],
+          "tipOffset": [
+            22.32347504621066,
+            -385.0
+          ]
+        },
+        "hairpin": {
+          "attachmentOffset": [
+            94,
+            -177
+          ],
+          "tipOffset": [
+            97.64,
+            -7.740000000000009
+          ]
+        }
+      }
+    },
+    "left": {
+      "angle": 90,
+      "appendages": {
+        "hornLeft": {
+          "attachmentOffset": [
+            82.43302499999999,
+            -204.745
+          ],
+          "tipOffset": [
+            112.43302499999999,
+            -394.745
+          ]
+        },
+        "hornRight": {
+          "attachmentOffset": [
+            56.43302499999999,
+            -205.745
+          ],
+          "tipOffset": [
+            63.43302499999999,
+            -386.745
+          ]
+        },
+        "earLeft": {
+          "attachmentOffset": [
+            89.433025,
+            -95.745
+          ],
+          "tipOffset": [
+            153.433025,
+            -111.745
+          ]
+        },
+        "earRight": {
+          "attachmentOffset": [
+            65.43302499999999,
+            -95.745
+          ],
+          "tipOffset": [
+            10.433024999999986,
+            -112.745
+          ]
+        },
+        "ahoge": {
+          "attachmentOffset": [
+            10.534133986928055,
+            -290.745
+          ],
+          "tipOffset": [
+            64.53413398692805,
+            -356.745
+          ]
+        },
+        "hairpin": {
+          "attachmentOffset": [
+            71.43302499999999,
+            -169.745
+          ],
+          "tipOffset": [
+            75.07302499999999,
+            -0.48500000000001364
+          ]
+        }
+      }
+    },
+    "back-left": {
+      "angle": 135,
+      "appendages": {
+        "hornLeft": {
+          "attachmentOffset": [
+            -93.148,
+            -174.745
+          ],
+          "tipOffset": [
+            -135.148,
+            -370.745
+          ]
+        },
+        "hornRight": {
+          "attachmentOffset": [
+            53.852,
+            -192.745
+          ],
+          "tipOffset": [
+            79.852,
+            -352.745
+          ]
+        },
+        "earLeft": {
+          "attachmentOffset": [
+            -92.148,
+            -74.745
+          ],
+          "tipOffset": [
+            -157.148,
+            -106.745
+          ]
+        },
+        "earRight": {
+          "attachmentOffset": [
+            60.852,
+            -89.745
+          ],
+          "tipOffset": [
+            89.852,
+            -103.745
+          ]
+        },
+        "ahoge": {
+          "attachmentOffset": [
+            -45.13799999999992,
+            -303.432
+          ],
+          "tipOffset": [
+            -6.13799999999992,
+            -393.432
+          ]
+        },
+        "hairpin": {
+          "attachmentOffset": [
+            -10.148000000000025,
+            -154.745
+          ],
+          "tipOffset": [
+            -6.508000000000024,
+            14.514999999999986
+          ]
+        }
+      }
+    },
+    "back": {
+      "angle": 180,
+      "appendages": {
+        "hornLeft": {
+          "attachmentOffset": [
+            -110,
+            -218.745
+          ],
+          "tipOffset": [
+            -115,
+            -384.745
+          ]
+        },
+        "hornRight": {
+          "attachmentOffset": [
+            115,
+            -218.745
+          ],
+          "tipOffset": [
+            120,
+            -387.745
+          ]
+        },
+        "earLeft": {
+          "attachmentOffset": [
+            -115,
+            -134.745
+          ],
+          "tipOffset": [
+            -151,
+            -148.745
+          ]
+        },
+        "earRight": {
+          "attachmentOffset": [
+            115,
+            -134.745
+          ],
+          "tipOffset": [
+            154,
+            -148.745
+          ]
+        },
+        "ahoge": {
+          "attachmentOffset": [
+            0.0,
+            -305.74499999999995
+          ],
+          "tipOffset": [
+            29.0,
+            -360.74499999999995
+          ]
+        },
+        "hairpin": {
+          "attachmentOffset": [
+            -65,
+            -164.745
+          ],
+          "tipOffset": [
+            -61.36,
+            4.514999999999986
+          ]
+        }
+      }
+    },
+    "back-right": {
+      "angle": 225,
+      "appendages": {
+        "hornLeft": {
+          "attachmentOffset": [
+            -84.985216,
+            -219.745
+          ],
+          "tipOffset": [
+            -60.985216,
+            -383.745
+          ]
+        },
+        "hornRight": {
+          "attachmentOffset": [
+            114.014784,
+            -205.745
+          ],
+          "tipOffset": [
+            162.014784,
+            -363.745
+          ]
+        },
+        "earLeft": {
+          "attachmentOffset": [
+            -44.985216,
+            -95.745
+          ],
+          "tipOffset": [
+            -71.985216,
+            -110.745
+          ]
+        },
+        "earRight": {
+          "attachmentOffset": [
+            106.014784,
+            -113.745
+          ],
+          "tipOffset": [
+            158.014784,
+            -136.745
+          ]
+        },
+        "ahoge": {
+          "attachmentOffset": [
+            -25.498014240506336,
+            -288.745
+          ],
+          "tipOffset": [
+            52.501985759493664,
+            -354.745
+          ]
+        },
+        "hairpin": {
+          "attachmentOffset": [
+            -46.98521599999998,
+            -164.745
+          ],
+          "tipOffset": [
+            -43.34521599999998,
+            4.514999999999986
+          ]
+        }
+      }
+    },
+    "right": {
+      "angle": 270,
+      "appendages": {
+        "hornLeft": {
+          "attachmentOffset": [
+            -18.58992,
+            -214.745
+          ],
+          "tipOffset": [
+            -44.58992,
+            -394.745
+          ]
+        },
+        "hornRight": {
+          "attachmentOffset": [
+            -39.58992,
+            -198.745
+          ],
+          "tipOffset": [
+            -102.58992,
+            -365.745
+          ]
+        },
+        "earLeft": {
+          "attachmentOffset": [
+            25.41008,
+            -118.745
+          ],
+          "tipOffset": [
+            42.41008,
+            -129.745
+          ]
+        },
+        "earRight": {
+          "attachmentOffset": [
+            -15.58992,
+            -101.745
+          ],
+          "tipOffset": [
+            -85.58992,
+            -118.745
+          ]
+        },
+        "ahoge": {
+          "attachmentOffset": [
+            39.046491935483914,
+            -306.74500000000006
+          ],
+          "tipOffset": [
+            10.046491935483914,
+            -347.74500000000006
+          ]
+        },
+        "hairpin": {
+          "attachmentOffset": [
+            104.41008,
+            -154.745
+          ],
+          "tipOffset": [
+            108.05008,
+            14.514999999999986
+          ]
+        }
+      }
+    },
+    "front-right": {
+      "angle": 315,
+      "appendages": {
+        "hornLeft": {
+          "attachmentOffset": [
+            100.60899999999998,
+            -186.949
+          ],
+          "tipOffset": [
+            103.60899999999998,
+            -362.949
+          ]
+        },
+        "hornRight": {
+          "attachmentOffset": [
+            -137.391,
+            -186.949
+          ],
+          "tipOffset": [
+            -173.391,
+            -379.949
+          ]
+        },
+        "earLeft": {
+          "attachmentOffset": [
+            138.609,
+            -69.949
+          ],
+          "tipOffset": [
+            164.609,
+            -90.949
+          ]
+        },
+        "earRight": {
+          "attachmentOffset": [
+            -141.391,
+            -65.949
+          ],
+          "tipOffset": [
+            -198.391,
+            -82.949
+          ]
+        },
+        "ahoge": {
+          "attachmentOffset": [
+            -12.179941915227573,
+            -290.949
+          ],
+          "tipOffset": [
+            19.820058084772427,
+            -343.949
+          ]
+        },
+        "hairpin": {
+          "attachmentOffset": [
+            124.60899999999992,
+            -167.949
+          ],
+          "tipOffset": [
+            128.2489999999999,
+            1.3109999999999786
+          ]
+        }
+      }
+    }
+  },
+  "parts": {
+    "hornLeft": {
+      "asset": "tex/horns.png",
+      "sourceRectUV": [
+        0.7175792507204611,
+        0.0,
+        0.2824207492795389,
+        1.0
+      ],
+      "rootCropUV": [
+        0.5204081632653061,
+        0.864406779661017
+      ],
+      "tipCropUV": [
+        0.7142857142857143,
+        0.00847457627118644
+      ]
+    },
+    "hornRight": {
+      "asset": "tex/horns.png",
+      "sourceRectUV": [
+        0.0,
+        0.0423728813559322,
+        0.2737752161383285,
+        0.864406779661017
+      ],
+      "rootCropUV": [
+        0.35789473684210527,
+        0.8529411764705882
+      ],
+      "tipCropUV": [
+        0.7052631578947368,
+        0.024509803921568627
+      ]
+    },
+    "earLeft": {
+      "asset": "tex/ear-near.png",
+      "sourceRectUV": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "rootCropUV": [
+        0.2736842105263158,
+        0.46875
+      ],
+      "tipCropUV": [
+        0.9789473684210527,
+        0.234375
+      ]
+    },
+    "earRight": {
+      "asset": "tex/ear-far.png",
+      "sourceRectUV": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "rootCropUV": [
+        0.8260869565217391,
+        0.5384615384615384
+      ],
+      "tipCropUV": [
+        0.028985507246376812,
+        0.21153846153846154
+      ]
+    }
+  },
+  "hairpin": {
+    "src": "common/hairpin.png",
+    "rootUV": [
+      0.5,
+      0.19228210246174318
+    ],
+    "tipUV": [
+      0.5462633451957295,
+      0.9966733200266135
+    ],
+    "uniformModelScale": 0.14
+  },
+  "earBack": {
+    "src": "common/ear-back.png",
+    "rootUV": [
+      0.1518288474810214,
+      0.7559681697612732
+    ],
+    "tipUV": [
+      0.9951690821256038,
+      0.10610079575596817
+    ]
+  },
+  "neckMaskSpace": "model coordinates after registration to neck (425,460); ROIs select components, never rectangular cutouts"
+}

@@ -1,0 +1,15 @@
+{
+  "samples": 1200,
+  "phases": [
+    0,
+    0.25,
+    0.5,
+    0.75,
+    0.99
+  ],
+  "initialViews": 8,
+  "actions": 30,
+  "clipped": [],
+  "empty": [],
+  "scope": "neutral expression; canvas bounds only, not visual acceptance"
+}

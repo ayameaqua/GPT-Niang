@@ -1,13 +1,14 @@
 """Deterministic pose evaluation, independent of Qt, wall time and quota polling."""
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 import math
+from .dynamics import perform,run_flight
 
 EXPRESSIONS = dict(zip(
     "neutral happy wink love shy surprised angry sad sleepy thinking smug pout worried determined flustered scared excited cry confused".split(),
     "平静 开心 眨眼 喜欢 害羞 惊讶 生气 难过 犯困 思考 得意 嘟嘴 担心 认真 慌张 害怕 期待 大哭 疑惑".split()))
 MOTIONS = {
     "stand": ("站起", 1.2), "jump": ("跳", 1.2), "hop": ("小跳", .9), "look": ("张望", 2.7),
-    "turn": ("转身", .4), "nod": ("点头", .8), "shake": ("摇头", .8), "spin": ("转圈", .8),
+    "turn": ("转身", .6), "nod": ("点头", 1.2), "shake": ("摇头", 1.2), "spin": ("转圈", 1.6),
     "sit": ("坐下", .8), "sleep": ("睡觉", .8), "dizzy": ("晕", 3.2), "walk": ("走走", 12),
     "run": ("跑", 12), "wave": ("招手", 1.7), "bow": ("鞠躬", 1.7), "shiver": ("发抖", 1.9),
     "flap": ("扑腾", 1.5), "dance": ("跳舞", 3.4),
@@ -43,6 +44,10 @@ def smooth(value):
     return x*x*(3-2*x)
 
 
+def turn_progress(phase):
+    return smooth((phase-.15)/.70)
+
+
 @dataclass
 class Pose:
     expression: str = "neutral"
@@ -68,6 +73,24 @@ class Pose:
     look_back: float = 0
     # Anatomical left/right lift, pointing-hand mix, wrist sway in degrees.
     hands: tuple = (0., 0., 0., 0.)
+    head_pitch: float = 0.
+    head_yaw: float = 0.
+    pelvis: tuple = (0.,0.)
+    legs: dict = field(default_factory=dict)
+    contacts: tuple = (True,True)
+    airborne: bool = False
+    vertical_velocity: float = 0.
+    root_anchor: tuple = (425.,969.)
+    tail_energy: float = 0.
+    tail_angle: object = None
+    point_target: object = None
+    arm_base: dict = field(default_factory=dict)
+    expression_from: str = ''
+    expression_mix: float = 1.
+    face_weights: dict = field(default_factory=dict)
+    camera_angle: object = None
+    turn_tail: float = 0.
+    face_visibility: float = 1.
 
 
 class Animator:
@@ -96,10 +119,21 @@ class Animator:
         self.head_start=0.
         self.head_return=None
         self.hand_return=None
+        self.body_return=None
+        self.fall=None
+        self.after_land=''
+        self.point_target=None
+        self.lid=0.
+        self.speech_amount=0.
+        self.face_transition=None
+        self.hair_follow=0.;self.hair_velocity=0.
 
     def set_expression(self, value):
         if value not in EXPRESSIONS:
             return False
+        previous=self.pose()
+        weights=previous.face_weights or {previous.expression:1.}
+        self.face_transition=[weights,0.] if weights!={value:1.} and not self.paused else None
         self.expression = value
         self.request_face_view()
         return True
@@ -118,8 +152,12 @@ class Animator:
             self.face_requested=False
             self.face_reasons.clear()
             return
+        # A facial request cannot take ownership of a ballistic performance.
+        # Keep it queued until touchdown; carried pets retain their grab anchor.
+        if self.action in ('jump','hop','toss','flap','land') or (self.action!='carried' and self.pose().airborne) or self.fall:
+            return
         resume=self.action
-        self.play("turn")
+        self.play("turn",keep_air=True)
         self.turn_to="front-right" if self.view=="back-right" else "front-left"
         self.pending=resume
 
@@ -130,12 +168,41 @@ class Animator:
         self.settling=None
         self.head_return=None
         self.hand_return=None
+        self.body_return=None
         return True
 
-    def play(self, action):
+    def play(self, action,keep_air=False):
         if action not in MOTIONS:
             return False
         previous=self.pose()
+        previous_fall=self.fall;previous_elapsed=self.elapsed
+        self.face_transition=[previous.face_weights or {previous.expression:1.},0.]
+        if previous.airborne and self.action=='land' and self.fall and action!='carried':
+            self.after_land=action if action!='land' else ''
+            self.pending=''
+            return True
+        self.after_land=''
+        self.fall=None
+        if previous.airborne and not keep_air and action!='carried':
+            release=previous.motion=='carried' and action=='toss'
+            if action!='land' and not release:self.after_land=action
+            action='land'
+            height=min(-1e-6,previous.root_y);velocity=previous.vertical_velocity;gravity=1200.
+            if previous.motion in ('jump','hop','toss','flap'):
+                peak={'jump':125,'hop':48,'toss':165,'flap':42}[previous.motion]
+                gravity=8*peak/(.55*MOTIONS[previous.motion][1])**2
+            elif previous_fall:gravity=previous_fall['gravity']
+            if release:velocity=-430.;gravity=1200.
+            seconds=(-velocity+math.sqrt(velocity*velocity-2*gravity*height))/gravity
+            self.fall={'start':previous,'height':height,'velocity':velocity,'gravity':gravity,'duration':seconds}
+            if release:self.fall['release']=True
+            if previous.motion=='run':
+                _,_,remaining=run_flight(self.elapsed,MOTIONS['run'][1])
+                self.fall.update(run_elapsed=self.elapsed,duration=max(1e-6,remaining))
+            elif previous_fall and 'run_elapsed' in previous_fall:
+                self.fall.update(run_elapsed=previous_fall['run_elapsed']+previous_elapsed,
+                                 duration=max(1e-6,previous_fall['duration']-previous_elapsed))
+        self.body_return=None if self.fall else [previous,0.,.14]
         self.hand_return=[previous.hands,0.]
         head=previous.look_back
         self.head_start=head if action=='look-back' else 0.
@@ -150,6 +217,8 @@ class Animator:
                 self.settling=[current.view,current.blend_view,current.view_mix,target,0.]
         self.pending = ""
         self.start_seat = self.seat
+        seated_next=action if self.seat>.001 and action not in ('sit','sleep','stand','land','carried') else ''
+        if seated_next:action='stand'
         self.elapsed = 0.
         self.action = action
         self.sleeping = action == "sleep"
@@ -178,16 +247,25 @@ class Animator:
                 self.pending = action
                 self.turn_from, self.turn_to = self.view, target
                 self.action = "turn"
+        elif seated_next:
+            self.pending=seated_next
         return True
 
     def cancel(self):
         current=self.pose()
-        self.action = self.pending = ""
-        self.elapsed = self.seat = 0.
+        self.face_transition=[current.face_weights or {current.expression:1.},0.]
+        if current.airborne:
+            self.play('land')
+        elif self.seat>.001:
+            self.play('stand')
+        else:
+            self.action = self.pending = ""
+            self.elapsed = 0.
+            self.fall=None
+            self.body_return=[current,0.,.22]
+        self.after_land=''
         self.sleeping = self.speech = self.listening = False
         self.expression = "neutral"
-        self.carry = 0.
-        self.emotion = 0.
         self.face_requested=False
         self.face_reasons.clear()
         self.settling=None
@@ -204,6 +282,14 @@ class Animator:
             return self.pose()
         dt = clamp(dt, 0, .1) * self.speed
         self.clock += dt
+        if self.face_transition:
+            self.face_transition[1]+=dt
+            if self.face_transition[1]>=.16:self.face_transition=None
+        self.speech_amount=clamp(self.speech_amount+(dt/.12 if self.speech else -dt/.12))
+        self.lid=clamp(self.lid+(dt/.22 if self.sleeping else -dt/.22))
+        if self.body_return:
+            self.body_return[1]+=dt
+            if self.body_return[1]>=self.body_return[2]:self.body_return=None
         if self.hand_return:
             self.hand_return[1]+=dt
             if self.hand_return[1]>=.18:self.hand_return=None
@@ -223,7 +309,7 @@ class Animator:
         self._consume_face_request()
         if self.action:
             self.elapsed += action_dt
-            duration = MOTIONS[self.action][1]
+            duration = MOTIONS[self.action][1]+(self.fall['duration'] if self.fall else 0.)
             p = clamp(self.elapsed / duration)
             target = 1. if self.action in ("sit", "sleep") else 0.
             self.seat = self.start_seat + (target-self.start_seat)*smooth(p)
@@ -233,14 +319,17 @@ class Animator:
                 delta = (end-start) % 8
                 if delta > 4:
                     delta -= 8
-                step = min(abs(delta), int(p*abs(delta)))
+                step = min(abs(delta), int(turn_progress(p)*abs(delta)))
                 self.view = order[(start + (step if delta >= 0 else -step)) % 8]
             if self.action == "spin":
                 order = list(VIEWS)
-                self.view = order[(order.index(self.turn_from) + int(p*8)) % 8]
+                self.view = order[(order.index(self.turn_from) + int(turn_progress(p)*8)) % 8]
             if p >= 1 and self.action != "carried":
                 old = self.action
+                ended=self.pose()
+                if ended.expression!=self.expression:self.face_transition=[ended.face_weights or {ended.expression:1.},0.]
                 self.action = ""
+                self.fall=None
                 if old == "spin":
                     self.view = self.turn_from
                 if self.pending:
@@ -248,22 +337,31 @@ class Animator:
                     self.play(pending)
                 if self.face_requested:
                     self._consume_face_request()
+                if old=='land' and self.after_land:
+                    following,self.after_land=self.after_land,''
+                    self.play(following)
+        physical=self.pose()
+        target=physical.head_yaw*.5+physical.head_pitch*.35+physical.transforms['head'].get('a',0)*.7+physical.root_angle
+        acceleration=50*(target-self.hair_follow)-12*self.hair_velocity
+        self.hair_velocity+=acceleration*dt;self.hair_follow+=self.hair_velocity*dt
         return self.pose()
 
     def pose(self):
         t = self.clock
         a = self.action
-        p = clamp(self.elapsed / MOTIONS[a][1]) if a else 0
+        motion_elapsed=max(0,self.elapsed-(self.fall['duration'] if self.fall else 0.))
+        p = clamp(motion_elapsed / MOTIONS[a][1]) if a else 0
         env = smooth(p/.18) * (1-smooth((p-.78)/.22)) if a else 0
         beat = math.sin(t*2)
         pose = Pose(expression=self.expression, view=self.view, seat=self.seat, gaze=self.gaze,
-                    speech=(.35+.65*abs(math.sin(t*12))) if self.speech else 0,
+                    speech=self.speech_amount*(math.sin(math.pi*((t*3.8)%1)/.76)**2 if (t*3.8)%1<.76 else 0.),
                     phase=p,time=t,motion=a,hair=math.sin(t*1.7)*3,cloth=math.sin(t*1.3))
         if a in ("turn","spin"):
             order=list(VIEWS);start=order.index(self.turn_from)
             delta=8 if a=="spin" else (order.index(self.turn_to)-start)%8
             if a=="turn" and delta>4:delta-=8
-            position=p*abs(delta);step=int(position);direction=1 if delta>=0 else -1
+            position=turn_progress(p)*abs(delta);step=int(position);direction=1 if delta>=0 else -1
+            pose.turn_tail=smooth(p/.15)*(1-smooth((p-.85)/.15))
             if step<abs(delta):
                 pose.blend_view=order[(start+direction*(step+1))%8]
                 pose.view_mix=smooth(position-step)
@@ -274,7 +372,8 @@ class Animator:
         # Natural blink, 180 ms every 4.6 s, no wall-clock random jitter in previews.
         blink_phase = t % 4.6
         pose.blink = max(0., 1-abs(blink_phase-3.9)/.09)
-        pose.eye_closed = self.sleeping
+        pose.blink=max(pose.blink,self.lid)
+        pose.eye_closed = self.lid>=.999
         if self.sleeping:
             pose.expression = "sleepy"
         pose.root_y = math.sin(t*1.9)*1.7
@@ -365,7 +464,7 @@ class Animator:
         if a in HAND_GESTURES:
             left=env if a in ('wave','raise-left','raise-both','point','dance') else 0.
             right=env if a in ('raise-right','raise-both','dance') else 0.
-            sway=math.sin(p*math.pi*(12 if a=='wave' else 8))*12*env if a in ('wave','dance') else 0.
+            sway=math.sin(p*math.pi*4)*12*env if a in ('wave','dance') else 0.
             pose.hands=(left,right,env if a=='point' else 0.,sway)
         if self.hand_return:
             start,elapsed=self.hand_return;amount=smooth(elapsed/.18)
@@ -408,4 +507,56 @@ class Animator:
             tr["head"]["a"] += 5
         tr["hairBack"]["warp"]=pose.hair
         tr["hairFront"]["warp"]=pose.hair*.35
+        pose=perform(pose,motion_elapsed,MOTIONS[a][1] if a else 1.,smooth(self.carry),self.seat,self.listening)
+        pose.point_target=self.point_target
+        target=pose.head_yaw*.5+pose.head_pitch*.35+pose.transforms['head'].get('a',0)*.7+pose.root_angle
+        pose.hair+=(target-self.hair_follow)*.6
+        if self.fall and self.elapsed<max(.14,self.fall['duration']):
+            start=self.fall['start'];t=self.elapsed
+            ready=smooth(t/max(.14,self.fall['duration']))
+            source=start
+            if 'run_elapsed' in self.fall:
+                elapsed=self.fall['run_elapsed']+t
+                continuation=Pose(view=start.view,motion='run',phase=clamp(elapsed/MOTIONS['run'][1]),time=self.clock,
+                                  transforms={node:{} for node in start.transforms})
+                continuation=perform(continuation,elapsed,MOTIONS['run'][1],0.,0.)
+                transforms={**start.transforms}
+                for node in ('upper','armFar','armNear'):
+                    transforms[node]={**start.transforms[node],**continuation.transforms[node]}
+                source=replace(start,transforms=transforms,root_x=continuation.root_x,pelvis=continuation.pelvis,
+                               legs=continuation.legs,contacts=continuation.contacts,arm_base=continuation.arm_base,
+                               tail_energy=continuation.tail_energy)
+            gravity=self.fall['gravity']
+            y=self.fall['height']+self.fall['velocity']*t+gravity*t*t/2
+            velocity=self.fall['velocity']+gravity*t
+            if 'run_elapsed' in self.fall:y,velocity,_=run_flight(self.fall['run_elapsed']+t,MOTIONS['run'][1])
+            flying=t<self.fall['duration']
+            pose=replace(blend_pose(source,pose,ready),time=self.clock,motion='toss' if self.fall.get('release') else 'land',airborne=flying,
+                root_y=min(0.,y) if flying else 0.,
+                root_angle=start.root_angle*(1-ready),root_anchor=(425.,start.root_anchor[1]+(969-start.root_anchor[1])*ready),
+                vertical_velocity=velocity if flying else 0.,head_pitch=start.head_pitch*(1-ready),head_yaw=start.head_yaw*(1-ready))
+            pose.contacts=(False,False) if flying else tuple(abs(pose.legs[node]['y'])<1 for node in ('legFar','legNear'))
+        elif self.body_return:
+            start,elapsed,duration=self.body_return
+            pose=blend_pose(start,pose,smooth(elapsed/duration))
+        pose.transforms['hairBack']['warp']=pose.hair;pose.transforms['hairFront']['warp']=pose.hair*.35
+        if self.face_transition:
+            old,elapsed=self.face_transition;amount=smooth(elapsed/.16)
+            pose.face_weights={name:weight*(1-amount) for name,weight in old.items()}
+            pose.face_weights[pose.expression]=pose.face_weights.get(pose.expression,0.)+amount
         return pose
+
+
+def blend_pose(first,second,amount):
+    """Blend every physical channel, preserving authored view/action identity."""
+    def value(a,b,key=''):
+        if isinstance(a,dict) or isinstance(b,dict):
+            a=a if isinstance(a,dict) else {};b=b if isinstance(b,dict) else {}
+            return {k:value(a.get(k,1. if k in ('sx','sy') else 0.),b.get(k,1. if k in ('sx','sy') else 0.),k) for k in a.keys()|b.keys()}
+        if isinstance(a,(tuple,list)) and isinstance(b,(tuple,list)):
+            return tuple(value(x,y) for x,y in zip(a,b))
+        if type(a) in (int,float) and type(b) in (int,float):return a+(b-a)*amount
+        return b
+    keys=('transforms','root_x','root_y','root_angle','root_anchor','pelvis','legs','seat','head_pitch','head_yaw','gaze','hands','arm_base','tail_energy','hair','cloth','blink','turn_tail')
+    contacts=tuple(a and b for a,b in zip(first.contacts,second.contacts)) if amount<.999 else second.contacts
+    return replace(second,contacts=contacts,**{k:value(getattr(first,k),getattr(second,k)) for k in keys})

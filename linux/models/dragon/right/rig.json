@@ -103,7 +103,7 @@
     },
     {
       "id": "tail",
-      "src": "tail.png",
+      "src": "../common/tail-right.png",
       "box": [
         -81.09689999999995,
         638.45,
@@ -113,7 +113,7 @@
       "parent": "tail",
       "z": 2.2,
       "mesh": false,
-      "flipX": true
+      "tailRig": true
     },
     {
       "id": "leg-near",
@@ -126,7 +126,8 @@
       ],
       "parent": "legNear",
       "z": 2.6,
-      "mesh": false
+      "mesh": false,
+      "legRig": true
     },
     {
       "id": "leg-far",
@@ -139,7 +140,8 @@
       ],
       "parent": "legFar",
       "z": 2.4,
-      "mesh": false
+      "mesh": false,
+      "legRig": true
     }
   ],
   "pivots": {
@@ -172,7 +174,7 @@
       535
     ],
     "tail": [
-      375,
+      425,
       683
     ],
     "legFar": [
@@ -223,7 +225,19 @@
       142.3706
     ],
     "oneEye": true,
-    "flip": true
+    "flip": true,
+    "features": {
+      "mouth": {
+        "source": "mouth",
+        "box": [
+          98,
+          90,
+          11,
+          9
+        ]
+      }
+    },
+    "maskSkin": true
   },
   "landmarks": {
     "waist": [
@@ -261,10 +275,6 @@
     "wing-near": [
       0.065,
       0.5
-    ],
-    "tail": [
-      0.05,
-      0.15
     ]
   },
   "anatomicalHands": {

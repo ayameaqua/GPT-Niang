@@ -98,7 +98,7 @@
     },
     {
       "id": "tail",
-      "src": "tail.png",
+      "src": "../common/tail-right.png",
       "box": [
         -25.393,
         648.821,
@@ -108,7 +108,7 @@
       "parent": "tail",
       "z": 2.2,
       "mesh": false,
-      "flipX": true
+      "tailRig": true
     },
     {
       "id": "leg-near",
@@ -122,7 +122,8 @@
       "z": 2.6,
       "mesh": false,
       "sourcePart": "leg-near",
-      "flipX": true
+      "flipX": true,
+      "legRig": true
     },
     {
       "id": "leg-far",
@@ -136,7 +137,8 @@
       "z": 2.4,
       "mesh": false,
       "sourcePart": "leg-far",
-      "flipX": true
+      "flipX": true,
+      "legRig": true
     },
     {
       "id": "neck",
@@ -182,7 +184,7 @@
       522.093
     ],
     "tail": [
-      360,
+      425,
       683
     ],
     "legFar": [
@@ -370,10 +372,6 @@
     "wing-near": [
       0.07612456747404844,
       0.4020618556701031
-    ],
-    "tail": [
-      0.05217391304347826,
-      0.11507936507936507
     ],
     "leg-near": [
       0.5,

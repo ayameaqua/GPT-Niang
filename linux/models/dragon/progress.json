@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "updated": "2026-10-31",
-  "status": "model-repair-pass-2",
+  "updated": "2026-11-01",
+  "status": "model-repair-pass-3",
   "fullModelV1Complete": false,
-  "renderer": "independent-qt-layered-raster-warp",
+  "renderer": "independent-qt-layered-skeletal-raster",
   "baselineExpressionsImplemented": 19,
   "baselineMotionsImplemented": 18,
   "baselineMotionsPending": [],
@@ -47,22 +47,19 @@
     "left",
     "right"
   ],
-  "originalPoseMotions": [
-    "sit",
-    "sleep"
-  ],
+  "originalPoseMotions": [],
   "artReviewPending": true,
   "forearmAndHandDetailPending": false,
   "visualReviewPassed": false,
   "countsScope": "registered and renderable IDs/resources, not visual acceptance",
   "visualReview": {
-    "date": "2026-10-31",
-    "baselineCommit": "a219dc3aea9eb444349fb23e85a5072b6a739e2e",
+    "date": "2026-11-01",
+    "baselineCommit": "0e50179fb7e9b09db947739eb04f404f61dbfaae",
     "model": "gpt-6-astra",
     "reasoningEffort": "xhigh",
-    "result": "requires-rework",
+    "result": "targeted-pass-3-repairs-passed; full-V1-pending",
     "handoff": "../../docs/model-review/README.md",
-    "repairRecord": "../../docs/model-review/FIXES.md"
+    "repairRecord": "../../docs/model-review/PASS3-FIXES.md"
   },
   "modelRepair": {
     "sourceExtraction": "explicit complete components; neighboring opaque islands excluded; original RGBA retained",
@@ -70,24 +67,64 @@
     "handPoses": "front upper arm, forearm sleeve and wrist/hand articulated independently; hand shape alone mixes for pointing",
     "gestureDirection": "front; bow profiles; look-back rear-quarter body with head groups",
     "verification": {
-      "pythonQtTests": 61,
+      "pythonQtTests": 91,
       "nodeAdapterTests": 5,
-      "nativeWaylandSmoke": true,
+      "sharedNodeTestsPassed": 161,
+      "sharedNodeTestsSkipped": 5,
+      "nativeWaylandQmlSmoke": true,
+      "nativeWaylandFinalCapture": false,
+      "offscreenQmlPreviewCapture": true,
       "canvasBoundarySamples": 1200,
       "boundaryClips": 0,
-      "renderAndAlphaMs320": 1.99
+      "emptyFrames": 0,
+      "renderAndInputMask384": {
+        "front/nod": {
+          "meanMs": 21.04,
+          "maxMs": 24.15,
+          "frames": 40
+        },
+        "left/jump": {
+          "meanMs": 32.27,
+          "maxMs": 40.3,
+          "frames": 40
+        },
+        "back/run": {
+          "meanMs": 35.18,
+          "maxMs": 37.05,
+          "frames": 40
+        },
+        "back-left/sit": {
+          "meanMs": 20.94,
+          "maxMs": 26.65,
+          "frames": 40
+        },
+        "front-left/spin": {
+          "meanMs": 22.46,
+          "maxMs": 34.02,
+          "frames": 40
+        }
+      }
     },
-    "evidence": "../../docs/model-review/evidence/fix-snapshot.json",
+    "evidence": "../../docs/model-review/evidence/pass3/verification.json",
     "remainingArt": [
-      "fine costume/ornament consistency across all eight views",
-      "full visual review of all expression/motion combinations"
+      "continuous turn inbetweens; current body turns use eight native frames",
+      "fine costume and ornament consistency across eight views",
+      "full visual review of all expression and motion combinations"
     ],
     "notFullModelV1Acceptance": true,
-    "pass": 2,
+    "pass": 3,
     "articulationScope": "front gestures; all hand gestures route here; other directions retain their registered limb transforms",
     "rearLimbs": "dedicated near/far rear-quarter arms and heels; opposite side mirrors each limb separately",
     "rearHair": "retained long hair over rear garment, shoulders underneath, distal near forearm above hair; feathered crown",
     "lookBack": "profile crown on rear-quarter body; own long hair and rear clothing retained",
-    "detailRecord": "../../docs/model-review/DETAIL-FIXES.md"
+    "detailRecord": "../../docs/model-review/PASS3-FIXES.md",
+    "seatedMotionImplementation": "pelvis plus two-bone IK; original pose direction routing retained",
+    "headMotion": "fixed-neck small pitch/yaw; complete native material and live facial features",
+    "tailMotion": "six-node FK; alpha-domain harmonic skinning; rigid tip and grounded chain",
+    "directionFrames": {
+      "body": 8,
+      "head": 12,
+      "continuousTurnAccepted": false
+    }
   }
 }

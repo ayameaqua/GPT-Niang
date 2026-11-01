@@ -16,7 +16,8 @@
       ],
       "parent": "legFar",
       "z": 0,
-      "mesh": false
+      "mesh": false,
+      "legRig": true
     },
     {
       "id": "leg-near",
@@ -29,7 +30,8 @@
       ],
       "parent": "legNear",
       "z": 1,
-      "mesh": false
+      "mesh": false,
+      "legRig": true
     },
     {
       "id": "hair-back",
@@ -42,11 +44,21 @@
       ],
       "parent": "hairBack",
       "z": 3,
-      "mesh": true
+      "mesh": true,
+      "sourceWindow": [
+        0,
+        0.4,
+        1,
+        0.6
+      ],
+      "fadeTop": [
+        0.4,
+        0.52
+      ]
     },
     {
       "id": "tail",
-      "src": "tail.png",
+      "src": "../common/tail-back.png",
       "box": [
         411.12728,
         643.8,
@@ -54,8 +66,9 @@
         280
       ],
       "parent": "tail",
-      "z": 2,
-      "mesh": false
+      "z": 2.7,
+      "mesh": false,
+      "tailRig": true
     },
     {
       "id": "arm-far",
@@ -291,10 +304,6 @@
     "wing-near": [
       0.06,
       0.52
-    ],
-    "tail": [
-      0.04,
-      0.14
     ],
     "dress": [
       0.5,

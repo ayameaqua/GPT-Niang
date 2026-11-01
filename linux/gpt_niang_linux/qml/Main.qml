@@ -25,6 +25,12 @@ Window {
     property bool bubbleVisible: false
 
     function updateInputMask() {
+        if (dragon.available && character.width > 0) {
+            const targetX = bubble.x + bubble.width / 2
+            const targetY = bubble.y + bubble.height
+            dragon.setPointTarget((targetX-character.x)/character.width*1280-150,
+                                  (targetY-character.y)/character.height*1280-220)
+        }
         windowBackend.updateMask(character.x, character.y, character.width, character.height,
                                  bubbleVisible, bubble.x, bubble.y, bubble.width, bubble.height)
     }
@@ -34,6 +40,13 @@ Window {
     Component.onCompleted: maskTimer.start()
     Timer { id: maskTimer; interval: 0; onTriggered: petWindow.updateInputMask() }
 
+    Connections {
+        target: dragon
+        function onChanged() {
+            if (dragon.motion === "point") petWindow.bubbleVisible = true
+            maskTimer.restart()
+        }
+    }
     Connections {
         target: windowBackend
         function onDragStarted() { if (petWindow.modelActive) dragon.play("carried") }

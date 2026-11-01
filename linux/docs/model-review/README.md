@@ -1,5 +1,7 @@
 # 龙娘模型专项审查与主上下文交接
 
+**2026-11-01 第三轮尾巴与骨骼动作修复见 [PASS3-FIXES.md](PASS3-FIXES.md)。原生八向素材已恢复；连续转身试验未采用，完整V1仍未验收。**
+
 **最新进展：第二轮已处理肘腕衔接、后侧四肢、长发深度和回眸服装，见 [DETAIL-FIXES.md](DETAIL-FIXES.md)。** 首轮的顺序、方向适用表与验证边界保留在 [FIXES.md](FIXES.md)。下文保留原失败基线；四份定向复核见 [正面静态](FRONT-STATIC-RECHECK.md)、[右前侧绑定](FR-REBIND-RECHECK.md)、[侧后根点](SIDE-REAR-REBIND-RECHECK.md)、[状态逻辑](MOTION-STATE-RECHECK.md)。
 
 审查日期：2026-10-31。固定基线：`a219dc3aea9eb444349fb23e85a5072b6a739e2e`，分支 `linux/qt-wayland`。用户指出正面脸、头发和脚异常后，要求使用 **GPT-6 Astra / xhigh** 子代理逐方向、逐动作检查，再留下详细说明交给主上下文修复。

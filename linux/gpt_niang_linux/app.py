@@ -13,7 +13,7 @@ import sys
 import PySide6
 from PySide6.QtCore import ClassInfo, QObject, Property, QTimer, QUrl, Signal, Slot, qVersion
 from PySide6.QtDBus import QDBusConnection, QDBusInterface
-from PySide6.QtGui import QGuiApplication, QIcon
+from PySide6.QtGui import QGuiApplication, QIcon, QImage, QPainter
 from PySide6.QtQml import QQmlApplicationEngine, qmlRegisterType
 from PySide6.QtQuick import QQuickWindow
 
@@ -251,11 +251,38 @@ def main(argv=None):
         QTimer.singleShot(1400, app.quit)
     elif not args.model_preview:
         QTimer.singleShot(150, quota.refresh)
+    capture_saved = not args.capture
+    pending_captures = []
     if args.capture:
         def capture():
             args.capture.parent.mkdir(parents=True, exist_ok=True)
             target = next((w for w in app.allWindows() if w.objectName() == "modelPreview"), window) if args.model_preview else window
-            target.grabWindow().save(str(args.capture))
+            # An unexposed Wayland window may never produce a capture frame.
+            # Keep the diagnostic asynchronous so it cannot block the event loop.
+            if not target.isExposed():
+                logging.warning("Capture window is not exposed")
+                return
+            content_item = target.contentItem()
+            while content_item.parentItem() is not None:
+                content_item = content_item.parentItem()
+            request = content_item.grabToImage()
+            result = request.data()
+            if result is None:
+                return
+            pending_captures.append(request)
+            def save_capture():
+                nonlocal capture_saved
+                content = result.image()
+                image = QImage(content.size(), QImage.Format.Format_ARGB32_Premultiplied)
+                image.setDevicePixelRatio(content.devicePixelRatio())
+                image.fill(target.property("color"))
+                painter = QPainter(image)
+                painter.drawImage(0, 0, content)
+                painter.end()
+                capture_saved = image.save(str(args.capture))
+                result.ready.disconnect(save_capture)
+                pending_captures.remove(request)
+            result.ready.connect(save_capture)
         QTimer.singleShot(900, capture)
     if args.quit_after > 0:
         QTimer.singleShot(round(args.quit_after * 1000), app.quit)
@@ -263,7 +290,9 @@ def main(argv=None):
     # Destroy QML while its context objects are still alive.
     from shiboken6 import delete
     delete(engine)
-    return 1 if args.smoke_test and qml_warnings else result
+    if not capture_saved:
+        print("未能完成抓图：窗口未暴露或未能及时生成图像。", file=sys.stderr)
+    return 1 if (args.smoke_test and qml_warnings) or not capture_saved else result
 
 
 if __name__ == "__main__":

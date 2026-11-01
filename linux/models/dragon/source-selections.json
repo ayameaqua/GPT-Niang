@@ -607,6 +607,105 @@
         450,
         400
       ]
+    },
+    "common/tail-left.png": {
+      "source": "source/revision-4/tail-left.png",
+      "locator": [
+        0,
+        0,
+        3000,
+        3000
+      ]
+    },
+    "common/tail-right.png": {
+      "source": "source/revision-4/tail-right.png",
+      "locator": [
+        0,
+        0,
+        3000,
+        3000
+      ]
+    },
+    "common/tail-back-left.png": {
+      "source": "source/revision-4/tail-back-left.png",
+      "locator": [
+        0,
+        0,
+        3000,
+        3000
+      ]
+    },
+    "common/tail-back-right.png": {
+      "source": "source/revision-4/tail-back-right.png",
+      "locator": [
+        0,
+        0,
+        3000,
+        3000
+      ]
+    },
+    "common/tail-back.png": {
+      "source": "source/revision-4/tail-back.png",
+      "locator": [
+        0,
+        0,
+        3000,
+        3000
+      ]
+    },
+    "common/head-left112.png": {
+      "source": "source/revision-4/head-left112.png",
+      "locator": [
+        0,
+        0,
+        3000,
+        3000
+      ]
+    },
+    "common/head-left67.png": {
+      "source": "source/revision-4/head-left67.png",
+      "locator": [
+        0,
+        0,
+        3000,
+        3000
+      ]
+    },
+    "common/head-right247.png": {
+      "source": "source/revision-4/head-right247.png",
+      "locator": [
+        0,
+        0,
+        3000,
+        3000
+      ]
+    },
+    "common/head-right292.png": {
+      "source": "source/revision-4/head-right292.png",
+      "locator": [
+        0,
+        0,
+        3000,
+        3000
+      ]
+    },
+    "common/hairpin.png": {
+      "source": "source/revision-5/hairpin.png",
+      "locator": [
+        0,
+        0,
+        3000,
+        3000
+      ]
+    },
+    "common/ear-back.png": {
+      "source": "source/revision-5/ear-back.png",
+      "locator": [
+        0,
+        0,
+        3000,
+        3000
+      ]
     }
   }
 }

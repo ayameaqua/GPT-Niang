@@ -1,0 +1,46 @@
+{
+  "date": "2026-11-01",
+  "pythonQt": {
+    "passed": 91
+  },
+  "nodeAdapter": {
+    "passed": 5
+  },
+  "sharedNode": {
+    "passed": 161,
+    "skipped": 5,
+    "failed": 0
+  },
+  "canvas": {
+    "samples": 1200,
+    "phases": [
+      0,
+      0.25,
+      0.5,
+      0.75,
+      0.99
+    ],
+    "initialViews": 8,
+    "actions": 30,
+    "clipped": [],
+    "empty": [],
+    "scope": "neutral expression; canvas bounds only, not visual acceptance"
+  },
+  "wayland": {
+    "qmlSmokeExit": 0,
+    "finalCaptureAvailable": false,
+    "captureReason": "current compositor session reports QQuickWindow.isExposed=false; asynchronous capture exits instead of blocking"
+  },
+  "offscreen": {
+    "qmlPreviewCaptureExit": 0,
+    "scope": "rendered item content composited with the actual window clear colour; input masks unsupported on this backend"
+  },
+  "reviews": {
+    "tail": "PASS3-TAIL-CANDIDATE11.md",
+    "motion": "PASS3-MOTION-CANDIDATE11.md",
+    "head": "PASS3-FRONT-CANDIDATE14.md"
+  },
+  "fullModelV1Accepted": false,
+  "continuousTurnAccepted": false,
+  "gifSha256": "2dbbfb02c9f8b93d9d3c46810f8e1f2267ac3addb25864ccf3c29c94bc865b84"
+}
